@@ -1,0 +1,120 @@
+/* Gift Modal */
+#gift-modal .modal-dialog {
+    max-width: 700px;
+}
+
+#gift-modal .modal-body {
+    max-height: 70vh;
+    overflow-y: auto;
+}
+
+.gift-balance-box {
+    background: var(--light);
+    border: 1px solid var(--border-color);
+}
+
+[data-theme="dark"] .gift-balance-box {
+    background: var(--dark);
+    border-color: var(--border-color);
+}
+
+.gift-category-tabs .nav-link {
+    font-size: 0.875rem;
+    padding: 0.4rem 1rem;
+}
+
+.gift-card {
+    cursor: pointer;
+    transition: transform 0.15s ease, box-shadow 0.15s ease;
+    border: 1px solid var(--border-color);
+    border-radius: 0.5rem;
+}
+
+.gift-card:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+}
+
+.gift-card-icon ion-icon {
+    font-size: 2rem;
+    color: var(--primary);
+}
+
+.gift-card-name {
+    font-size: 0.8rem;
+    line-height: 1.2;
+}
+
+.gift-card-credits {
+    font-size: 0.75rem;
+}
+
+.gift-card .btn-sm {
+    font-size: 0.75rem;
+    padding: 0.2rem 0.5rem;
+}
+
+/* Post Gifts Display */
+.post-gift-item {
+    font-size: 0.85rem;
+}
+
+.post-gift-item .gift-icon {
+    font-size: 1.1rem;
+    color: var(--primary);
+}
+
+.post-gift-item .gift-count {
+    font-size: 0.85rem;
+}
+
+/* Gift Effect Overlay */
+#gift-effect-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 9999;
+    background: rgba(0,0,0,0.6);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+#gift-effect-overlay .gift-effect-inner {
+    text-align: center;
+}
+
+#gift-effect-overlay .gift-effect-gif {
+    max-width: 200px;
+    max-height: 200px;
+    border-radius: 1rem;
+}
+
+#gift-effect-overlay .gift-effect-text {
+    font-size: 1.5rem;
+    text-shadow: 0 2px 8px rgba(0,0,0,0.5);
+}
+
+/* Profile Gift Stats */
+.profile-gift-stats {
+    margin-top: 1rem;
+}
+
+.profile-gift-stats .stat-item {
+    display: flex;
+    align-items: center;
+    padding: 0.5rem 0;
+    border-bottom: 1px solid var(--border-color);
+}
+
+.profile-gift-stats .stat-item:last-child {
+    border-bottom: none;
+}
+
+.profile-gift-stats .gift-icon {
+    font-size: 1.3rem;
+    margin-right: 0.5rem;
+    color: var(--primary);
+}

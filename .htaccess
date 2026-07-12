@@ -1,0 +1,16 @@
+<IfModule mod_rewrite.c>
+    RewriteEngine On
+
+    # Disable Directory listing
+    Options -Indexes
+
+    # Block sensitive files from direct access
+    <FilesMatch "\.(env|config\.js|md|gitignore|gitattributes|lock|backup|log)$">
+        Require all denied
+    </FilesMatch>
+
+    # Block access to .env files specifically (regardless of extension)
+    RewriteRule ^\.env - [F,L]
+    RewriteRule ^\.env\. - [F,L]
+    RewriteRule ^storage/ - [F,L]
+</IfModule>

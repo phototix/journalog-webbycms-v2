@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="instagram_pink">#E1306C</color>
+    <color name="instagram_purple">#833AB4</color>
+    <color name="instagram_orange">#F77737</color>
+    <color name="instagram_yellow">#FCAF45</color>
+    <color name="instagram_blue">#405DE6</color>
+
+    <color name="white">#FFFFFF</color>
+    <color name="black">#000000</color>
+    <color name="gray_50">#FAFAFA</color>
+    <color name="gray_100">#F5F5F5</color>
+    <color name="gray_200">#EEEEEE</color>
+    <color name="gray_300">#DBDBDB</color>
+    <color name="gray_400">#BDBDBD</color>
+    <color name="gray_500">#8E8E8E</color>
+    <color name="gray_600">#636363</color>
+    <color name="gray_700">#262626</color>
+    <color name="gray_800">#1A1A1A</color>
+    <color name="gray_900">#121212</color>
+
+    <color name="dark_background">#121212</color>
+    <color name="dark_surface">#1E1E1E</color>
+    <color name="dark_card">#2A2A2A</color>
+    <color name="story_gradient_start">#F58529</color>
+    <color name="story_gradient_mid">#DD2A7B</color>
+    <color name="story_gradient_end">#8134AF</color>
+</resources>

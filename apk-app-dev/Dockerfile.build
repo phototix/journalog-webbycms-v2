@@ -1,0 +1,33 @@
+FROM eclipse-temurin:17-jdk
+
+ENV ANDROID_SDK_ROOT=/opt/android-sdk
+ENV ANDROID_HOME=/opt/android-sdk
+ENV PATH=$PATH:$ANDROID_SDK_ROOT/cmdline-tools/latest/bin:$ANDROID_SDK_ROOT/platform-tools:$ANDROID_SDK_ROOT/build-tools/35.0.0
+
+# Install required packages
+RUN apt-get update && apt-get install -y --no-install-recommends \
+    wget \
+    unzip \
+    git \
+    && rm -rf /var/lib/apt/lists/*
+
+# Download and install Android command-line tools
+RUN wget -q https://dl.google.com/android/repository/commandlinetools-linux-11076708_latest.zip -O /tmp/cmdline-tools.zip \
+    && unzip -q /tmp/cmdline-tools.zip -d /tmp/ \
+    && mkdir -p $ANDROID_SDK_ROOT/cmdline-tools \
+    && mv /tmp/cmdline-tools $ANDROID_SDK_ROOT/cmdline-tools/latest \
+    && rm /tmp/cmdline-tools.zip
+
+# Accept licenses and install SDK components
+RUN yes | $ANDROID_SDK_ROOT/cmdline-tools/latest/bin/sdkmanager --licenses > /dev/null 2>&1 || true
+RUN $ANDROID_SDK_ROOT/cmdline-tools/latest/bin/sdkmanager \
+    "platforms;android-35" \
+    "build-tools;35.0.0" \
+    "platform-tools" \
+    > /dev/null 2>&1
+
+WORKDIR /project
+COPY . .
+
+RUN chmod +x gradlew
+RUN ./gradlew assembleDebug --no-daemon -x test
