@@ -7,11 +7,14 @@ import android.widget.Toast
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.gestures.detectDragGestures
 import androidx.compose.foundation.layout.*
-import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.items
+import androidx.compose.ui.input.pointer.pointerInput
+import androidx.compose.ui.unit.IntOffset
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.*
 import androidx.compose.material.icons.outlined.ContentCopy
@@ -35,16 +38,31 @@ fun DebugOverlay(isAdmin: Boolean) {
     var showPanel by remember { mutableStateOf(false) }
     val context = LocalContext.current
 
+    var offsetX by remember { mutableFloatStateOf(0f) }
+    var offsetY by remember { mutableFloatStateOf(0f) }
+
     Box(modifier = Modifier.fillMaxSize()) {
-        // Floating bug button
-        FloatingActionButton(
-            onClick = { showPanel = !showPanel },
+        // Floating bug button — draggable
+        Box(
             modifier = Modifier
+                .offset { IntOffset(offsetX.toInt(), offsetY.toInt()) }
                 .align(Alignment.BottomEnd)
-                .padding(16.dp)
-                .size(40.dp),
-            containerColor = if (DebugLogStore.entries.any { it.responseCode >= 400 || it.error.isNotBlank() })
-                Color(0xFFE53935) else Color(0xFF1E88E5)
+                .offset(x = (-16).dp, y = (-16).dp)
+                .size(40.dp)
+                .pointerInput(Unit) {
+                    detectDragGestures { change, dragAmount ->
+                        change.consume()
+                        offsetX += dragAmount.x
+                        offsetY += dragAmount.y
+                    }
+                }
+                .clickable { showPanel = !showPanel }
+                .background(
+                    color = if (DebugLogStore.entries.any { it.responseCode >= 400 || it.error.isNotBlank() })
+                        Color(0xFFE53935) else Color(0xFF1E88E5),
+                    shape = CircleShape
+                ),
+            contentAlignment = Alignment.Center
         ) {
             Icon(
                 Icons.Filled.BugReport,
