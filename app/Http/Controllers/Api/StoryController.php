@@ -38,6 +38,9 @@ class StoryController extends ApiController
 
         $story = Story::create([
             'user_id' => $request->user()->id,
+            'text' => $request->get('text'),
+            'overlay' => $request->get('overlay'),
+            'bg_preset' => $request->get('bg_preset'),
         ]);
 
         \App\Model\Attachment::where('id', $validated['attachment_id'])
