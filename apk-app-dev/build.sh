@@ -180,16 +180,20 @@ step6_deploy() {
         exit 1
     fi
 
-    echo "  Copying APK to server..."
+    echo "  Preparing server directory..."
     sshpass -p "$SSH_PASS" ssh -o StrictHostKeyChecking=no "$SSH_USER@$SSH_HOST" "
-      mkdir -p $REMOTE_DIR/public/apk
-      echo '$SSH_PASS' | sudo -S chmod 777 $REMOTE_DIR/public/apk 2>/dev/null || true
-    "
+      echo '$SSH_PASS' | sudo -S mkdir -p $REMOTE_DIR/public/apk
+      echo '$SSH_PASS' | sudo -S rm -f $REMOTE_DIR/public/apk/${APP_NAME}-v${VERSION_STR}.apk
+    " 2>&1 | grep -v "^\[sudo\]" || true
 
+    echo "  Copying APK to server..."
     if sshpass -p "$SSH_PASS" scp -o StrictHostKeyChecking=no \
       "$APK_SOURCE" \
       "$SSH_USER@$SSH_HOST:$REMOTE_DIR/public/apk/"; then
         echo "  APK copied successfully"
+        sshpass -p "$SSH_PASS" ssh -o StrictHostKeyChecking=no "$SSH_USER@$SSH_HOST" "
+          echo '$SSH_PASS' | sudo -S chmod 644 $REMOTE_DIR/public/apk/${APP_NAME}-v${VERSION_STR}.apk
+        " 2>&1 | grep -v "^\[sudo\]" || true
     else
         echo "  ⚠ SCP failed, aborting deploy"
         exit 1
@@ -198,11 +202,11 @@ step6_deploy() {
     echo "  Pulling latest code on server..."
     sshpass -p "$SSH_PASS" ssh -o StrictHostKeyChecking=no "$SSH_USER@$SSH_HOST" "
       echo '$SSH_PASS' | sudo -S -u www-data git -c safe.directory=$REMOTE_DIR -C $REMOTE_DIR pull origin main 2>&1
+      echo '$SSH_PASS' | sudo -S chown www-data:www-data $REMOTE_DIR/public/apk/${APP_NAME}-v${VERSION_STR}.apk 2>/dev/null || true
       echo '$SSH_PASS' | sudo -S chmod -R g+rw $REMOTE_DIR/.git 2>/dev/null || true
-      echo '$SSH_PASS' | sudo -S chown -R www-data:www-data $REMOTE_DIR 2>/dev/null || true
       ls -t $REMOTE_DIR/public/apk/*.apk 2>/dev/null | tail -n +6 | xargs rm -f 2>/dev/null || true
       echo 'Server deploy complete'
-    "
+    " 2>&1 | grep -v "^\[sudo\]" || true
     echo "  → Production server updated"
 }
 
