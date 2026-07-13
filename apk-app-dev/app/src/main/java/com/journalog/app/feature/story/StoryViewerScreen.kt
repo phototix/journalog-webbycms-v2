@@ -246,14 +246,7 @@ fun StoryViewerScreen(
     LaunchedEffect(currentGroupIndex, currentItemIndex, isPaused, videoFinished) {
         if (isPaused) return@LaunchedEffect
         val duration = (currentItem.length ?: 5) * 1000L
-        if (isVideo) {
-            if (videoFinished) {
-                advanceStory()
-                return@LaunchedEffect
-            }
-            // For video, wait for onFinished callback
-            return@LaunchedEffect
-        }
+
         val steps = 50
         val stepMs = duration / steps
         currentProgress = 0f
@@ -261,7 +254,14 @@ fun StoryViewerScreen(
             delay(stepMs)
             currentProgress = i.toFloat() / steps
         }
-        advanceStory()
+
+        if (isVideo) {
+            if (videoFinished) {
+                advanceStory()
+            }
+        } else {
+            advanceStory()
+        }
     }
 }
 
