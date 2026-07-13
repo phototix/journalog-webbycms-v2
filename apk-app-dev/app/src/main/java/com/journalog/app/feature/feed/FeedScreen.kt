@@ -350,7 +350,9 @@ fun PostCard(
     onLike: () -> Unit,
     onComment: () -> Unit,
     onProfileClick: () -> Unit,
-    onPostClick: () -> Unit = {}
+    onPostClick: () -> Unit = {},
+    hideCommentButton: Boolean = false,
+    onGiftClick: (() -> Unit)? = null
 ) {
     Card(
         modifier = Modifier.fillMaxWidth().padding(horizontal = 0.dp, vertical = 4.dp),
@@ -386,6 +388,18 @@ fun PostCard(
                     contentAlignment = Alignment.Center
                 ) {
                     Text(post.text ?: "", maxLines = 3, overflow = TextOverflow.Ellipsis)
+                    if (onGiftClick != null) {
+                        FloatingActionButton(
+                            onClick = onGiftClick,
+                            modifier = Modifier
+                                .align(Alignment.BottomEnd)
+                                .padding(8.dp)
+                                .size(36.dp),
+                            containerColor = MaterialTheme.colorScheme.primary
+                        ) {
+                            Icon(Icons.Filled.CardGiftcard, contentDescription = "Send Gift", tint = MaterialTheme.colorScheme.onPrimary, modifier = Modifier.size(18.dp))
+                        }
+                    }
                 }
             } else {
                 Box(
@@ -401,6 +415,18 @@ fun PostCard(
                             modifier = Modifier.fillMaxWidth().aspectRatio(1f),
                             contentScale = ContentScale.Crop
                         )
+                    }
+                    if (onGiftClick != null) {
+                        FloatingActionButton(
+                            onClick = onGiftClick,
+                            modifier = Modifier
+                                .align(Alignment.BottomEnd)
+                                .padding(8.dp)
+                                .size(36.dp),
+                            containerColor = MaterialTheme.colorScheme.primary
+                        ) {
+                            Icon(Icons.Filled.CardGiftcard, contentDescription = "Send Gift", tint = MaterialTheme.colorScheme.onPrimary, modifier = Modifier.size(18.dp))
+                        }
                     }
                 }
             }
@@ -431,7 +457,7 @@ fun PostCard(
                 Text("${post.user?.name ?: ""} ${post.text}", style = MaterialTheme.typography.bodyMedium,
                     maxLines = 2, overflow = TextOverflow.Ellipsis, modifier = Modifier.padding(horizontal = 12.dp, vertical = 2.dp))
             }
-            if (post.commentsCount > 0) {
+            if (!hideCommentButton && post.commentsCount > 0) {
                 TextButton(onClick = onComment, modifier = Modifier.padding(horizontal = 4.dp, vertical = 0.dp)) {
                     Text("View all ${post.commentsCount} comments", style = MaterialTheme.typography.bodyMedium,
                         color = MaterialTheme.colorScheme.onSurfaceVariant)

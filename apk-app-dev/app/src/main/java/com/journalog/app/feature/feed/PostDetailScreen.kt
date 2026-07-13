@@ -141,7 +141,9 @@ fun PostDetailScreen(
                                 scope.launch { try { api.toggleLike(p.id) } catch (_: Exception) {} }
                             },
                             onComment = { },
-                            onProfileClick = { }
+                            onProfileClick = { },
+                            hideCommentButton = true,
+                            onGiftClick = { showGiftModal = true }
                         )
                     }
 
@@ -149,22 +151,6 @@ fun PostDetailScreen(
                     if (p.poll != null && p.poll.answers != null) {
                         item {
                             PollDisplay(poll = p.poll, postId = p.id, api = api)
-                        }
-                    }
-
-                    // Gift button
-                    item {
-                        Row(
-                            modifier = Modifier
-                                .fillMaxWidth()
-                                .padding(horizontal = 12.dp, vertical = 4.dp),
-                            horizontalArrangement = Arrangement.spacedBy(8.dp)
-                        ) {
-                            TextButton(onClick = { showGiftModal = true }) {
-                                Icon(Icons.Filled.CardGiftcard, contentDescription = null)
-                                Spacer(modifier = Modifier.width(4.dp))
-                                Text("Send Gift")
-                            }
                         }
                     }
                 }
