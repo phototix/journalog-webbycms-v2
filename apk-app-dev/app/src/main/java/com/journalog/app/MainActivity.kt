@@ -169,7 +169,9 @@ fun MainContent(tokenManager: TokenManager, launchToken: String? = null) {
             }
 
             composable(NavRoutes.Create.route) {
-                CreateScreen()
+                CreateScreen(onPostCreated = {
+                    navController.popBackStack()
+                })
             }
 
             composable(NavRoutes.Messenger.route) {

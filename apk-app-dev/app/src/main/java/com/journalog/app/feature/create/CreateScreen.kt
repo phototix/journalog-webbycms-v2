@@ -31,7 +31,7 @@ import okhttp3.RequestBody.Companion.toRequestBody
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun CreateScreen() {
+fun CreateScreen(onPostCreated: () -> Unit = {}) {
     var caption by remember { mutableStateOf("") }
     var price by remember { mutableStateOf("") }
     var selectedUri by remember { mutableStateOf<Uri?>(null) }
@@ -175,7 +175,12 @@ fun CreateScreen() {
                             }
                         }
 
-                        api.createPost(body)
+                        val createResp = api.createPost(body)
+                        if (createResp.isSuccessful) {
+                            onPostCreated()
+                        } else {
+                            error = "Failed to create post"
+                        }
                     } catch (e: Exception) {
                         error = e.message ?: "Failed to create post"
                     } finally {
