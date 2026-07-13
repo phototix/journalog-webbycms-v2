@@ -12,6 +12,7 @@ REMOTE_DIR="/var/www/webbypage/just-friends.webbypage.com"
 echo ""
 echo "Pulling latest code on production server..."
 sshpass -p "$SSH_PASS" ssh -o StrictHostKeyChecking=no "$SSH_USER@$SSH_HOST" "
-  echo '$SSH_PASS' | sudo -S -u www-data git -c safe.directory=$REMOTE_DIR -C $REMOTE_DIR pull origin main 2>&1
+  echo '$SSH_PASS' | sudo -S -u www-data git -c safe.directory=$REMOTE_DIR -C $REMOTE_DIR fetch origin main 2>&1
+  echo '$SSH_PASS' | sudo -S -u www-data git -c safe.directory=$REMOTE_DIR -C $REMOTE_DIR reset --hard origin/main 2>&1
   echo 'Server git pull complete'
 "
