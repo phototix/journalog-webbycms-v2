@@ -252,6 +252,10 @@ data class PaginatedNotifications(
     val data: List<NotificationDto>
 )
 
+data class PaginatedComments(
+    val data: List<CommentDto>
+)
+
 data class UploadResponse(
     @SerializedName("attachmentID") val attachmentID: String,
     val path: String,

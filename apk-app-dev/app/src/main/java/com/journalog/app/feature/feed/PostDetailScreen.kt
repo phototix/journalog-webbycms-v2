@@ -54,7 +54,7 @@ fun PostDetailScreen(
                     commentText = ""
                     val commentsResp = api.getComments(postId)
                     if (commentsResp.isSuccessful) {
-                        comments = commentsResp.body()?.data?.get("comments") ?: emptyList()
+                comments = commentsResp.body()?.data?.get("comments")?.data ?: emptyList()
                     }
                 }
             } catch (_: Exception) {}
@@ -69,8 +69,8 @@ fun PostDetailScreen(
                 post = resp.body()?.data?.get("post")
             }
             val commentsResp = api.getComments(postId)
-            if (commentsResp.isSuccessful) {
-                comments = commentsResp.body()?.data?.get("comments") ?: emptyList()
+                if (commentsResp.isSuccessful) {
+                        comments = commentsResp.body()?.data?.get("comments")?.data ?: emptyList()
             }
         } catch (_: Exception) {}
         isLoading = false
