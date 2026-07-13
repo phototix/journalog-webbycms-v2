@@ -76,8 +76,8 @@ step2_build() {
           -t journalog-build \
           "$SCRIPT_DIR" 2>&1 | tail -5
 
-        echo "  Extracting from Docker image..."
         mkdir -p "$APK_PUBLIC_DIR"
+        rm -f "$APK_PUBLIC_DIR"/*.apk
         CONTAINER_ID=$(docker container create journalog-build 2>/dev/null)
         docker cp "$CONTAINER_ID:/project/app/build/outputs/apk/debug/app-debug.apk" \
           "$APK_PUBLIC_DIR/${APP_NAME}-v${VERSION_STR}.apk"
@@ -91,13 +91,12 @@ step2_build() {
             echo "  ⚠ Gradle build failed"
             exit 1
         fi
+        rm -f "$APK_PUBLIC_DIR"/*.apk
         cp "$SCRIPT_DIR/app/build/outputs/apk/debug/app-debug.apk" \
           "$APK_PUBLIC_DIR/${APP_NAME}-v${VERSION_STR}.apk"
     fi
 
     echo "  → ${APP_NAME}-v${VERSION_STR}.apk ($(du -h "$APK_PUBLIC_DIR/${APP_NAME}-v${VERSION_STR}.apk" | cut -f1))"
-
-    ls -t "$APK_PUBLIC_DIR"/*.apk 2>/dev/null | tail -n +6 | xargs rm -f 2>/dev/null || true
 }
 
 step3_metadata() {
