@@ -103,6 +103,8 @@ data class StoryItemDto(
     val thumbnail: String?,
     val text: String?,
     val length: Int?,
+    val overlay: Map<String, Double>?,
+    @SerializedName("bg_preset") val bgPreset: String?,
     @SerializedName("created_at") val createdAt: String?
 )
 

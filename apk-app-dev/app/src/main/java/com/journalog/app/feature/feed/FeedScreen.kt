@@ -35,7 +35,8 @@ import kotlinx.coroutines.launch
 fun FeedScreen(
     onPostClick: (Int) -> Unit,
     onProfileClick: (String) -> Unit,
-    onStoryClick: (Int) -> Unit
+    onStoryClick: (Int) -> Unit,
+    onCreateStory: () -> Unit = {}
 ) {
     val api = remember { ApiClient.create(ApiService::class.java) }
     var posts by remember { mutableStateOf<List<PostDto>>(emptyList()) }
@@ -88,7 +89,7 @@ fun FeedScreen(
         contentPadding = PaddingValues(bottom = 8.dp)
     ) {
         item {
-            StoriesRow(stories = stories, onStoryClick = onStoryClick)
+            StoriesRow(stories = stories, onCreateStory = onCreateStory, onStoryClick = onStoryClick)
         }
 
         if (isLoading && posts.isEmpty()) {
@@ -159,6 +160,8 @@ fun parseStories(list: List<*>): List<StoryGroupDto> {
                     thumbnail = sm["preview"] as? String,
                     text = sm["text"] as? String,
                     length = sm["length"] as? Int,
+                    overlay = sm["overlay"] as? Map<String, Double>,
+                    bgPreset = sm["bg_preset"] as? String,
                     createdAt = timeStr
                 )
             }
@@ -179,71 +182,85 @@ fun parseStories(list: List<*>): List<StoryGroupDto> {
 }
 
 @Composable
-fun StoriesRow(stories: List<StoryGroupDto>, onStoryClick: (Int) -> Unit) {
+fun StoriesRow(
+    stories: List<StoryGroupDto>,
+    onCreateStory: () -> Unit = {},
+    onStoryClick: (Int) -> Unit
+) {
     LazyRow(
         modifier = Modifier.padding(vertical = 8.dp),
         contentPadding = PaddingValues(horizontal = 12.dp),
         horizontalArrangement = Arrangement.spacedBy(12.dp)
     ) {
-        if (stories.isEmpty()) {
-            items(3) {
-                Column(horizontalAlignment = Alignment.CenterHorizontally) {
+        // Create Story button — always first
+        item {
+            Column(
+                horizontalAlignment = Alignment.CenterHorizontally,
+                modifier = Modifier.clickable { onCreateStory() }
+            ) {
+                Box(
+                    modifier = Modifier
+                        .size(64.dp)
+                        .clip(CircleShape)
+                        .background(StoryGradient)
+                        .padding(2.dp)
+                ) {
                     Box(
                         modifier = Modifier
-                            .size(64.dp)
+                            .fillMaxSize()
                             .clip(CircleShape)
-                            .background(StoryGradient)
-                            .padding(2.dp)
+                            .background(MaterialTheme.colorScheme.surface),
+                        contentAlignment = Alignment.Center
                     ) {
+                        Icon(
+                            Icons.Filled.Add,
+                            contentDescription = "Create Story",
+                            modifier = Modifier.size(28.dp),
+                            tint = MaterialTheme.colorScheme.primary
+                        )
+                    }
+                }
+                Spacer(modifier = Modifier.height(4.dp))
+                Text("Your Story", style = MaterialTheme.typography.labelSmall, maxLines = 1, overflow = TextOverflow.Ellipsis)
+            }
+        }
+
+        items(stories, key = { it.user.id }) { group ->
+            Column(
+                horizontalAlignment = Alignment.CenterHorizontally,
+                modifier = Modifier.clickable { onStoryClick(group.user.id) }
+            ) {
+                val ringBrush: Brush = if (group.hasUnseen) StoryGradient
+                    else Brush.linearGradient(listOf(MaterialTheme.colorScheme.outline, MaterialTheme.colorScheme.outline))
+                Box(
+                    modifier = Modifier
+                        .size(64.dp)
+                        .clip(CircleShape)
+                        .background(ringBrush)
+                        .padding(2.dp)
+                ) {
+                    val avatarUrl = group.user.avatar ?: ""
+                    if (avatarUrl.isNotBlank()) {
+                        AsyncImage(
+                            model = avatarUrl,
+                            contentDescription = null,
+                            modifier = Modifier.fillMaxSize().clip(CircleShape),
+                            contentScale = ContentScale.Crop
+                        )
+                    } else {
                         Box(
-                            modifier = Modifier
-                                .fillMaxSize()
-                                .clip(CircleShape)
+                            modifier = Modifier.fillMaxSize().clip(CircleShape)
                                 .background(MaterialTheme.colorScheme.surface)
                         )
                     }
-                    Spacer(modifier = Modifier.height(4.dp))
-                    Text("Story", style = MaterialTheme.typography.labelSmall, maxLines = 1, overflow = TextOverflow.Ellipsis)
                 }
-            }
-        } else {
-            items(stories, key = { it.user.id }) { group ->
-                Column(
-                    horizontalAlignment = Alignment.CenterHorizontally,
-                    modifier = Modifier.clickable { onStoryClick(group.user.id) }
-                ) {
-                    val ringBrush: Brush = if (group.hasUnseen) StoryGradient
-                        else Brush.linearGradient(listOf(MaterialTheme.colorScheme.outline, MaterialTheme.colorScheme.outline))
-                    Box(
-                        modifier = Modifier
-                            .size(64.dp)
-                            .clip(CircleShape)
-                            .background(ringBrush)
-                            .padding(2.dp)
-                    ) {
-                        val avatarUrl = group.user.avatar ?: ""
-                        if (avatarUrl.isNotBlank()) {
-                            AsyncImage(
-                                model = avatarUrl,
-                                contentDescription = null,
-                                modifier = Modifier.fillMaxSize().clip(CircleShape),
-                                contentScale = ContentScale.Crop
-                            )
-                        } else {
-                            Box(
-                                modifier = Modifier.fillMaxSize().clip(CircleShape)
-                                    .background(MaterialTheme.colorScheme.surface)
-                            )
-                        }
-                    }
-                    Spacer(modifier = Modifier.height(4.dp))
-                    Text(
-                        group.user.name,
-                        style = MaterialTheme.typography.labelSmall,
-                        maxLines = 1,
-                        overflow = TextOverflow.Ellipsis
-                    )
-                }
+                Spacer(modifier = Modifier.height(4.dp))
+                Text(
+                    group.user.name,
+                    style = MaterialTheme.typography.labelSmall,
+                    maxLines = 1,
+                    overflow = TextOverflow.Ellipsis
+                )
             }
         }
     }

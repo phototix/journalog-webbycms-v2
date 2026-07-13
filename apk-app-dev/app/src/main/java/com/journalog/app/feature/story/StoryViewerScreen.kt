@@ -1,7 +1,5 @@
 package com.journalog.app.feature.story
 
-import androidx.compose.animation.core.animateFloatAsState
-import androidx.compose.animation.core.tween
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.gestures.detectVerticalDragGestures
@@ -16,9 +14,16 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.compose.ui.viewinterop.AndroidView
+import androidx.media3.common.MediaItem
+import androidx.media3.common.util.UnstableApi
+import androidx.media3.exoplayer.ExoPlayer
+import androidx.media3.ui.AspectRatioFrameLayout
+import androidx.media3.ui.PlayerView
 import coil.compose.AsyncImage
 import coil.request.ImageRequest
 import com.journalog.app.core.network.ApiClient
@@ -26,8 +31,8 @@ import com.journalog.app.data.remote.ApiService
 import com.journalog.app.data.remote.dto.StoryGroupDto
 import com.journalog.app.feature.feed.parseStories
 import kotlinx.coroutines.delay
-import kotlinx.coroutines.launch
 
+@androidx.annotation.OptIn(UnstableApi::class)
 @Composable
 fun StoryViewerScreen(
     userId: Int,
@@ -39,7 +44,6 @@ fun StoryViewerScreen(
     var currentItemIndex by remember { mutableStateOf(0) }
     var isPaused by remember { mutableStateOf(false) }
     var currentProgress by remember { mutableStateOf(0f) }
-    val scope = rememberCoroutineScope()
     var dragOffset by remember { mutableStateOf(0f) }
 
     LaunchedEffect(userId) {
@@ -67,6 +71,8 @@ fun StoryViewerScreen(
         return
     }
 
+    val isVideo = currentItem.type == "video"
+
     Box(
         modifier = Modifier
             .fillMaxSize()
@@ -79,35 +85,43 @@ fun StoryViewerScreen(
                         }
                         dragOffset = 0f
                     },
-                    onVerticalDrag = { change, dragAmount ->
+                    onVerticalDrag = { _, dragAmount ->
                         dragOffset += dragAmount
                     }
                 )
             }
     ) {
-        // Background image
-        AsyncImage(
-            model = ImageRequest.Builder(LocalContext.current)
-                .data(currentItem.url)
-                .crossfade(true)
-                .build(),
-            contentDescription = null,
-            modifier = Modifier.fillMaxSize(),
-            contentScale = ContentScale.Fit
-        )
+        // Story content — image or video
+        if (isVideo) {
+            VideoPlayer(
+                url = currentItem.url,
+                isPaused = isPaused,
+                modifier = Modifier.fillMaxSize()
+            )
+        } else {
+            AsyncImage(
+                model = ImageRequest.Builder(LocalContext.current)
+                    .data(currentItem.url)
+                    .crossfade(true)
+                    .build(),
+                contentDescription = null,
+                modifier = Modifier.fillMaxSize(),
+                contentScale = ContentScale.Fit
+            )
+        }
 
-        // Progress bars
+        // Overlay UI on top
         Column(modifier = Modifier.fillMaxSize()) {
             Spacer(modifier = Modifier.windowInsetsTopHeight(WindowInsets.statusBars))
 
-            // Progress indicators
+            // Progress bars
             Row(
                 modifier = Modifier
                     .fillMaxWidth()
                     .padding(horizontal = 8.dp, vertical = 4.dp),
                 horizontalArrangement = Arrangement.spacedBy(4.dp)
             ) {
-                currentGroup.stories.forEachIndexed { index, story ->
+                currentGroup.stories.forEachIndexed { index, _ ->
                     val progress = if (index < currentItemIndex) 1f
                     else if (index == currentItemIndex) currentProgress
                     else 0f
@@ -160,24 +174,28 @@ fun StoryViewerScreen(
                 }
             }
 
-            Spacer(modifier = Modifier.weight(1f))
-
-            // Text overlay
+            // Centered text overlay
             currentItem.text?.let { text ->
                 if (text.isNotBlank()) {
-                    Text(
-                        text,
-                        color = Color.White,
-                        fontSize = 16.sp,
+                    Box(
                         modifier = Modifier
-                            .padding(16.dp)
-                            .background(Color.Black.copy(alpha = 0.3f))
-                            .padding(12.dp)
-                    )
+                            .weight(1f)
+                            .fillMaxWidth()
+                            .padding(horizontal = 16.dp),
+                        contentAlignment = Alignment.Center
+                    ) {
+                        Text(
+                            text,
+                            color = Color.White,
+                            fontSize = 18.sp,
+                            textAlign = TextAlign.Center,
+                            lineHeight = 24.sp
+                        )
+                    }
+                } else {
+                    Spacer(modifier = Modifier.weight(1f))
                 }
-            }
-
-            Spacer(modifier = Modifier.height(16.dp))
+            } ?: Spacer(modifier = Modifier.weight(1f))
         }
 
         // Tap zones for navigation
@@ -223,6 +241,10 @@ fun StoryViewerScreen(
     LaunchedEffect(currentGroupIndex, currentItemIndex, isPaused) {
         if (isPaused) return@LaunchedEffect
         val duration = (currentItem.length ?: 5) * 1000L
+        if (isVideo) {
+            // For video, let the video play; advance when it ends
+            // Simple fallback: use the duration as timeout
+        }
         val steps = 50
         val stepMs = duration / steps
         currentProgress = 0f
@@ -230,7 +252,6 @@ fun StoryViewerScreen(
             delay(stepMs)
             currentProgress = i.toFloat() / steps
         }
-        // Advance to next item
         if (currentItemIndex + 1 < currentGroup.stories.size) {
             currentItemIndex++
         } else if (currentGroupIndex + 1 < groups.size) {
@@ -240,4 +261,41 @@ fun StoryViewerScreen(
             onBack()
         }
     }
+}
+
+@androidx.annotation.OptIn(UnstableApi::class)
+@Composable
+private fun VideoPlayer(
+    url: String,
+    isPaused: Boolean,
+    modifier: Modifier = Modifier
+) {
+    val context = LocalContext.current
+    val exoPlayer = remember {
+        ExoPlayer.Builder(context).build().apply {
+            setMediaItem(MediaItem.fromUri(url))
+            repeatMode = ExoPlayer.REPEAT_MODE_ONE
+            prepare()
+            playWhenReady = true
+        }
+    }
+
+    LaunchedEffect(isPaused) {
+        if (isPaused) exoPlayer.pause() else exoPlayer.play()
+    }
+
+    DisposableEffect(Unit) {
+        onDispose { exoPlayer.release() }
+    }
+
+    AndroidView(
+        modifier = modifier,
+        factory = { ctx ->
+            PlayerView(ctx).apply {
+                player = exoPlayer
+                useController = false
+                resizeMode = AspectRatioFrameLayout.RESIZE_MODE_FIT
+            }
+        }
+    )
 }

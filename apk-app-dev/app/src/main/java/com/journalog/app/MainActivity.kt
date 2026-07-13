@@ -146,6 +146,9 @@ fun MainContent(tokenManager: TokenManager, launchToken: String? = null) {
                     },
                     onStoryClick = { userId ->
                         navController.navigate(NavRoutes.StoryViewer.createRoute(userId))
+                    },
+                    onCreateStory = {
+                        navController.navigate(NavRoutes.Create.route)
                     }
                 )
             }
