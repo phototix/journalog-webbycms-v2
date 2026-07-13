@@ -13,7 +13,7 @@ SSH_USER="webbycms"
 SSH_PASS="Quidents64"
 REMOTE_DIR="/var/www/webbypage/just-friends.webbypage.com"
 
-LARAVEL_APP_URL="${APP_URL:-https://journal.webbypage.com}"
+LARAVEL_APP_URL="${APP_URL:-https://journalog.webbypage.com}"
 
 header() {
     echo ""
