@@ -387,7 +387,7 @@ fun PostCard(
                         .clickable { onPostClick() },
                     contentAlignment = Alignment.Center
                 ) {
-                    Text(post.text ?: "", maxLines = 3, overflow = TextOverflow.Ellipsis)
+                    Text(post.text?.replace("<br>", "\n")?.replace("<br />", "\n")?.replace("<br/>", "\n") ?: "", maxLines = 3, overflow = TextOverflow.Ellipsis)
                     if (onGiftClick != null) {
                         FloatingActionButton(
                             onClick = onGiftClick,
@@ -454,7 +454,8 @@ fun PostCard(
                     fontWeight = FontWeight.SemiBold, modifier = Modifier.padding(horizontal = 12.dp, vertical = 2.dp))
             }
             if (!post.text.isNullOrBlank()) {
-                Text("${post.user?.name ?: ""} ${post.text}", style = MaterialTheme.typography.bodyMedium,
+                val displayText = post.text?.replace("<br>", "\n")?.replace("<br />", "\n")?.replace("<br/>", "\n")
+                Text("${post.user?.name ?: ""} $displayText", style = MaterialTheme.typography.bodyMedium,
                     maxLines = 2, overflow = TextOverflow.Ellipsis, modifier = Modifier.padding(horizontal = 12.dp, vertical = 2.dp))
             }
             if (!hideCommentButton && post.commentsCount > 0) {
