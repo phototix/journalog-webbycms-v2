@@ -60,7 +60,11 @@ fun ConversationScreen(
                     currentPage = page
                     if (page == 1) {
                         scope.launch {
-                            if (messages.isNotEmpty()) listState.scrollToItem(messages.size - 1)
+                            try {
+                                if (messages.isNotEmpty()) {
+                                    listState.scrollToItem(messages.size - 1)
+                                }
+                            } catch (_: Exception) {}
                         }
                     }
                 }
@@ -83,22 +87,31 @@ fun ConversationScreen(
         if (shouldLoadPrev.value) loadMessages(currentPage + 1, append = true)
     }
 
-    // Background polling every 5s
+    // Background polling every 5s, stops after 3 consecutive failures
+    var pollFailCount by remember { mutableIntStateOf(0) }
     LaunchedEffect(Unit) {
         while (true) {
             delay(5000)
+            if (pollFailCount >= 3) break
             try {
                 val resp = api.getMessages(userId, 1, 10)
                 if (resp.isSuccessful) {
+                    pollFailCount = 0
                     val fresh = resp.body()?.data?.get("messages")?.data?.reversed() ?: emptyList()
                     val currentIds = messages.map { it.id }.toSet()
                     val newOnes = fresh.filter { it.id !in currentIds }
                     if (newOnes.isNotEmpty()) {
                         messages = messages + newOnes
-                        scope.launch { listState.scrollToItem(messages.size - 1) }
+                        if (messages.isNotEmpty()) {
+                            scope.launch { listState.scrollToItem(messages.size - 1) }
+                        }
                     }
+                } else {
+                    pollFailCount++
                 }
-            } catch (_: Exception) {}
+            } catch (_: Exception) {
+                pollFailCount++
+            }
         }
     }
 
