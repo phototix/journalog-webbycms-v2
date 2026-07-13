@@ -54,25 +54,46 @@ fun PostDetailScreen(
                     commentText = ""
                     val commentsResp = api.getComments(postId)
                     if (commentsResp.isSuccessful) {
-                comments = commentsResp.body()?.data?.get("comments")?.data ?: emptyList()
+                        comments = commentsResp.body()?.data?.comments?.data ?: emptyList()
                     }
                 }
             } catch (_: Exception) {}
         }
     }
 
+    fun loadComments() {
+        scope.launch {
+            try {
+                val commentsResp = api.getComments(postId)
+                android.util.Log.d("Journalog-Feed", "comments resp ok=${commentsResp.isSuccessful} code=${commentsResp.code()}")
+                if (commentsResp.isSuccessful) {
+                    val paginated = commentsResp.body()?.data?.comments
+                    android.util.Log.d("Journalog-Feed", "comments paginated=${paginated != null} listSize=${paginated?.data?.size}")
+                    comments = paginated?.data ?: emptyList()
+                } else {
+                    val errBody = commentsResp.errorBody()?.string()
+                    android.util.Log.e("Journalog-Feed", "comments API error ${commentsResp.code()}: $errBody")
+                }
+            } catch (e: Exception) {
+                android.util.Log.e("Journalog-Feed", "comments exception", e)
+            }
+        }
+    }
+
     LaunchedEffect(postId) {
+        android.util.Log.d("Journalog-Feed", "PostDetail LaunchedEffect postId=$postId")
         isLoading = true
         try {
             val resp = api.getPost(postId)
+            android.util.Log.d("Journalog-Feed", "post resp ok=${resp.isSuccessful}")
             if (resp.isSuccessful) {
                 post = resp.body()?.data?.get("post")
+                android.util.Log.d("Journalog-Feed", "post loaded id=${post?.id}")
             }
-            val commentsResp = api.getComments(postId)
-                if (commentsResp.isSuccessful) {
-                        comments = commentsResp.body()?.data?.get("comments")?.data ?: emptyList()
-            }
-        } catch (_: Exception) {}
+        } catch (e: Exception) {
+            android.util.Log.e("Journalog-Feed", "post load failed", e)
+        }
+        loadComments()
         isLoading = false
     }
 

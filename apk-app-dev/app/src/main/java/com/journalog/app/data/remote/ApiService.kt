@@ -45,7 +45,7 @@ interface ApiService {
     suspend fun toggleBookmark(@Path("id") id: Int): Response<ApiResponse<Map<String, Boolean>>>
 
     @GET("posts/{id}/comments")
-    suspend fun getComments(@Path("id") id: Int): Response<ApiResponse<Map<String, PaginatedComments>>>
+    suspend fun getComments(@Path("id") id: Int): Response<ApiResponse<CommentsResponse>>
 
     @POST("posts/{id}/comments")
     suspend fun addComment(@Path("id") id: Int, @Body body: Map<String, String>): Response<ApiResponse<Map<String, CommentDto>>>

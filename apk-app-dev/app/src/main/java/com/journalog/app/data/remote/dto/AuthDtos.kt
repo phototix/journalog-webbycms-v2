@@ -252,6 +252,10 @@ data class PaginatedNotifications(
     val data: List<NotificationDto>
 )
 
+data class CommentsResponse(
+    val comments: PaginatedComments
+)
+
 data class PaginatedComments(
     val data: List<CommentDto>
 )
