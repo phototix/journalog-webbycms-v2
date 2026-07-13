@@ -8,7 +8,7 @@ VERSION_FILE="$PROJECT_DIR/storage/app/apk-version.json"
 VERSION_TXT="$SCRIPT_DIR/app-version.txt"
 APP_NAME="journalog"
 
-LARAVEL_APP_URL="${APP_URL:-https://just-friends.webbypage.com}"
+LARAVEL_APP_URL="${APP_URL:-https://journalog.webbypage.com}"
 
 echo "========================================"
 echo "  Journalog APK Build Script"

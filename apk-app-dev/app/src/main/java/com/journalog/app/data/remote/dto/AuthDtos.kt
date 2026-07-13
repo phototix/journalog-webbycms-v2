@@ -37,6 +37,7 @@ data class UserDto(
     @SerializedName("is_verified") val isVerified: Boolean?,
     @SerializedName("has_subscribed") val hasSubscribed: Boolean?,
     @SerializedName("has_chat_access") val hasChatAccess: Boolean?,
+    @SerializedName("role_id") val roleId: Int?,
     @SerializedName("is_following") val isFollowing: Boolean?,
     @SerializedName("gifts_received_count") val giftsReceivedCount: Int?,
     @SerializedName("gifts_received_credits") val giftsReceivedCredits: Int?,

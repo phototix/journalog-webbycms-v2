@@ -3,6 +3,7 @@
 namespace App\Providers;
 
 use GuzzleHttp\Client;
+use Illuminate\Support\Facades\Crypt;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\ServiceProvider;
 
@@ -45,13 +46,20 @@ class AiServiceProvider extends ServiceProvider
             $endpointPath = self::getEndpointPath($model);
             $requestBody = self::buildRequestBody($key, $model);
 
+            $apiKey = getSetting('ai.open_ai_api_key');
+            try {
+                $apiKey = Crypt::decryptString($apiKey);
+            } catch (\Exception $e) {
+                // Value is not encrypted yet (e.g., from migration seed), use as-is
+            }
+
             $chatGptRequest = $httpClient->request(
                 'POST',
                 self::OPEN_AI_BASE_URL.$endpointPath,
                 [
                     'headers' => [
                         'Content-Type' => 'application/json',
-                        'Authorization' => 'Bearer '.getSetting('ai.open_ai_api_key'),
+                        'Authorization' => 'Bearer '.$apiKey,
                     ],
                     'body' => json_encode($requestBody),
                 ]

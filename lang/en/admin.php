@@ -1287,6 +1287,7 @@ return [
     'settings' => [
         'general' => 'General',
         'profiles' => 'Profiles',
+        'free_credits_signup' => 'Free Credits Signup',
         'feed' => 'Feed',
         'media' => 'Media',
         'storage' => 'Storage',

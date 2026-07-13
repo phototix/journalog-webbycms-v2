@@ -53,6 +53,8 @@ class JavascriptVariables
             $jsData['enable_age_verification_dialog'] = getSetting('compliance.enable_age_verification_dialog');
             $jsData['allow_profile_bio_markdown'] = getSetting('profiles.allow_profile_bio_markdown');
             $jsData['open_ai_enabled'] = getSetting('ai.open_ai_enabled');
+            $botUser = \App\Model\User::where('is_bot', true)->first();
+            $jsData['chatbot_user_id'] = $botUser ? (int) $botUser->id : null;
             $jsData['tosPageSlug'] = App\Providers\GenericHelperServiceProvider::getTOSPage() ? App\Providers\GenericHelperServiceProvider::getTOSPage()->slug : null;
             $jsData['privacyPageSlug'] = App\Providers\GenericHelperServiceProvider::getPrivacyPage() ? App\Providers\GenericHelperServiceProvider::getPrivacyPage()->slug : null;
             $jsData['siteName'] = getSetting('site.name');

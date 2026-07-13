@@ -48,7 +48,7 @@ class User extends Authenticatable implements FilamentUser, MustVerifyEmail
         'public_profile',
         'billing_address', 'first_name', 'last_name', 'city', 'country', 'state', 'postcode',
         'email_verified_at', 'paid_profile',
-        'auth_provider', 'auth_provider_id', 'enable_2fa', 'enable_geoblocking', 'open_profile', 'referral_code',
+        'auth_provider', 'auth_provider_id', 'enable_2fa', 'enable_geoblocking', 'open_profile', 'referral_code', 'is_bot',
         'last_active_at',
         'last_ip',
         'identity_verified_at',
@@ -75,6 +75,7 @@ class User extends Authenticatable implements FilamentUser, MustVerifyEmail
     protected $casts = [
         'email_verified_at' => 'datetime',
         'public_profile' => 'boolean',
+        'is_bot' => 'boolean',
         'settings' => 'array',
     ];
 
@@ -272,5 +273,15 @@ class User extends Authenticatable implements FilamentUser, MustVerifyEmail
 
         // This way, diffForHumans() will show "1 minute ago"
         return $time->diffForHumans();
+    }
+
+    public function scopeBot($query)
+    {
+        return $query->where('is_bot', true);
+    }
+
+    public function scopeNotBot($query)
+    {
+        return $query->where('is_bot', false);
     }
 }

@@ -108,7 +108,7 @@ class UsersObserver
             $user->update([
                 'settings' => collect([
                     'notification_email_new_sub' => 'true',
-                    'notification_email_new_message' => env('notification_email_new_message', 'false'),
+                    'notification_email_new_message' => 'true',
                     'notification_email_expiring_subs' => 'true',
                     'notification_email_renewals' => 'false',
                     'notification_email_new_tip' => 'true',

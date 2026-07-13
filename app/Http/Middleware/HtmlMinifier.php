@@ -18,6 +18,10 @@ class HtmlMinifier extends Middleware
     {
         $response = $next($request);
 
+        if ($response instanceof \Symfony\Component\HttpFoundation\StreamedResponse) {
+            return $response;
+        }
+
         $actionName = $request->route()->getActionMethod();
         if (in_array($actionName, [/*Skipped routes*/]) || config('minify.config.enable_html_min') == false) {
             return $response;

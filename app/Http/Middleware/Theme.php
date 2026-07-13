@@ -26,6 +26,10 @@ class Theme extends Middleware
 
         $response = $next($request);
 
+        if ($response instanceof \Symfony\Component\HttpFoundation\StreamedResponse) {
+            return $response;
+        }
+
         $routeName = $request->route()->getName();
         if (in_array($routeName, [])) {
             return $response;

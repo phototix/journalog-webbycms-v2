@@ -31,30 +31,53 @@
 @stop
 
 @section('content')
-    <div class="home-header min-vh-75 relative pt-2" >
-        <div class="container h-100 pb-5">
-            <div class="row d-flex flex-row align-items-center h-100">
-                <div class="col-12 col-md-6 mt-4 mt-md-0">
-                    <h1 class="font-weight-bolder text-gradient bg-gradient-primary">{{__('Make more money')}}</h1>
-                    <h1 class="font-weight-bolder text-gradient bg-gradient-primary">{{__('with your content')}}</h1>
-                    <p class="font-weight-bold mt-3">🚀 {{__("Start your own premium creators platform with our ready to go solution.")}}</p>
-                    <div class="pt-1 d-flex justify-content-center justify-content-md-start">
-                        <a href="{{Auth::check() ? route('feed') : route('login')}}" class="btn btn-grow bg-gradient-primary  btn-round mb-0 me-1 mt-2 mt-md-0 mr-2">{{__('Try for free')}}</a>
-                        <a href="{{route('explore')}}" class="btn btn-grow btn-link  btn-round mb-0 me-1 mt-2 mt-md-0 ">
-                            @include('elements.icon',['icon'=>'compass-outline','centered'=>false])
-                            {{__('Explore')}}</a>
+    @if(getSetting('free-credits-signup.enabled'))
+        <div class="home-header min-vh-75 relative pt-2" >
+            <div class="container h-100 pb-5">
+                <div class="row d-flex flex-row align-items-center h-100">
+                    <div class="col-12 col-md-6 mt-4 mt-md-0">
+                        <h1 class="font-weight-bolder text-gradient bg-gradient-primary">{{__('Get :amount free credits on signup!', ['amount' => getSetting('free-credits-signup.amount')])}}</h1>
+                        <p class="font-weight-bold mt-3">{{__('Sign up today and start with :amount in your wallet to explore premium content.', ['amount' => getSetting('free-credits-signup.amount')])}}</p>
+                        <div class="pt-1 d-flex justify-content-center justify-content-md-start">
+                            <a href="{{route('register')}}" class="btn btn-grow bg-gradient-primary btn-round mb-0 me-1 mt-2 mt-md-0 mr-2">{{__('Sign Up Now')}}</a>
+                            <a href="{{route('explore')}}" class="btn btn-grow btn-link btn-round mb-0 me-1 mt-2 mt-md-0 ">
+                                @include('elements.icon',['icon'=>'compass-outline','centered'=>false])
+                                {{__('Explore')}}</a>
+                        </div>
                     </div>
-                </div>
-                <div class="col-12 col-md-6 d-none d-md-block">
-                    <div class="pt-5">
-                        <img src="{{asset('/img/home-header.svg')}}" alt="{{__('Make more money')}}"/>
+                    <div class="col-12 col-md-6 d-none d-md-block">
+                        <div class="pt-5">
+                            <img src="{{asset('/img/home-header.svg')}}" alt="{{__('Free credits on signup')}}"/>
+                        </div>
                     </div>
-                    {{--                    <img src="{{asset('/img/home-header-high-res.gif')}}" alt="{{__('Make more money')}}" class="img-fluid"/>--}}
-                    {{--                    <img src="{{asset('/img/home-header.gif')}}" alt="{{__('Make more money')}}" class="img-fluid"/>--}}
                 </div>
             </div>
         </div>
-    </div>
+    @else
+        <div class="home-header min-vh-75 relative pt-2" >
+            <div class="container h-100 pb-5">
+                <div class="row d-flex flex-row align-items-center h-100">
+                    <div class="col-12 col-md-6 mt-4 mt-md-0">
+                        <h1 class="font-weight-bolder text-gradient bg-gradient-primary">{{__("Unlock your content's value")}}</h1>
+                        <p class="font-weight-bold mt-3">{{__('Your content, your community, your platform')}}</p>
+                        <div class="pt-1 d-flex justify-content-center justify-content-md-start">
+                            <a href="{{Auth::check() ? route('feed') : route('login')}}" class="btn btn-grow bg-gradient-primary  btn-round mb-0 me-1 mt-2 mt-md-0 mr-2">{{__('Try for free')}}</a>
+                            <a href="{{route('explore')}}" class="btn btn-grow btn-link  btn-round mb-0 me-1 mt-2 mt-md-0 ">
+                                @include('elements.icon',['icon'=>'compass-outline','centered'=>false])
+                                {{__('Explore')}}</a>
+                        </div>
+                    </div>
+                    <div class="col-12 col-md-6 d-none d-md-block">
+                        <div class="pt-5">
+                            <img src="{{asset('/img/home-header.svg')}}" alt="{{__("Unlock your content's value")}}"/>
+                        </div>
+                        {{--                    <img src="{{asset('/img/home-header-high-res.gif')}}" alt="{{__("Unlock your content's value")}}" class="img-fluid"/>--}}
+                        {{--                    <img src="{{asset('/img/home-header.gif')}}" alt="{{__("Unlock your content's value")}}" class="img-fluid"/>--}}
+                    </div>
+                </div>
+            </div>
+        </div>
+    @endif
 
 
 
@@ -103,7 +126,7 @@
         <div class="container py-4">
             <div class="row">
                 <div class="col-12 col-md-6 d-none d-md-flex justify-content-center">
-                    <img src="{{asset('/img/home-creators.svg')}}" class="home-mid-img" alt="{{__('Make more money')}}">
+                    <img src="{{asset('/img/home-creators.svg')}}" class="home-mid-img" alt="{{__("Unlock your content's value")}}">
                 </div>
                 <div class="col-12 col-md-6">
                     <div class="w-100 h-100 d-flex justify-content-center align-items-center">

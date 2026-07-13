@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Api;
 
 use App\Model\User;
+use App\Rules\BannedUsername;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Auth;
@@ -14,7 +15,7 @@ class AuthController extends ApiController
     {
         $validated = $request->validate([
             'name' => 'required|string|max:255',
-            'username' => 'required|string|max:255|unique:users,username',
+            'username' => ['required', 'string', 'max:255', 'unique:users,username', 'alpha_dash', new BannedUsername],
             'email' => 'required|string|email|max:255|unique:users,email',
             'password' => 'required|string|min:8',
             'birthdate' => 'required|date',
@@ -87,6 +88,7 @@ class AuthController extends ApiController
             'website' => $user->website,
             'birthdate' => $user->birthdate,
             'gender_pronoun' => $user->gender_pronoun,
+            'role_id' => $user->role_id,
             'paid_profile' => (bool) $user->paid_profile,
             'profile_access_price' => (float) $user->profile_access_price,
             'public_profile' => (bool) $user->public_profile,

@@ -9,6 +9,7 @@ use App\Http\Requests\UpdateUserProfileSettingsRequest;
 use App\Http\Requests\UpdateUserRatesSettingsRequest;
 use App\Http\Requests\UpdateUserSettingsRequest;
 use App\Http\Requests\VerifyProfileAssetsRequest;
+use App\Rules\BannedUsername;
 use App\Model\Attachment;
 use App\Model\Country;
 use App\Model\CreatorOffer;
@@ -281,7 +282,7 @@ class SettingsController extends Controller
 
         $validator = \Illuminate\Support\Facades\Validator::make(
             ['username' => $username],
-            ['username' => 'not_in:'.implode(',', $routes)],
+            ['username' => ['not_in:'.implode(',', $routes), new BannedUsername]],
             ['username.*' => __('The selected username is invalid.')]
         );
 

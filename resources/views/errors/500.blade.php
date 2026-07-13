@@ -13,7 +13,7 @@
                     <p class="mb-1">{{__('Sorry, something happened on our side.')}}</p>
                     <p>{{__('Please try again or contact us if the error persists.')}}</p>
                     <div class="d-flex justify-content-center mt-2">
-                        <a href="{{route('home')}}" class="right">{{__('Go home')}} »</a>
+                        <a href="{{url('/')}}" class="right">{{__('Go home')}} »</a>
                     </div>
                 </div>
             </div>

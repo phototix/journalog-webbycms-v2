@@ -393,8 +393,10 @@
                         </div>
                         <div class="bg-separator border-top border-bottom"></div>
                     @endif
-                @elseif(!Auth::check() || (Auth::check() && Auth::user()->id !== $user->id))
-                    <div class=" p-4 subscription-holder">
+                @endif
+
+                @if(($user->public_profile || !$user->paid_profile || (getSetting('profiles.allow_users_enabling_open_profiles') && $user->open_profile)) && (!Auth::check() || Auth::user()->id !== $user->id))
+                    <div class="p-4 subscription-holder">
                         <h6 class="font-weight-bold text-uppercase mb-3">{{__('Follow this creator')}}</h6>
                         @if(Auth::check())
                             <button class="btn btn-round btn-lg btn-primary btn-block mt-3 mb-0 manage-follow-button" onclick="Lists.manageFollowsAction('{{$user->id}}')">

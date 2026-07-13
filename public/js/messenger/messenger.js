@@ -11,7 +11,8 @@
 $(function () {
 
     // TODO: bootFullMessenger not used anymore I think; should be deleted; re-check
-    if(messengerVars.bootFullMessenger){
+        if(messengerVars.bootFullMessenger){
+        messenger.initBotUser();
         messenger.boot();
         messenger.fetchContacts();
         messenger.initAutoScroll();
@@ -75,6 +76,10 @@ var messenger = {
         newConversationMode: false,
         newConversationSelectAllToggle: false,
         isSendingMessage: false,
+        botUser: null,
+        isBotConversation: false,
+        botAbortController: null,
+        botFullResponse: '',
     },
 
     maxNewConversationContacts: 60,
@@ -86,6 +91,10 @@ var messenger = {
      * Boots up the main messenger functions
      */
     boot: function(){
+        var key = socketsDriver === 'soketi' ? soketi.key : pusher.key;
+        if (!key) {
+            return;
+        }
         Pusher.logToConsole = app.debug;
         let params = {
             authorizer: PusherBatchAuthorizer,
@@ -105,7 +114,20 @@ var messenger = {
         else{
             params.cluster = messengerVars.pusherCluster;
         }
-        messenger.pusher = new Pusher(socketsDriver === 'soketi' ? soketi.key : pusher.key, params);
+        messenger.pusher = new Pusher(key, params);
+    },
+
+    /**
+     * Initializes the bot user data
+     */
+    initBotUser: function(){
+        if (app.open_ai_enabled && app.chatbot_user_id) {
+            messenger.state.botUser = {
+                id: parseInt(app.chatbot_user_id),
+                name: 'Assistant',
+                username: 'assistant',
+            };
+        }
     },
 
     /**
@@ -164,6 +186,31 @@ var messenger = {
             success: function (result) {
                 if(result.status === 'success'){
                     messenger.state.contacts = result.data.contacts;
+                    if (messenger.state.botUser) {
+                        var botId = messenger.state.botUser.id;
+                        var hasBot = messenger.state.contacts.some(function(c) { return parseInt(c.contactID) === botId; });
+                        if (!hasBot) {
+                            messenger.state.contacts.unshift({
+                                contactID: botId,
+                                senderID: botId,
+                                receiverID: user.user_id,
+                                lastMessageSenderID: botId,
+                                lastMessage: 'Ask me anything!',
+                                isSeen: 1,
+                                messageDate: null,
+                                created_at: null,
+                                senderID: botId,
+                                senderName: messenger.state.botUser.name,
+                                senderAvatar: app.baseUrl + '/img/default-avatar.jpg',
+                                senderRole: 1,
+                                receiverID: user.user_id,
+                                receiverName: user.name,
+                                receiverAvatar: user.avatar,
+                                receiverRole: user.role_id,
+                                isBot: true,
+                            });
+                        }
+                    }
                     messenger.reloadContactsList();
                     messenger.initLiveSockets();
                     callback();
@@ -200,6 +247,8 @@ var messenger = {
      */
     fetchConversation: function (userID) {
         messenger.closeNewConversationUI();
+        messenger.state.isBotConversation = messenger.state.botUser && parseInt(userID) === messenger.state.botUser.id;
+
         // Setting up loading and clearign up conv content
         $('.conversation-loading-box').removeClass('d-none');
         $('.conversation-header-loading-box').removeClass('d-none');
@@ -208,6 +257,12 @@ var messenger = {
         // Setting up loading and clearign up conv content
         $('.conversation-loading-box').removeClass('d-none');
         $('.conversation-content').html('');
+
+        if (messenger.state.botAbortController) {
+            messenger.state.botAbortController.abort();
+            messenger.state.botAbortController = null;
+        }
+
         $.ajax({
             type: 'GET',
             url: app.baseUrl + '/my/messenger/fetchMessages/' + userID,
@@ -236,6 +291,14 @@ var messenger = {
      * @returns {boolean}
      */
     sendMessage: function(forceSave = false) {
+
+        // Bot conversation - use streaming endpoint
+        if (messenger.state.isBotConversation) {
+            var text = $('.conversation-writeup .messageBoxInput').val();
+            if (!text || !text.trim()) return false;
+            messenger.sendBotMessage(text);
+            return false;
+        }
 
         // Checking if files are being uploaded
         if(FileUpload.isLoading === true && forceSave === false){
@@ -328,6 +391,130 @@ var messenger = {
     },
 
     /**
+     * Sends a message to the bot via streaming API
+     */
+    sendBotMessage: function(text) {
+        var tempUserMsg = {
+            id: 'temp-' + Date.now(),
+            sender_id: user.user_id,
+            receiver_id: messenger.state.botUser.id,
+            message: text,
+            price: 0,
+            isSeen: 1,
+            created_at: new Date().toISOString(),
+            sender: {id: user.user_id, username: user.username},
+            receiver: {id: messenger.state.botUser.id, username: 'assistant'},
+            attachments: [],
+            hasUserUnlockedMessage: false,
+        };
+        messenger.state.conversation.push(tempUserMsg);
+        messenger.reloadConversation();
+        messenger.clearMessageBox();
+        messenger.resetTextAreaHeight();
+        $('.conversation-content').append(
+            '<div class="col-12 no-gutters pt-1 pb-1 message-box px-0" id="bot-typing">' +
+            '<div class="d-flex flex-row"><div class="pl-0"><div class="typing-indicator">' +
+            '<span></span><span></span><span></span></div></div></div></div>'
+        );
+        $('.conversation-content').animate({ scrollTop: $('.conversation-content')[0].scrollHeight + 100}, 300);
+        messenger.state.botAbortController = new AbortController();
+        messenger.state.botFullResponse = '';
+        fetch(app.baseUrl + '/chatbot/send', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'X-CSRF-Token': $('meta[name="csrf-token"]').attr('content'),
+            },
+            body: JSON.stringify({message: text}),
+            signal: messenger.state.botAbortController.signal,
+        }).then(async function(response) {
+            $('#bot-typing').remove();
+            var botMsgId = 'bot-msg-' + Date.now();
+            $('.conversation-content').append(
+                '<div class="col-12 no-gutters pt-1 pb-1 message-box px-0" id="' + botMsgId + '" data-bot-streaming="true">' +
+                '<div class="d-flex flex-row"><div class="pl-0">' +
+                '<div class="m-0 message-bubble text-break alert alert-default bot-message"></div>' +
+                '</div></div></div>'
+            );
+            $('.conversation-content').animate({ scrollTop: $('.conversation-content')[0].scrollHeight + 100}, 300);
+            var reader = response.body.getReader();
+            var decoder = new TextDecoder();
+            var buffer = '';
+            var done = false;
+            while (!done) {
+                var result = await reader.read();
+                done = result.done;
+                if (done) break;
+                buffer += decoder.decode(result.value, {stream: true});
+                var lines = buffer.split('\n');
+                buffer = lines.pop() || '';
+                for (var i = 0; i < lines.length; i++) {
+                    var line = lines[i].trim();
+                    if (line.startsWith('data: ')) {
+                        var payload = line.slice(6);
+                        if (payload === '[DONE]') {
+                            $('#' + botMsgId).removeAttr('data-bot-streaming');
+                            var botMessage = {
+                                id: botMsgId,
+                                sender_id: messenger.state.botUser.id,
+                                receiver_id: user.user_id,
+                                message: messenger.state.botFullResponse,
+                                price: 0,
+                                isSeen: 1,
+                                created_at: new Date().toISOString(),
+                                sender: {id: messenger.state.botUser.id, username: 'assistant'},
+                                receiver: {id: user.user_id, username: user.username},
+                                attachments: [],
+                                hasUserUnlockedMessage: false,
+                            };
+                            messenger.state.conversation.push(botMessage);
+                            messenger.addLatestMessageToConversation(messenger.state.botUser.id, botMessage);
+                            messenger.fetchContacts();
+                            return;
+                        }
+                        try {
+                            var parsed = JSON.parse(payload);
+                            if (parsed.token) {
+                                messenger.state.botFullResponse += parsed.token;
+                                $('#' + botMsgId + ' .bot-message').html(messenger.renderMarkdown(messenger.state.botFullResponse));
+                                $('.conversation-content').animate({ scrollTop: $('.conversation-content')[0].scrollHeight + 100}, 100);
+                            }
+                            if (parsed.error) {
+                                $('#' + botMsgId + ' .bot-message').html(messenger.renderMarkdown('Error: ' + parsed.error)).addClass('text-danger');
+                                $('#' + botMsgId).removeAttr('data-bot-streaming');
+                                launchToast('danger', 'Error', parsed.error);
+                                return;
+                            }
+                        } catch(e) {}
+                    }
+                }
+            }
+            if (messenger.state.botFullResponse) {
+                var botMessage = {
+                    id: botMsgId,
+                    sender_id: messenger.state.botUser.id,
+                    receiver_id: user.user_id,
+                    message: messenger.state.botFullResponse,
+                    price: 0,
+                    isSeen: 1,
+                    created_at: new Date().toISOString(),
+                    sender: {id: messenger.state.botUser.id, username: 'assistant'},
+                    receiver: {id: user.user_id, username: user.username},
+                    attachments: [],
+                    hasUserUnlockedMessage: false,
+                };
+                messenger.state.conversation.push(botMessage);
+                messenger.addLatestMessageToConversation(messenger.state.botUser.id, botMessage);
+                messenger.fetchContacts();
+            }
+        }).catch(function(err) {
+            if (err.name === 'AbortError') return;
+            $('#bot-typing').remove();
+            launchToast('danger', 'Error', 'Failed to get response from assistant.');
+        });
+    },
+
+    /**
      * Clears up uploaded files
      */
     clearFileUploadsState: function(){
@@ -381,17 +568,29 @@ var messenger = {
      * Reloads conversation list
      */
     reloadContactsList: function () {
-        let contactsHtml = '';
-        $.each( messenger.state.contacts, function( key, value ) {
+        var botContact = null;
+        var otherContacts = [];
+        $.each(messenger.state.contacts, function(k, v) {
+            if (v.isBot || (messenger.state.botUser && parseInt(v.contactID) === messenger.state.botUser.id)) {
+                botContact = v;
+            } else {
+                otherContacts.push(v);
+            }
+        });
+        var contactsHtml = '';
+        if (botContact) {
+            contactsHtml += '<div class="bot-pinned-section border-bottom mb-1 pb-1">' +
+                '<div class="row">' + contactElement(botContact) + '</div></div>';
+        }
+        $.each(otherContacts, function(key, value) {
             contactsHtml += contactElement(value);
         });
-        if(messenger.state.contacts.length > 0){
-            $('.conversations-list').html('<div class="row">'+contactsHtml+'</div>');
-        }
-        else{
+        if (contactsHtml) {
+            $('.conversations-list').html(contactsHtml);
+        } else {
             $('.conversations-list').html(noContactsLabel());
         }
-        $('.contact-'+messenger.state.activeConversationUserID).addClass('contact-active');
+        $('.contact-' + messenger.state.activeConversationUserID).addClass('contact-active');
     },
 
     /**
@@ -436,6 +635,13 @@ var messenger = {
             $('.details-holder .report-btn').on('click',function () {
                 Lists.showReportBox(userID,null);
             });
+            if (messenger.state.isBotConversation) {
+                $('.tip-btn, .messenger-button.file-upload-button, .messenger-button[onClick*="showSetPriceDialog"]').addClass('hidden');
+                $('.details-holder .unfollow-btn, .details-holder .block-btn, .details-holder .report-btn').addClass('hidden');
+            } else {
+                $('.tip-btn, .messenger-button.file-upload-button, .messenger-button[onClick*="showSetPriceDialog"]').removeClass('hidden');
+                $('.details-holder .unfollow-btn, .details-holder .block-btn, .details-holder .report-btn').removeClass('hidden');
+            }
             if(contact.sender.canEarnMoney === false) {
                 $('.tip-btn').addClass('hidden');
             } else {
@@ -613,7 +819,56 @@ var messenger = {
      * @param text
      * @returns {*}
      */
-    parseMessage: function(text){
+    renderMarkdown: function(text) {
+        var html = text
+            .replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;')
+            .replace(/\*\*(.+?)\*\*/g, '<strong>$1</strong>')
+            .replace(/\*(.+?)\*/g, '<em>$1</em>')
+            .replace(/`(.+?)`/g, '<code>$1</code>')
+            .replace(/\[([^\]]+)\]\(([^)]+)\)/g, '<a href="$2" rel="nofollow noopener noreferrer">$1</a>');
+        var lines = html.split('\n');
+        var result = [];
+        var inUl = false;
+        var inOl = false;
+        for (var i = 0; i < lines.length; i++) {
+            var line = lines[i];
+            var ulMatch = line.match(/^[-*]\s(.+)/);
+            var olMatch = line.match(/^\d+\.\s(.+)/);
+            if (ulMatch) {
+                if (inOl) { result.push('</ol>'); inOl = false; }
+                if (!inUl) { result.push('<ul>'); inUl = true; }
+                result.push('<li>' + ulMatch[1] + '</li>');
+            } else if (olMatch) {
+                if (inUl) { result.push('</ul>'); inUl = false; }
+                if (!inOl) { result.push('<ol>'); inOl = true; }
+                result.push('<li>' + olMatch[1] + '</li>');
+            } else {
+                if (inUl) { result.push('</ul>'); inUl = false; }
+                if (inOl) { result.push('</ol>'); inOl = false; }
+                result.push(line);
+            }
+        }
+        if (inUl) { result.push('</ul>'); }
+        if (inOl) { result.push('</ol>'); }
+        html = result.join('\n');
+        html = html.replace(/\n\n/g, '</p><p>');
+        html = html.replace(/\n/g, '<br>');
+        if (html.indexOf('<p>') !== 0 && html.indexOf('<ul>') !== 0 && html.indexOf('<ol>') !== 0) {
+            html = '<p>' + html + '</p>';
+        }
+        return filterXSS(html, {
+            whiteList: {
+                p: [], br: [], strong: [], em: [], code: [],
+                ul: [], ol: [], li: [],
+                a: ['href', 'rel', 'target'],
+            },
+        });
+    },
+
+    parseMessage: function(text, markdown){
+        if (markdown) {
+            return messenger.renderMarkdown(text);
+        }
         // 1. Replace newlines with <br/>
         const replaced = text.replace(/\n/g, '<br/>');
         // 2. Sanitize, allowing <br>

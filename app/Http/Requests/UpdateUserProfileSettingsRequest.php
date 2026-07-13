@@ -2,6 +2,7 @@
 
 namespace App\Http\Requests;
 
+use App\Rules\BannedUsername;
 use App\Rules\MaxLengthMarkdown;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Support\Facades\Auth;
@@ -28,7 +29,7 @@ class UpdateUserProfileSettingsRequest extends FormRequest
 
         $rules = [
             'name' => 'required|max:191',
-            'username' => 'required|string|alpha_dash|max:255|unique:users,username,'.Auth::user()->id,
+            'username' => ['required', 'string', 'alpha_dash', 'max:255', 'unique:users,username,'.Auth::user()->id, new BannedUsername],
             'location' => 'max:500',
         ];
 

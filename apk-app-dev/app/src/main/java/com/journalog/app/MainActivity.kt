@@ -4,7 +4,7 @@ import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
-import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.*
 import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
@@ -17,6 +17,7 @@ import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navArgument
 import com.journalog.app.core.common.TokenManager
+import com.journalog.app.core.debug.DebugOverlay
 import com.journalog.app.core.designsystem.JournalogTheme
 import com.journalog.app.core.network.ApiClient
 import com.journalog.app.feature.auth.AuthScreen
@@ -54,12 +55,14 @@ fun MainContent(tokenManager: TokenManager) {
 
     var isLoggedIn by remember { mutableStateOf(false) }
     var currentUsername by remember { mutableStateOf("") }
+    var isAdmin by remember { mutableStateOf(false) }
 
     LaunchedEffect(Unit) {
         val token = tokenManager.getToken()
         if (!token.isNullOrEmpty()) {
             ApiClient.setToken(token)
             isLoggedIn = true
+            isAdmin = tokenManager.isAdmin()
         }
     }
 
@@ -76,26 +79,27 @@ fun MainContent(tokenManager: TokenManager) {
 
     val showBottomBar = isLoggedIn && currentRoute != null && !currentRoute.startsWith("auth")
 
-    Scaffold(
-        bottomBar = {
-            if (showBottomBar) {
-                BottomNavBar(
-                    currentRoute = currentRoute,
-                    profileUsername = currentUsername,
-                    onItemSelected = { route ->
-                        navController.navigate(route) {
-                            popUpTo(navController.graph.findStartDestination().id) {
-                                saveState = true
+    Box(modifier = Modifier.fillMaxSize()) {
+        Scaffold(
+            bottomBar = {
+                if (showBottomBar) {
+                    BottomNavBar(
+                        currentRoute = currentRoute,
+                        profileUsername = currentUsername,
+                        onItemSelected = { route ->
+                            navController.navigate(route) {
+                                popUpTo(navController.graph.findStartDestination().id) {
+                                    saveState = true
+                                }
+                                launchSingleTop = true
+                                restoreState = true
                             }
-                            launchSingleTop = true
-                            restoreState = true
                         }
-                    }
-                )
+                    )
+                }
             }
-        }
-    ) { innerPadding ->
-        NavHost(
+        ) { innerPadding ->
+            NavHost(
             navController = navController,
             startDestination = if (isLoggedIn) NavRoutes.Feed.route else NavRoutes.Auth.route,
             modifier = Modifier.padding(innerPadding)
@@ -206,6 +210,9 @@ fun MainContent(tokenManager: TokenManager) {
                 )
             }
         }
+    }
+
+        DebugOverlay(isAdmin = isAdmin)
     }
 }
 

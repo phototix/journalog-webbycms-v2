@@ -236,6 +236,10 @@ Route::group(['middleware' => ['auth', 'verified', '2fa']], function () {
         Route::post('/generate', ['uses' => 'AiController@generateSuggestion', 'as'   => 'generate']);
     });
 
+    // Chatbot
+    Route::post('/chatbot/send', ['uses' => 'ChatbotController@send', 'as' => 'chatbot.send'])
+        ->middleware('throttle:30,1');
+
     Route::post('/auth/presence-channel', ['uses' => 'GenericController@authorizePresenceChannel', 'as' => 'presence.auth']);
 
     // Private stories routes

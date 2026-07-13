@@ -5,7 +5,7 @@
                 <div class="d-flex align-items-center">
                     <div class="">
                         <a class="conversation-profile-link" target="_blank">
-                            <img class="conversation-header-avatar" src="{{asset('/img/no-avatar.png')}}" />
+                            <img class="conversation-header-avatar" src="{{asset('/img/default-avatar.jpg')}}" />
                         </a>
                     </div>
                     <div class="d-flex flex-column pl-3">

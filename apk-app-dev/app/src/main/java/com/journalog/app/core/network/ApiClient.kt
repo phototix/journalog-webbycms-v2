@@ -1,5 +1,7 @@
 package com.journalog.app.core.network
 
+import com.journalog.app.core.debug.DebugLogStore
+import okhttp3.Interceptor
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit
@@ -14,6 +16,40 @@ object ApiClient {
         level = HttpLoggingInterceptor.Level.BODY
     }
 
+    private val debugInterceptor = Interceptor { chain ->
+        val request = chain.request()
+        val requestBody = DebugLogStore.requestBodyToString(request.body)
+
+        var responseCode = 0
+        var responseBody = ""
+        var errorMsg = ""
+
+        try {
+            val response = chain.proceed(request)
+            responseCode = response.code
+            responseBody = DebugLogStore.responseBodyToString(response.body)
+            DebugLogStore.add(
+                method = request.method,
+                url = request.url.toString(),
+                requestHeaders = request.headers.toString(),
+                requestBody = requestBody,
+                responseCode = responseCode,
+                responseBody = responseBody
+            )
+            response
+        } catch (e: Exception) {
+            errorMsg = e.message ?: e.javaClass.simpleName
+            DebugLogStore.add(
+                method = request.method,
+                url = request.url.toString(),
+                requestHeaders = request.headers.toString(),
+                requestBody = requestBody,
+                error = errorMsg
+            )
+            throw e
+        }
+    }
+
     private val okHttpClient: OkHttpClient by lazy {
         OkHttpClient.Builder()
             .addInterceptor { chain ->
@@ -24,6 +60,7 @@ object ApiClient {
                 request.addHeader("Accept", "application/json")
                 chain.proceed(request.build())
             }
+            .addInterceptor(debugInterceptor)
             .addInterceptor(loggingInterceptor)
             .connectTimeout(30, TimeUnit.SECONDS)
             .readTimeout(30, TimeUnit.SECONDS)

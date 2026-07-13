@@ -108,25 +108,30 @@ class AdminHelperProvider extends ServiceProvider
         ?string $icon,
         string $pageClass // e.g. ManageEmailsSettings::class
     ): ?NavigationItem {
-        $user = Filament::auth()->user();
-        if (!$user) {
+        try {
+            $user = Filament::auth()->user();
+            if (!$user) {
+                return null;
+            }
+
+            // Respect Filament’s own gate for pages
+            if (method_exists($pageClass, 'canAccess') && !$pageClass::canAccess()) {
+                return null;
+            }
+
+            // If the page isn’t registered on this panel, bail out
+            if (!method_exists($pageClass, 'getUrl') || !method_exists($pageClass, 'getRouteName')) {
+                return null;
+            }
+
+            return NavigationItem::make($label)
+                ->icon($icon)
+                ->url($pageClass::getUrl())
+                ->isActiveWhen(fn () => request()->routeIs($pageClass::getRouteName()));
+        } catch (\Throwable $e) {
+            logger()->warning("Failed to create settings nav item for {$pageClass}: {$e->getMessage()}");
             return null;
         }
-
-        // Respect Filament’s own gate for pages
-        if (method_exists($pageClass, 'canAccess') && !$pageClass::canAccess()) {
-            return null;
-        }
-
-        // If the page isn’t registered on this panel, bail out
-        if (!method_exists($pageClass, 'getUrl') || !method_exists($pageClass, 'getRouteName')) {
-            return null;
-        }
-
-        return NavigationItem::make($label)
-            ->icon($icon)                               // pass null if your group has an icon
-            ->url($pageClass::getUrl())                 // derives URL from the page class
-            ->isActiveWhen(fn () => request()->routeIs($pageClass::getRouteName()));
     }
 
     public static function formatMoney(float|int $amount): string

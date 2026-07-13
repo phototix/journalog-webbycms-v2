@@ -19,7 +19,7 @@ class AiController extends Controller
             return response()->json(['success' => true, 'message' => $suggestion]);
         }
         catch (\Exception $exception){
-            return response()->json(['success' => false, 'errors' => [$exception->getMessage()], 'message' => $exception->getMessage()], 500);
+            return response()->json(['success' => false, 'errors' => ['An internal error occurred while generating the suggestion.'], 'message' => 'An internal error occurred while generating the suggestion.'], 500);
         }
 
     }

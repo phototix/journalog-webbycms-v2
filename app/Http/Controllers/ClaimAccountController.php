@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Mail\GenericEmail;
 use App\Model\User;
+use App\Rules\BannedUsername;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Mail;
@@ -19,7 +20,7 @@ class ClaimAccountController extends Controller
     public function submitClaim(Request $request)
     {
         $request->validate([
-            'username' => 'required|string|max:255',
+            'username' => ['required', 'string', 'max:255', new BannedUsername],
             'email' => 'required|email|max:255',
         ]);
 
@@ -41,7 +42,7 @@ class ClaimAccountController extends Controller
         ]);
 
         Mail::to('brandon@kkbuddy.com')->send(new GenericEmail([
-            'subject' => 'New Account Claim Request - Just Friends',
+            'subject' => 'New Account Claim Request - Journalog',
             'mailTitle' => 'Account Claim Request',
             'mailContent' => "A user has requested to claim their old account.<br><br>
                 <strong>Username:</strong> {$username}<br>

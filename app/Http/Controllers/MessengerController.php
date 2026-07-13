@@ -26,6 +26,7 @@ use Javascript;
 use Pusher\Pusher;
 use Ramsey\Uuid\Uuid;
 use Illuminate\Support\Arr;
+use Illuminate\Support\Facades\Log;
 
 class MessengerController extends Controller
 {
@@ -226,6 +227,37 @@ class MessengerController extends Controller
 
         if ($limit) {
             return $contacts;
+        }
+
+        $botUser = getSetting('ai.open_ai_enabled') ? User::where('is_bot', true)->first() : null;
+        if ($botUser) {
+            $botExists = false;
+            foreach ($contacts as $contact) {
+                if ((int) $contact->contactID === (int) $botUser->id) {
+                    $botExists = true;
+                    break;
+                }
+            }
+            if (!$botExists) {
+                $botContact = new \stdClass();
+                $botContact->lastMessageSenderID = $botUser->id;
+                $botContact->lastMessage = 'Ask me anything!';
+                $botContact->isSeen = 1;
+                $botContact->created_at = null;
+                $botContact->messageDate = now()->toDateTimeString();
+                $botContact->senderID = $botUser->id;
+                $botContact->senderName = $botUser->name;
+                $botContact->senderAvatar = $botUser->getRawOriginal('avatar');
+                $botContact->senderRole = $botUser->role_id;
+                $botContact->receiverID = $userID;
+                $botContact->receiverName = Auth::user()->name;
+                $botContact->receiverAvatar = Auth::user()->avatar;
+                $botContact->receiverRole = Auth::user()->role_id;
+                $botContact->contactID = $botUser->id;
+                $botContact->senderAvatar = GenericHelperServiceProvider::getStorageAvatarPath($botContact->senderAvatar);
+                $botContact->receiverAvatar = GenericHelperServiceProvider::getStorageAvatarPath($botContact->receiverAvatar);
+                array_unshift($contacts, $botContact);
+            }
         }
 
         return response()->json([
@@ -468,7 +500,11 @@ class MessengerController extends Controller
         }
 
         // Sending the message to the socket
-        broadcast(new NewUserMessage(json_encode($payload), $senderID, $receiverID))->toOthers();
+        try {
+            broadcast(new NewUserMessage(json_encode($payload), $senderID, $receiverID))->toOthers();
+        } catch (\Exception $e) {
+            Log::error('Failed to broadcast new message: ' . $e->getMessage());
+        }
 
         $return = [
             'message' => $payload,
@@ -786,6 +822,9 @@ class MessengerController extends Controller
             $viewerUser = User::where('id', $viewerID)->first();
         }
         $contactUser = User::where('id', $contactId)->first();
+        if ($contactUser && $contactUser->is_bot) {
+            return true;
+        }
         if ($viewerUser) {
             // Is subscribed to user
             if (PostsHelperServiceProvider::hasActiveSub($viewerUser->id, $contactUser->id)) {

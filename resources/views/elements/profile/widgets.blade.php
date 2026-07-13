@@ -18,7 +18,7 @@
         </div>
     </div>
 
-    @if($user->paid_profile && (!getSetting('profiles.allow_users_enabling_open_profiles') || (getSetting('profiles.allow_users_enabling_open_profiles') && !$user->open_profile)))
+    @if($user->paid_profile)
         @if(Auth::check())
             @if( !(isset($hasSub) && $hasSub) && !(isset($post) && PostsHelper::hasActiveSub(Auth::user()->id, $post->user->id)) && Auth::user()->id !== $user->id)
                 <div class="card mt-3 rounded-lg">

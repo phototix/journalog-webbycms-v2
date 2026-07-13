@@ -10,6 +10,7 @@ use App\Filament\Pages\Settings\ManageColorsSettings;
 use App\Filament\Pages\Settings\ManageComplianceSettings;
 use App\Filament\Pages\Settings\ManageEmailsSettings;
 use App\Filament\Pages\Settings\ManageFeedSettings;
+use App\Filament\Pages\Settings\ManageFreeCreditsSignupSettings;
 use App\Filament\Pages\Settings\ManageGeneralSettings;
 use App\Filament\Pages\Settings\ManageLicenseSettings;
 use App\Filament\Pages\Settings\ManageMediaSettings;
@@ -199,7 +200,7 @@ class AdminPanelProvider extends PanelProvider
                         NavigationGroup::make()
                             ->label(__('admin.navigation.groups.finances'))
                             ->icon('heroicon-o-banknotes')
-                            ->items([
+                            ->items(array_filter([
                                 ...AdminHelperProvider::resourceNavIfCan(TransactionResource::class),
                                 ...AdminHelperProvider::resourceNavIfCan(SubscriptionResource::class),
                                 ...AdminHelperProvider::resourceNavIfCan(GiftResource::class),
@@ -209,7 +210,8 @@ class AdminPanelProvider extends PanelProvider
                                 ...AdminHelperProvider::resourceNavIfCan(InvoiceResource::class),
                                 ...AdminHelperProvider::resourceNavIfCan(TaxResource::class),
                                 ...AdminHelperProvider::resourceNavIfCan(CountryResource::class),
-                            ])->collapsed(),
+                                AdminHelperProvider::settingsNavItem(__('admin.settings.free_credits_signup'), '', ManageFreeCreditsSignupSettings::class),
+                            ]))->collapsed(),
 
                         NavigationGroup::make()
                             ->label(__('admin.navigation.groups.stories'))
@@ -239,7 +241,7 @@ class AdminPanelProvider extends PanelProvider
                         NavigationGroup::make()
                             ->label(__('admin.navigation.groups.settings'))
                             ->icon('heroicon-o-cog-6-tooth')
-                            ->items(array_filter([
+                            ->items(array_values(array_filter([
                                 AdminHelperProvider::settingsNavItem(__('admin.settings.general'), '', ManageGeneralSettings::class),
                                 AdminHelperProvider::settingsNavItem(__('admin.settings.profiles'), '', ManageProfilesSettings::class),
                                 AdminHelperProvider::settingsNavItem(__('admin.settings.feed'), '', ManageFeedSettings::class),
@@ -259,7 +261,7 @@ class AdminPanelProvider extends PanelProvider
                                 AdminHelperProvider::settingsNavItem(__('admin.settings.admin'), '', ManageAdminSettings::class),
                                 AdminHelperProvider::settingsNavItem(__('admin.settings.theme'), '', ManageColorsSettings::class),
                                 AdminHelperProvider::settingsNavItem(__('admin.settings.license'), '', ManageLicenseSettings::class),
-                            ]))
+                            ])))
                             ->collapsed(),
                     ]);
             });

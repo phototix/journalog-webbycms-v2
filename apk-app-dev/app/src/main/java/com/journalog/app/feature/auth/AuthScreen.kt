@@ -178,7 +178,8 @@ fun AuthScreen(
                                             userId = data.user.id,
                                             username = data.user.username,
                                             name = data.user.name,
-                                            avatar = data.user.avatar ?: ""
+                                            avatar = data.user.avatar ?: "",
+                                            roleId = data.user.roleId ?: 2
                                         )
                                         onLoggedIn()
                                     }

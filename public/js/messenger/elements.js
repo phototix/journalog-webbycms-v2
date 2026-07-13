@@ -15,11 +15,13 @@
 function contactElement(contact){
     const avatar = contact.receiverID === user.user_id ? contact.senderAvatar : contact.receiverAvatar;
     const name = contact.receiverID === user.user_id ? contact.senderName : contact.receiverName;
+    const botBadge = contact.isBot ? '<span class="badge badge-primary ml-1 bot-badge">AI</span>' : '';
+    const botClass = contact.isBot ? ' contact-bot' : '';
     return `
-      <div class="col-12 d-flex pt-2 pb-2 contact-box contact-${contact.contactID}" onclick="messenger.fetchConversation(${contact.contactID})">
+      <div class="col-12 d-flex pt-2 pb-2 contact-box contact-${contact.contactID}${botClass}" onclick="messenger.fetchConversation(${contact.contactID})">
         <img src="${ avatar }" class="contact-avatar rounded-circle"/>
         <div class="m-0 ml-md-3 d-none d-lg-flex d-md-flex d-xl-flex justify-content-center flex-column text-truncate">
-            <div class="m-0 text-truncate overflow-hidden contact-name ${contact.lastMessageSenderID !== user.user_id && contact.isSeen === 0 ? 'font-weight-bold' : ''}">${filterXSS(name)}</div>
+            <div class="m-0 text-truncate overflow-hidden contact-name ${contact.lastMessageSenderID !== user.user_id && contact.isSeen === 0 ? 'font-weight-bold' : ''}">${filterXSS(name)}${botBadge}</div>
             <small class="message-excerpt-holder d-flex text-truncate">
                 <span class="text-muted mr-1 ${contact.lastMessageSenderID !== user.user_id ? 'd-none' : ''}"> ${trans('You')}: </span>
                 <div class="m-0 text-muted contact-message text-truncate ${contact.lastMessageSenderID !== user.user_id && contact.isSeen === 0 ? 'font-weight-bold' : ''}" >${filterXSS(contact.lastMessage)}</div>
@@ -103,10 +105,12 @@ function messageElement(message){
  * @returns {string}
  */
 function messageBubble(isSender, message) {
+    var isBot = !isSender && app.chatbot_user_id && parseInt(message.sender_id) === parseInt(app.chatbot_user_id);
+    var botClass = isBot ? ' bot-message' : '';
     return `
         <div class="d-flex flex-row">
                 <div class="col-12 d-flex  ${isSender ? 'sender d-flex flex-row-reverse pr-1' : 'pl-0'}">
-                    <div class="m-0 message-bubble text-break alert ${isSender ? 'alert-primary text-white' : 'alert-default'}">${message.hasUserUnlockedMessage === false && message.price > 0 && !isSender && app.disableTextPreview === true ? '' : messenger.parseMessage(message.message)}</div>
+                    <div class="m-0 message-bubble text-break alert ${isSender ? 'alert-primary text-white' : 'alert-default'}${botClass}">${message.hasUserUnlockedMessage === false && message.price > 0 && !isSender && app.disableTextPreview === true ? '' : messenger.parseMessage(message.message, isBot)}</div>
                     ${messageActions(isSender, message)}
                 </div>
         </div>

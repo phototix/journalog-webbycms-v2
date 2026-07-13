@@ -3,14 +3,15 @@
 namespace App\Filament\Pages\Settings;
 
 use App\Settings\AiSettings;
+use BackedEnum;
 use BezhanSalleh\FilamentShield\Traits\HasPageShield;
 use Filament\Forms\Components\Select;
 use Filament\Forms\Components\TextInput;
 use Filament\Forms\Components\Toggle;
 use Filament\Pages\SettingsPage;
-use BackedEnum;
 use Filament\Schemas\Components\Section;
 use Filament\Schemas\Schema;
+use Illuminate\Support\Facades\Crypt;
 
 class ManageAiSettings extends SettingsPage
 {
@@ -48,7 +49,10 @@ class ManageAiSettings extends SettingsPage
 
                     TextInput::make('open_ai_api_key')
                         ->label('OpenAI API key')
-                        ->required(),
+                        ->password()
+                        ->revealable()
+                        ->required()
+                        ->helperText('Your API key is encrypted at rest in the database. Use the eye icon to toggle visibility.'),
 
                     TextInput::make('open_ai_completion_max_tokens')
                         ->label('Max tokens')
@@ -66,5 +70,27 @@ class ManageAiSettings extends SettingsPage
                         ->helperText("What sampling temperature to use, between 0 and 2. Higher values like 0.8 will make the output more random, while lower values like 0.2 will make it more focused and deterministic."),
                 ]),
         ]);
+    }
+
+    protected function mutateFormDataBeforeFill(array $data): array
+    {
+        if (!empty($data['open_ai_api_key'])) {
+            try {
+                $data['open_ai_api_key'] = Crypt::decryptString($data['open_ai_api_key']);
+            } catch (\Exception $e) {
+                // Value is not encrypted yet (e.g., from migration seed), keep as-is
+            }
+        }
+
+        return $data;
+    }
+
+    protected function mutateFormDataBeforeSave(array $data): array
+    {
+        if (!empty($data['open_ai_api_key'])) {
+            $data['open_ai_api_key'] = Crypt::encryptString($data['open_ai_api_key']);
+        }
+
+        return $data;
     }
 }

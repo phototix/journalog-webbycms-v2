@@ -101,7 +101,9 @@ class GenericHelperServiceProvider extends ServiceProvider
                 } while (Wallet::query()->where('id', $id)->first() != null);
 
                 $balance = 0.0;
-                if(getSetting('profiles.default_wallet_balance_on_register') && getSetting('profiles.default_wallet_balance_on_register') != 0){
+                if(getSetting('free-credits-signup.enabled') && getSetting('free-credits-signup.amount')){
+                    $balance = getSetting('free-credits-signup.amount');
+                } elseif(getSetting('profiles.default_wallet_balance_on_register') && getSetting('profiles.default_wallet_balance_on_register') != 0){
                     $balance = getSetting('profiles.default_wallet_balance_on_register');
                 }
                 Wallet::create([
