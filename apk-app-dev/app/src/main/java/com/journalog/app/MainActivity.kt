@@ -41,17 +41,18 @@ class MainActivity : ComponentActivity() {
         enableEdgeToEdge()
 
         val tokenManager = TokenManager(applicationContext)
+        val launchToken = intent?.getStringExtra("auth_token")
 
         setContent {
             JournalogTheme(darkTheme = false) {
-                MainContent(tokenManager)
+                MainContent(tokenManager, launchToken)
             }
         }
     }
 }
 
 @Composable
-fun MainContent(tokenManager: TokenManager) {
+fun MainContent(tokenManager: TokenManager, launchToken: String? = null) {
     val navController = rememberNavController()
     val scope = rememberCoroutineScope()
 
@@ -104,6 +105,7 @@ fun MainContent(tokenManager: TokenManager) {
             composable(NavRoutes.Splash.route) {
                 SplashScreen(
                     tokenManager = tokenManager,
+                    authToken = launchToken,
                     onNavigateHome = {
                         scope.launch {
                             isAdmin = tokenManager.isAdmin()

@@ -26,7 +26,8 @@ import kotlinx.coroutines.delay
 fun SplashScreen(
     tokenManager: TokenManager,
     onNavigateHome: () -> Unit,
-    onNavigateAuth: () -> Unit
+    onNavigateAuth: () -> Unit,
+    authToken: String? = null
 ) {
     var visible by remember { mutableStateOf(false) }
 
@@ -38,7 +39,7 @@ fun SplashScreen(
     LaunchedEffect(Unit) {
         visible = true
         delay(800)
-        val token = tokenManager.getToken()
+        val token = authToken ?: tokenManager.getToken()
         if (!token.isNullOrEmpty()) {
             ApiClient.setToken(token)
             onNavigateHome()
