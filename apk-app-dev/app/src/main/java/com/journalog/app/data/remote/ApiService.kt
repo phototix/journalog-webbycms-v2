@@ -147,4 +147,19 @@ interface ApiService {
 
     @POST("subscriptions/cancel")
     suspend fun cancelSubscription(@Body body: Map<String, Int>): Response<ApiResponse<Unit>>
+
+    // Profile settings
+    @Multipart
+    @POST("settings/profile/upload/{type}")
+    suspend fun uploadProfileAsset(
+        @Path("type") type: String,
+        @Part file: okhttp3.MultipartBody.Part
+    ): Response<ApiResponse<Map<String, String>>>
+
+    // Genders & Countries
+    @GET("genders")
+    suspend fun getGenders(): Response<ApiResponse<List<GenderOption>>>
+
+    @GET("countries")
+    suspend fun getCountries(): Response<ApiResponse<List<CountryOption>>>
 }

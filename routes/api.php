@@ -90,6 +90,13 @@ Route::prefix('v1')->group(function () {
         // Attachment upload (mobile API)
         Route::post('/attachment/upload/{type}', [\App\Http\Controllers\Api\AttachmentApiController::class, 'upload']);
 
+        // Settings profile upload
+        Route::post('/settings/profile/upload/{type}', [\App\Http\Controllers\Api\SettingsController::class, 'uploadProfileAsset']);
+
+        // Genders & Countries
+        Route::get('/genders', [\App\Http\Controllers\Api\SettingsController::class, 'genders']);
+        Route::get('/countries', [\App\Http\Controllers\Api\SettingsController::class, 'countries']);
+
         // Wallet
         Route::get('/wallet/balance', [\App\Http\Controllers\Api\WalletController::class, 'balance']);
 

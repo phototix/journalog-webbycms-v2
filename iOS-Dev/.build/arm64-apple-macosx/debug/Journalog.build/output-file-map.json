@@ -1,0 +1,341 @@
+{
+  "": {
+    "swift-dependencies": "/Volumes/Files/Projects/journalog-webbycms-v2/iOS-Dev/.build/arm64-apple-macosx/debug/Journalog.build/primary.swiftdeps"
+  },
+  "/Volumes/Files/Projects/journalog-webbycms-v2/iOS-Dev/Sources/Journalog/DTOs/AdminDtos.swift": {
+    "dependencies": "/Volumes/Files/Projects/journalog-webbycms-v2/iOS-Dev/.build/arm64-apple-macosx/debug/Journalog.build/AdminDtos.d",
+    "object": "/Volumes/Files/Projects/journalog-webbycms-v2/iOS-Dev/.build/arm64-apple-macosx/debug/Journalog.build/AdminDtos.swift.o",
+    "swiftmodule": "/Volumes/Files/Projects/journalog-webbycms-v2/iOS-Dev/.build/arm64-apple-macosx/debug/Journalog.build/AdminDtos~partial.swiftmodule",
+    "swift-dependencies": "/Volumes/Files/Projects/journalog-webbycms-v2/iOS-Dev/.build/arm64-apple-macosx/debug/Journalog.build/AdminDtos.swiftdeps",
+    "diagnostics": "/Volumes/Files/Projects/journalog-webbycms-v2/iOS-Dev/.build/arm64-apple-macosx/debug/Journalog.build/AdminDtos.dia"
+  },
+  "/Volumes/Files/Projects/journalog-webbycms-v2/iOS-Dev/Sources/Journalog/DTOs/ApiResponse.swift": {
+    "dependencies": "/Volumes/Files/Projects/journalog-webbycms-v2/iOS-Dev/.build/arm64-apple-macosx/debug/Journalog.build/ApiResponse.d",
+    "object": "/Volumes/Files/Projects/journalog-webbycms-v2/iOS-Dev/.build/arm64-apple-macosx/debug/Journalog.build/ApiResponse.swift.o",
+    "swiftmodule": "/Volumes/Files/Projects/journalog-webbycms-v2/iOS-Dev/.build/arm64-apple-macosx/debug/Journalog.build/ApiResponse~partial.swiftmodule",
+    "swift-dependencies": "/Volumes/Files/Projects/journalog-webbycms-v2/iOS-Dev/.build/arm64-apple-macosx/debug/Journalog.build/ApiResponse.swiftdeps",
+    "diagnostics": "/Volumes/Files/Projects/journalog-webbycms-v2/iOS-Dev/.build/arm64-apple-macosx/debug/Journalog.build/ApiResponse.dia"
+  },
+  "/Volumes/Files/Projects/journalog-webbycms-v2/iOS-Dev/Sources/Journalog/DTOs/AuthDtos.swift": {
+    "dependencies": "/Volumes/Files/Projects/journalog-webbycms-v2/iOS-Dev/.build/arm64-apple-macosx/debug/Journalog.build/AuthDtos.d",
+    "object": "/Volumes/Files/Projects/journalog-webbycms-v2/iOS-Dev/.build/arm64-apple-macosx/debug/Journalog.build/AuthDtos.swift.o",
+    "swiftmodule": "/Volumes/Files/Projects/journalog-webbycms-v2/iOS-Dev/.build/arm64-apple-macosx/debug/Journalog.build/AuthDtos~partial.swiftmodule",
+    "swift-dependencies": "/Volumes/Files/Projects/journalog-webbycms-v2/iOS-Dev/.build/arm64-apple-macosx/debug/Journalog.build/AuthDtos.swiftdeps",
+    "diagnostics": "/Volumes/Files/Projects/journalog-webbycms-v2/iOS-Dev/.build/arm64-apple-macosx/debug/Journalog.build/AuthDtos.dia"
+  },
+  "/Volumes/Files/Projects/journalog-webbycms-v2/iOS-Dev/Sources/Journalog/DTOs/FeedDtos.swift": {
+    "dependencies": "/Volumes/Files/Projects/journalog-webbycms-v2/iOS-Dev/.build/arm64-apple-macosx/debug/Journalog.build/FeedDtos.d",
+    "object": "/Volumes/Files/Projects/journalog-webbycms-v2/iOS-Dev/.build/arm64-apple-macosx/debug/Journalog.build/FeedDtos.swift.o",
+    "swiftmodule": "/Volumes/Files/Projects/journalog-webbycms-v2/iOS-Dev/.build/arm64-apple-macosx/debug/Journalog.build/FeedDtos~partial.swiftmodule",
+    "swift-dependencies": "/Volumes/Files/Projects/journalog-webbycms-v2/iOS-Dev/.build/arm64-apple-macosx/debug/Journalog.build/FeedDtos.swiftdeps",
+    "diagnostics": "/Volumes/Files/Projects/journalog-webbycms-v2/iOS-Dev/.build/arm64-apple-macosx/debug/Journalog.build/FeedDtos.dia"
+  },
+  "/Volumes/Files/Projects/journalog-webbycms-v2/iOS-Dev/Sources/Journalog/DTOs/Helpers.swift": {
+    "dependencies": "/Volumes/Files/Projects/journalog-webbycms-v2/iOS-Dev/.build/arm64-apple-macosx/debug/Journalog.build/Helpers.d",
+    "object": "/Volumes/Files/Projects/journalog-webbycms-v2/iOS-Dev/.build/arm64-apple-macosx/debug/Journalog.build/Helpers.swift.o",
+    "swiftmodule": "/Volumes/Files/Projects/journalog-webbycms-v2/iOS-Dev/.build/arm64-apple-macosx/debug/Journalog.build/Helpers~partial.swiftmodule",
+    "swift-dependencies": "/Volumes/Files/Projects/journalog-webbycms-v2/iOS-Dev/.build/arm64-apple-macosx/debug/Journalog.build/Helpers.swiftdeps",
+    "diagnostics": "/Volumes/Files/Projects/journalog-webbycms-v2/iOS-Dev/.build/arm64-apple-macosx/debug/Journalog.build/Helpers.dia"
+  },
+  "/Volumes/Files/Projects/journalog-webbycms-v2/iOS-Dev/Sources/Journalog/DTOs/MessengerDtos.swift": {
+    "dependencies": "/Volumes/Files/Projects/journalog-webbycms-v2/iOS-Dev/.build/arm64-apple-macosx/debug/Journalog.build/MessengerDtos.d",
+    "object": "/Volumes/Files/Projects/journalog-webbycms-v2/iOS-Dev/.build/arm64-apple-macosx/debug/Journalog.build/MessengerDtos.swift.o",
+    "swiftmodule": "/Volumes/Files/Projects/journalog-webbycms-v2/iOS-Dev/.build/arm64-apple-macosx/debug/Journalog.build/MessengerDtos~partial.swiftmodule",
+    "swift-dependencies": "/Volumes/Files/Projects/journalog-webbycms-v2/iOS-Dev/.build/arm64-apple-macosx/debug/Journalog.build/MessengerDtos.swiftdeps",
+    "diagnostics": "/Volumes/Files/Projects/journalog-webbycms-v2/iOS-Dev/.build/arm64-apple-macosx/debug/Journalog.build/MessengerDtos.dia"
+  },
+  "/Volumes/Files/Projects/journalog-webbycms-v2/iOS-Dev/Sources/Journalog/DTOs/PaymentDtos.swift": {
+    "dependencies": "/Volumes/Files/Projects/journalog-webbycms-v2/iOS-Dev/.build/arm64-apple-macosx/debug/Journalog.build/PaymentDtos.d",
+    "object": "/Volumes/Files/Projects/journalog-webbycms-v2/iOS-Dev/.build/arm64-apple-macosx/debug/Journalog.build/PaymentDtos.swift.o",
+    "swiftmodule": "/Volumes/Files/Projects/journalog-webbycms-v2/iOS-Dev/.build/arm64-apple-macosx/debug/Journalog.build/PaymentDtos~partial.swiftmodule",
+    "swift-dependencies": "/Volumes/Files/Projects/journalog-webbycms-v2/iOS-Dev/.build/arm64-apple-macosx/debug/Journalog.build/PaymentDtos.swiftdeps",
+    "diagnostics": "/Volumes/Files/Projects/journalog-webbycms-v2/iOS-Dev/.build/arm64-apple-macosx/debug/Journalog.build/PaymentDtos.dia"
+  },
+  "/Volumes/Files/Projects/journalog-webbycms-v2/iOS-Dev/Sources/Journalog/DTOs/SocialDtos.swift": {
+    "dependencies": "/Volumes/Files/Projects/journalog-webbycms-v2/iOS-Dev/.build/arm64-apple-macosx/debug/Journalog.build/SocialDtos.d",
+    "object": "/Volumes/Files/Projects/journalog-webbycms-v2/iOS-Dev/.build/arm64-apple-macosx/debug/Journalog.build/SocialDtos.swift.o",
+    "swiftmodule": "/Volumes/Files/Projects/journalog-webbycms-v2/iOS-Dev/.build/arm64-apple-macosx/debug/Journalog.build/SocialDtos~partial.swiftmodule",
+    "swift-dependencies": "/Volumes/Files/Projects/journalog-webbycms-v2/iOS-Dev/.build/arm64-apple-macosx/debug/Journalog.build/SocialDtos.swiftdeps",
+    "diagnostics": "/Volumes/Files/Projects/journalog-webbycms-v2/iOS-Dev/.build/arm64-apple-macosx/debug/Journalog.build/SocialDtos.dia"
+  },
+  "/Volumes/Files/Projects/journalog-webbycms-v2/iOS-Dev/Sources/Journalog/Networking/APIClient.swift": {
+    "dependencies": "/Volumes/Files/Projects/journalog-webbycms-v2/iOS-Dev/.build/arm64-apple-macosx/debug/Journalog.build/APIClient.d",
+    "object": "/Volumes/Files/Projects/journalog-webbycms-v2/iOS-Dev/.build/arm64-apple-macosx/debug/Journalog.build/APIClient.swift.o",
+    "swiftmodule": "/Volumes/Files/Projects/journalog-webbycms-v2/iOS-Dev/.build/arm64-apple-macosx/debug/Journalog.build/APIClient~partial.swiftmodule",
+    "swift-dependencies": "/Volumes/Files/Projects/journalog-webbycms-v2/iOS-Dev/.build/arm64-apple-macosx/debug/Journalog.build/APIClient.swiftdeps",
+    "diagnostics": "/Volumes/Files/Projects/journalog-webbycms-v2/iOS-Dev/.build/arm64-apple-macosx/debug/Journalog.build/APIClient.dia"
+  },
+  "/Volumes/Files/Projects/journalog-webbycms-v2/iOS-Dev/Sources/Journalog/Networking/APIError.swift": {
+    "dependencies": "/Volumes/Files/Projects/journalog-webbycms-v2/iOS-Dev/.build/arm64-apple-macosx/debug/Journalog.build/APIError.d",
+    "object": "/Volumes/Files/Projects/journalog-webbycms-v2/iOS-Dev/.build/arm64-apple-macosx/debug/Journalog.build/APIError.swift.o",
+    "swiftmodule": "/Volumes/Files/Projects/journalog-webbycms-v2/iOS-Dev/.build/arm64-apple-macosx/debug/Journalog.build/APIError~partial.swiftmodule",
+    "swift-dependencies": "/Volumes/Files/Projects/journalog-webbycms-v2/iOS-Dev/.build/arm64-apple-macosx/debug/Journalog.build/APIError.swiftdeps",
+    "diagnostics": "/Volumes/Files/Projects/journalog-webbycms-v2/iOS-Dev/.build/arm64-apple-macosx/debug/Journalog.build/APIError.dia"
+  },
+  "/Volumes/Files/Projects/journalog-webbycms-v2/iOS-Dev/Sources/Journalog/Networking/AuthInterceptor.swift": {
+    "dependencies": "/Volumes/Files/Projects/journalog-webbycms-v2/iOS-Dev/.build/arm64-apple-macosx/debug/Journalog.build/AuthInterceptor.d",
+    "object": "/Volumes/Files/Projects/journalog-webbycms-v2/iOS-Dev/.build/arm64-apple-macosx/debug/Journalog.build/AuthInterceptor.swift.o",
+    "swiftmodule": "/Volumes/Files/Projects/journalog-webbycms-v2/iOS-Dev/.build/arm64-apple-macosx/debug/Journalog.build/AuthInterceptor~partial.swiftmodule",
+    "swift-dependencies": "/Volumes/Files/Projects/journalog-webbycms-v2/iOS-Dev/.build/arm64-apple-macosx/debug/Journalog.build/AuthInterceptor.swiftdeps",
+    "diagnostics": "/Volumes/Files/Projects/journalog-webbycms-v2/iOS-Dev/.build/arm64-apple-macosx/debug/Journalog.build/AuthInterceptor.dia"
+  },
+  "/Volumes/Files/Projects/journalog-webbycms-v2/iOS-Dev/Sources/Journalog/Services/AuthService.swift": {
+    "dependencies": "/Volumes/Files/Projects/journalog-webbycms-v2/iOS-Dev/.build/arm64-apple-macosx/debug/Journalog.build/AuthService.d",
+    "object": "/Volumes/Files/Projects/journalog-webbycms-v2/iOS-Dev/.build/arm64-apple-macosx/debug/Journalog.build/AuthService.swift.o",
+    "swiftmodule": "/Volumes/Files/Projects/journalog-webbycms-v2/iOS-Dev/.build/arm64-apple-macosx/debug/Journalog.build/AuthService~partial.swiftmodule",
+    "swift-dependencies": "/Volumes/Files/Projects/journalog-webbycms-v2/iOS-Dev/.build/arm64-apple-macosx/debug/Journalog.build/AuthService.swiftdeps",
+    "diagnostics": "/Volumes/Files/Projects/journalog-webbycms-v2/iOS-Dev/.build/arm64-apple-macosx/debug/Journalog.build/AuthService.dia"
+  },
+  "/Volumes/Files/Projects/journalog-webbycms-v2/iOS-Dev/Sources/Journalog/Services/ExploreService.swift": {
+    "dependencies": "/Volumes/Files/Projects/journalog-webbycms-v2/iOS-Dev/.build/arm64-apple-macosx/debug/Journalog.build/ExploreService.d",
+    "object": "/Volumes/Files/Projects/journalog-webbycms-v2/iOS-Dev/.build/arm64-apple-macosx/debug/Journalog.build/ExploreService.swift.o",
+    "swiftmodule": "/Volumes/Files/Projects/journalog-webbycms-v2/iOS-Dev/.build/arm64-apple-macosx/debug/Journalog.build/ExploreService~partial.swiftmodule",
+    "swift-dependencies": "/Volumes/Files/Projects/journalog-webbycms-v2/iOS-Dev/.build/arm64-apple-macosx/debug/Journalog.build/ExploreService.swiftdeps",
+    "diagnostics": "/Volumes/Files/Projects/journalog-webbycms-v2/iOS-Dev/.build/arm64-apple-macosx/debug/Journalog.build/ExploreService.dia"
+  },
+  "/Volumes/Files/Projects/journalog-webbycms-v2/iOS-Dev/Sources/Journalog/Services/FeedService.swift": {
+    "dependencies": "/Volumes/Files/Projects/journalog-webbycms-v2/iOS-Dev/.build/arm64-apple-macosx/debug/Journalog.build/FeedService.d",
+    "object": "/Volumes/Files/Projects/journalog-webbycms-v2/iOS-Dev/.build/arm64-apple-macosx/debug/Journalog.build/FeedService.swift.o",
+    "swiftmodule": "/Volumes/Files/Projects/journalog-webbycms-v2/iOS-Dev/.build/arm64-apple-macosx/debug/Journalog.build/FeedService~partial.swiftmodule",
+    "swift-dependencies": "/Volumes/Files/Projects/journalog-webbycms-v2/iOS-Dev/.build/arm64-apple-macosx/debug/Journalog.build/FeedService.swiftdeps",
+    "diagnostics": "/Volumes/Files/Projects/journalog-webbycms-v2/iOS-Dev/.build/arm64-apple-macosx/debug/Journalog.build/FeedService.dia"
+  },
+  "/Volumes/Files/Projects/journalog-webbycms-v2/iOS-Dev/Sources/Journalog/Services/GiftService.swift": {
+    "dependencies": "/Volumes/Files/Projects/journalog-webbycms-v2/iOS-Dev/.build/arm64-apple-macosx/debug/Journalog.build/GiftService.d",
+    "object": "/Volumes/Files/Projects/journalog-webbycms-v2/iOS-Dev/.build/arm64-apple-macosx/debug/Journalog.build/GiftService.swift.o",
+    "swiftmodule": "/Volumes/Files/Projects/journalog-webbycms-v2/iOS-Dev/.build/arm64-apple-macosx/debug/Journalog.build/GiftService~partial.swiftmodule",
+    "swift-dependencies": "/Volumes/Files/Projects/journalog-webbycms-v2/iOS-Dev/.build/arm64-apple-macosx/debug/Journalog.build/GiftService.swiftdeps",
+    "diagnostics": "/Volumes/Files/Projects/journalog-webbycms-v2/iOS-Dev/.build/arm64-apple-macosx/debug/Journalog.build/GiftService.dia"
+  },
+  "/Volumes/Files/Projects/journalog-webbycms-v2/iOS-Dev/Sources/Journalog/Services/MessengerService.swift": {
+    "dependencies": "/Volumes/Files/Projects/journalog-webbycms-v2/iOS-Dev/.build/arm64-apple-macosx/debug/Journalog.build/MessengerService.d",
+    "object": "/Volumes/Files/Projects/journalog-webbycms-v2/iOS-Dev/.build/arm64-apple-macosx/debug/Journalog.build/MessengerService.swift.o",
+    "swiftmodule": "/Volumes/Files/Projects/journalog-webbycms-v2/iOS-Dev/.build/arm64-apple-macosx/debug/Journalog.build/MessengerService~partial.swiftmodule",
+    "swift-dependencies": "/Volumes/Files/Projects/journalog-webbycms-v2/iOS-Dev/.build/arm64-apple-macosx/debug/Journalog.build/MessengerService.swiftdeps",
+    "diagnostics": "/Volumes/Files/Projects/journalog-webbycms-v2/iOS-Dev/.build/arm64-apple-macosx/debug/Journalog.build/MessengerService.dia"
+  },
+  "/Volumes/Files/Projects/journalog-webbycms-v2/iOS-Dev/Sources/Journalog/Services/NotificationService.swift": {
+    "dependencies": "/Volumes/Files/Projects/journalog-webbycms-v2/iOS-Dev/.build/arm64-apple-macosx/debug/Journalog.build/NotificationService.d",
+    "object": "/Volumes/Files/Projects/journalog-webbycms-v2/iOS-Dev/.build/arm64-apple-macosx/debug/Journalog.build/NotificationService.swift.o",
+    "swiftmodule": "/Volumes/Files/Projects/journalog-webbycms-v2/iOS-Dev/.build/arm64-apple-macosx/debug/Journalog.build/NotificationService~partial.swiftmodule",
+    "swift-dependencies": "/Volumes/Files/Projects/journalog-webbycms-v2/iOS-Dev/.build/arm64-apple-macosx/debug/Journalog.build/NotificationService.swiftdeps",
+    "diagnostics": "/Volumes/Files/Projects/journalog-webbycms-v2/iOS-Dev/.build/arm64-apple-macosx/debug/Journalog.build/NotificationService.dia"
+  },
+  "/Volumes/Files/Projects/journalog-webbycms-v2/iOS-Dev/Sources/Journalog/Services/PostService.swift": {
+    "dependencies": "/Volumes/Files/Projects/journalog-webbycms-v2/iOS-Dev/.build/arm64-apple-macosx/debug/Journalog.build/PostService.d",
+    "object": "/Volumes/Files/Projects/journalog-webbycms-v2/iOS-Dev/.build/arm64-apple-macosx/debug/Journalog.build/PostService.swift.o",
+    "swiftmodule": "/Volumes/Files/Projects/journalog-webbycms-v2/iOS-Dev/.build/arm64-apple-macosx/debug/Journalog.build/PostService~partial.swiftmodule",
+    "swift-dependencies": "/Volumes/Files/Projects/journalog-webbycms-v2/iOS-Dev/.build/arm64-apple-macosx/debug/Journalog.build/PostService.swiftdeps",
+    "diagnostics": "/Volumes/Files/Projects/journalog-webbycms-v2/iOS-Dev/.build/arm64-apple-macosx/debug/Journalog.build/PostService.dia"
+  },
+  "/Volumes/Files/Projects/journalog-webbycms-v2/iOS-Dev/Sources/Journalog/Services/SearchService.swift": {
+    "dependencies": "/Volumes/Files/Projects/journalog-webbycms-v2/iOS-Dev/.build/arm64-apple-macosx/debug/Journalog.build/SearchService.d",
+    "object": "/Volumes/Files/Projects/journalog-webbycms-v2/iOS-Dev/.build/arm64-apple-macosx/debug/Journalog.build/SearchService.swift.o",
+    "swiftmodule": "/Volumes/Files/Projects/journalog-webbycms-v2/iOS-Dev/.build/arm64-apple-macosx/debug/Journalog.build/SearchService~partial.swiftmodule",
+    "swift-dependencies": "/Volumes/Files/Projects/journalog-webbycms-v2/iOS-Dev/.build/arm64-apple-macosx/debug/Journalog.build/SearchService.swiftdeps",
+    "diagnostics": "/Volumes/Files/Projects/journalog-webbycms-v2/iOS-Dev/.build/arm64-apple-macosx/debug/Journalog.build/SearchService.dia"
+  },
+  "/Volumes/Files/Projects/journalog-webbycms-v2/iOS-Dev/Sources/Journalog/Services/SettingsService.swift": {
+    "dependencies": "/Volumes/Files/Projects/journalog-webbycms-v2/iOS-Dev/.build/arm64-apple-macosx/debug/Journalog.build/SettingsService.d",
+    "object": "/Volumes/Files/Projects/journalog-webbycms-v2/iOS-Dev/.build/arm64-apple-macosx/debug/Journalog.build/SettingsService.swift.o",
+    "swiftmodule": "/Volumes/Files/Projects/journalog-webbycms-v2/iOS-Dev/.build/arm64-apple-macosx/debug/Journalog.build/SettingsService~partial.swiftmodule",
+    "swift-dependencies": "/Volumes/Files/Projects/journalog-webbycms-v2/iOS-Dev/.build/arm64-apple-macosx/debug/Journalog.build/SettingsService.swiftdeps",
+    "diagnostics": "/Volumes/Files/Projects/journalog-webbycms-v2/iOS-Dev/.build/arm64-apple-macosx/debug/Journalog.build/SettingsService.dia"
+  },
+  "/Volumes/Files/Projects/journalog-webbycms-v2/iOS-Dev/Sources/Journalog/Services/StoryService.swift": {
+    "dependencies": "/Volumes/Files/Projects/journalog-webbycms-v2/iOS-Dev/.build/arm64-apple-macosx/debug/Journalog.build/StoryService.d",
+    "object": "/Volumes/Files/Projects/journalog-webbycms-v2/iOS-Dev/.build/arm64-apple-macosx/debug/Journalog.build/StoryService.swift.o",
+    "swiftmodule": "/Volumes/Files/Projects/journalog-webbycms-v2/iOS-Dev/.build/arm64-apple-macosx/debug/Journalog.build/StoryService~partial.swiftmodule",
+    "swift-dependencies": "/Volumes/Files/Projects/journalog-webbycms-v2/iOS-Dev/.build/arm64-apple-macosx/debug/Journalog.build/StoryService.swiftdeps",
+    "diagnostics": "/Volumes/Files/Projects/journalog-webbycms-v2/iOS-Dev/.build/arm64-apple-macosx/debug/Journalog.build/StoryService.dia"
+  },
+  "/Volumes/Files/Projects/journalog-webbycms-v2/iOS-Dev/Sources/Journalog/Services/SubscriptionService.swift": {
+    "dependencies": "/Volumes/Files/Projects/journalog-webbycms-v2/iOS-Dev/.build/arm64-apple-macosx/debug/Journalog.build/SubscriptionService.d",
+    "object": "/Volumes/Files/Projects/journalog-webbycms-v2/iOS-Dev/.build/arm64-apple-macosx/debug/Journalog.build/SubscriptionService.swift.o",
+    "swiftmodule": "/Volumes/Files/Projects/journalog-webbycms-v2/iOS-Dev/.build/arm64-apple-macosx/debug/Journalog.build/SubscriptionService~partial.swiftmodule",
+    "swift-dependencies": "/Volumes/Files/Projects/journalog-webbycms-v2/iOS-Dev/.build/arm64-apple-macosx/debug/Journalog.build/SubscriptionService.swiftdeps",
+    "diagnostics": "/Volumes/Files/Projects/journalog-webbycms-v2/iOS-Dev/.build/arm64-apple-macosx/debug/Journalog.build/SubscriptionService.dia"
+  },
+  "/Volumes/Files/Projects/journalog-webbycms-v2/iOS-Dev/Sources/Journalog/Services/UserService.swift": {
+    "dependencies": "/Volumes/Files/Projects/journalog-webbycms-v2/iOS-Dev/.build/arm64-apple-macosx/debug/Journalog.build/UserService.d",
+    "object": "/Volumes/Files/Projects/journalog-webbycms-v2/iOS-Dev/.build/arm64-apple-macosx/debug/Journalog.build/UserService.swift.o",
+    "swiftmodule": "/Volumes/Files/Projects/journalog-webbycms-v2/iOS-Dev/.build/arm64-apple-macosx/debug/Journalog.build/UserService~partial.swiftmodule",
+    "swift-dependencies": "/Volumes/Files/Projects/journalog-webbycms-v2/iOS-Dev/.build/arm64-apple-macosx/debug/Journalog.build/UserService.swiftdeps",
+    "diagnostics": "/Volumes/Files/Projects/journalog-webbycms-v2/iOS-Dev/.build/arm64-apple-macosx/debug/Journalog.build/UserService.dia"
+  },
+  "/Volumes/Files/Projects/journalog-webbycms-v2/iOS-Dev/Sources/Journalog/Services/WalletService.swift": {
+    "dependencies": "/Volumes/Files/Projects/journalog-webbycms-v2/iOS-Dev/.build/arm64-apple-macosx/debug/Journalog.build/WalletService.d",
+    "object": "/Volumes/Files/Projects/journalog-webbycms-v2/iOS-Dev/.build/arm64-apple-macosx/debug/Journalog.build/WalletService.swift.o",
+    "swiftmodule": "/Volumes/Files/Projects/journalog-webbycms-v2/iOS-Dev/.build/arm64-apple-macosx/debug/Journalog.build/WalletService~partial.swiftmodule",
+    "swift-dependencies": "/Volumes/Files/Projects/journalog-webbycms-v2/iOS-Dev/.build/arm64-apple-macosx/debug/Journalog.build/WalletService.swiftdeps",
+    "diagnostics": "/Volumes/Files/Projects/journalog-webbycms-v2/iOS-Dev/.build/arm64-apple-macosx/debug/Journalog.build/WalletService.dia"
+  },
+  "/Volumes/Files/Projects/journalog-webbycms-v2/iOS-Dev/Sources/Journalog/Storage/KeychainManager.swift": {
+    "dependencies": "/Volumes/Files/Projects/journalog-webbycms-v2/iOS-Dev/.build/arm64-apple-macosx/debug/Journalog.build/KeychainManager.d",
+    "object": "/Volumes/Files/Projects/journalog-webbycms-v2/iOS-Dev/.build/arm64-apple-macosx/debug/Journalog.build/KeychainManager.swift.o",
+    "swiftmodule": "/Volumes/Files/Projects/journalog-webbycms-v2/iOS-Dev/.build/arm64-apple-macosx/debug/Journalog.build/KeychainManager~partial.swiftmodule",
+    "swift-dependencies": "/Volumes/Files/Projects/journalog-webbycms-v2/iOS-Dev/.build/arm64-apple-macosx/debug/Journalog.build/KeychainManager.swiftdeps",
+    "diagnostics": "/Volumes/Files/Projects/journalog-webbycms-v2/iOS-Dev/.build/arm64-apple-macosx/debug/Journalog.build/KeychainManager.dia"
+  },
+  "/Volumes/Files/Projects/journalog-webbycms-v2/iOS-Dev/Sources/Journalog/Storage/SessionManager.swift": {
+    "dependencies": "/Volumes/Files/Projects/journalog-webbycms-v2/iOS-Dev/.build/arm64-apple-macosx/debug/Journalog.build/SessionManager.d",
+    "object": "/Volumes/Files/Projects/journalog-webbycms-v2/iOS-Dev/.build/arm64-apple-macosx/debug/Journalog.build/SessionManager.swift.o",
+    "swiftmodule": "/Volumes/Files/Projects/journalog-webbycms-v2/iOS-Dev/.build/arm64-apple-macosx/debug/Journalog.build/SessionManager~partial.swiftmodule",
+    "swift-dependencies": "/Volumes/Files/Projects/journalog-webbycms-v2/iOS-Dev/.build/arm64-apple-macosx/debug/Journalog.build/SessionManager.swiftdeps",
+    "diagnostics": "/Volumes/Files/Projects/journalog-webbycms-v2/iOS-Dev/.build/arm64-apple-macosx/debug/Journalog.build/SessionManager.dia"
+  },
+  "/Volumes/Files/Projects/journalog-webbycms-v2/iOS-Dev/Sources/Journalog/UI/Components/LoadingView.swift": {
+    "dependencies": "/Volumes/Files/Projects/journalog-webbycms-v2/iOS-Dev/.build/arm64-apple-macosx/debug/Journalog.build/LoadingView.d",
+    "object": "/Volumes/Files/Projects/journalog-webbycms-v2/iOS-Dev/.build/arm64-apple-macosx/debug/Journalog.build/LoadingView.swift.o",
+    "swiftmodule": "/Volumes/Files/Projects/journalog-webbycms-v2/iOS-Dev/.build/arm64-apple-macosx/debug/Journalog.build/LoadingView~partial.swiftmodule",
+    "swift-dependencies": "/Volumes/Files/Projects/journalog-webbycms-v2/iOS-Dev/.build/arm64-apple-macosx/debug/Journalog.build/LoadingView.swiftdeps",
+    "diagnostics": "/Volumes/Files/Projects/journalog-webbycms-v2/iOS-Dev/.build/arm64-apple-macosx/debug/Journalog.build/LoadingView.dia"
+  },
+  "/Volumes/Files/Projects/journalog-webbycms-v2/iOS-Dev/Sources/Journalog/UI/Components/PollView.swift": {
+    "dependencies": "/Volumes/Files/Projects/journalog-webbycms-v2/iOS-Dev/.build/arm64-apple-macosx/debug/Journalog.build/PollView.d",
+    "object": "/Volumes/Files/Projects/journalog-webbycms-v2/iOS-Dev/.build/arm64-apple-macosx/debug/Journalog.build/PollView.swift.o",
+    "swiftmodule": "/Volumes/Files/Projects/journalog-webbycms-v2/iOS-Dev/.build/arm64-apple-macosx/debug/Journalog.build/PollView~partial.swiftmodule",
+    "swift-dependencies": "/Volumes/Files/Projects/journalog-webbycms-v2/iOS-Dev/.build/arm64-apple-macosx/debug/Journalog.build/PollView.swiftdeps",
+    "diagnostics": "/Volumes/Files/Projects/journalog-webbycms-v2/iOS-Dev/.build/arm64-apple-macosx/debug/Journalog.build/PollView.dia"
+  },
+  "/Volumes/Files/Projects/journalog-webbycms-v2/iOS-Dev/Sources/Journalog/UI/Components/PostCardView.swift": {
+    "dependencies": "/Volumes/Files/Projects/journalog-webbycms-v2/iOS-Dev/.build/arm64-apple-macosx/debug/Journalog.build/PostCardView.d",
+    "object": "/Volumes/Files/Projects/journalog-webbycms-v2/iOS-Dev/.build/arm64-apple-macosx/debug/Journalog.build/PostCardView.swift.o",
+    "swiftmodule": "/Volumes/Files/Projects/journalog-webbycms-v2/iOS-Dev/.build/arm64-apple-macosx/debug/Journalog.build/PostCardView~partial.swiftmodule",
+    "swift-dependencies": "/Volumes/Files/Projects/journalog-webbycms-v2/iOS-Dev/.build/arm64-apple-macosx/debug/Journalog.build/PostCardView.swiftdeps",
+    "diagnostics": "/Volumes/Files/Projects/journalog-webbycms-v2/iOS-Dev/.build/arm64-apple-macosx/debug/Journalog.build/PostCardView.dia"
+  },
+  "/Volumes/Files/Projects/journalog-webbycms-v2/iOS-Dev/Sources/Journalog/UI/Components/UserRowView.swift": {
+    "dependencies": "/Volumes/Files/Projects/journalog-webbycms-v2/iOS-Dev/.build/arm64-apple-macosx/debug/Journalog.build/UserRowView.d",
+    "object": "/Volumes/Files/Projects/journalog-webbycms-v2/iOS-Dev/.build/arm64-apple-macosx/debug/Journalog.build/UserRowView.swift.o",
+    "swiftmodule": "/Volumes/Files/Projects/journalog-webbycms-v2/iOS-Dev/.build/arm64-apple-macosx/debug/Journalog.build/UserRowView~partial.swiftmodule",
+    "swift-dependencies": "/Volumes/Files/Projects/journalog-webbycms-v2/iOS-Dev/.build/arm64-apple-macosx/debug/Journalog.build/UserRowView.swiftdeps",
+    "diagnostics": "/Volumes/Files/Projects/journalog-webbycms-v2/iOS-Dev/.build/arm64-apple-macosx/debug/Journalog.build/UserRowView.dia"
+  },
+  "/Volumes/Files/Projects/journalog-webbycms-v2/iOS-Dev/Sources/Journalog/UI/Navigation/AppNavigation.swift": {
+    "dependencies": "/Volumes/Files/Projects/journalog-webbycms-v2/iOS-Dev/.build/arm64-apple-macosx/debug/Journalog.build/AppNavigation.d",
+    "object": "/Volumes/Files/Projects/journalog-webbycms-v2/iOS-Dev/.build/arm64-apple-macosx/debug/Journalog.build/AppNavigation.swift.o",
+    "swiftmodule": "/Volumes/Files/Projects/journalog-webbycms-v2/iOS-Dev/.build/arm64-apple-macosx/debug/Journalog.build/AppNavigation~partial.swiftmodule",
+    "swift-dependencies": "/Volumes/Files/Projects/journalog-webbycms-v2/iOS-Dev/.build/arm64-apple-macosx/debug/Journalog.build/AppNavigation.swiftdeps",
+    "diagnostics": "/Volumes/Files/Projects/journalog-webbycms-v2/iOS-Dev/.build/arm64-apple-macosx/debug/Journalog.build/AppNavigation.dia"
+  },
+  "/Volumes/Files/Projects/journalog-webbycms-v2/iOS-Dev/Sources/Journalog/UI/Screens/AuthScreen.swift": {
+    "dependencies": "/Volumes/Files/Projects/journalog-webbycms-v2/iOS-Dev/.build/arm64-apple-macosx/debug/Journalog.build/AuthScreen.d",
+    "object": "/Volumes/Files/Projects/journalog-webbycms-v2/iOS-Dev/.build/arm64-apple-macosx/debug/Journalog.build/AuthScreen.swift.o",
+    "swiftmodule": "/Volumes/Files/Projects/journalog-webbycms-v2/iOS-Dev/.build/arm64-apple-macosx/debug/Journalog.build/AuthScreen~partial.swiftmodule",
+    "swift-dependencies": "/Volumes/Files/Projects/journalog-webbycms-v2/iOS-Dev/.build/arm64-apple-macosx/debug/Journalog.build/AuthScreen.swiftdeps",
+    "diagnostics": "/Volumes/Files/Projects/journalog-webbycms-v2/iOS-Dev/.build/arm64-apple-macosx/debug/Journalog.build/AuthScreen.dia"
+  },
+  "/Volumes/Files/Projects/journalog-webbycms-v2/iOS-Dev/Sources/Journalog/UI/Screens/ConversationScreen.swift": {
+    "dependencies": "/Volumes/Files/Projects/journalog-webbycms-v2/iOS-Dev/.build/arm64-apple-macosx/debug/Journalog.build/ConversationScreen.d",
+    "object": "/Volumes/Files/Projects/journalog-webbycms-v2/iOS-Dev/.build/arm64-apple-macosx/debug/Journalog.build/ConversationScreen.swift.o",
+    "swiftmodule": "/Volumes/Files/Projects/journalog-webbycms-v2/iOS-Dev/.build/arm64-apple-macosx/debug/Journalog.build/ConversationScreen~partial.swiftmodule",
+    "swift-dependencies": "/Volumes/Files/Projects/journalog-webbycms-v2/iOS-Dev/.build/arm64-apple-macosx/debug/Journalog.build/ConversationScreen.swiftdeps",
+    "diagnostics": "/Volumes/Files/Projects/journalog-webbycms-v2/iOS-Dev/.build/arm64-apple-macosx/debug/Journalog.build/ConversationScreen.dia"
+  },
+  "/Volumes/Files/Projects/journalog-webbycms-v2/iOS-Dev/Sources/Journalog/UI/Screens/CreatePostScreen.swift": {
+    "dependencies": "/Volumes/Files/Projects/journalog-webbycms-v2/iOS-Dev/.build/arm64-apple-macosx/debug/Journalog.build/CreatePostScreen.d",
+    "object": "/Volumes/Files/Projects/journalog-webbycms-v2/iOS-Dev/.build/arm64-apple-macosx/debug/Journalog.build/CreatePostScreen.swift.o",
+    "swiftmodule": "/Volumes/Files/Projects/journalog-webbycms-v2/iOS-Dev/.build/arm64-apple-macosx/debug/Journalog.build/CreatePostScreen~partial.swiftmodule",
+    "swift-dependencies": "/Volumes/Files/Projects/journalog-webbycms-v2/iOS-Dev/.build/arm64-apple-macosx/debug/Journalog.build/CreatePostScreen.swiftdeps",
+    "diagnostics": "/Volumes/Files/Projects/journalog-webbycms-v2/iOS-Dev/.build/arm64-apple-macosx/debug/Journalog.build/CreatePostScreen.dia"
+  },
+  "/Volumes/Files/Projects/journalog-webbycms-v2/iOS-Dev/Sources/Journalog/UI/Screens/ExploreScreen.swift": {
+    "dependencies": "/Volumes/Files/Projects/journalog-webbycms-v2/iOS-Dev/.build/arm64-apple-macosx/debug/Journalog.build/ExploreScreen.d",
+    "object": "/Volumes/Files/Projects/journalog-webbycms-v2/iOS-Dev/.build/arm64-apple-macosx/debug/Journalog.build/ExploreScreen.swift.o",
+    "swiftmodule": "/Volumes/Files/Projects/journalog-webbycms-v2/iOS-Dev/.build/arm64-apple-macosx/debug/Journalog.build/ExploreScreen~partial.swiftmodule",
+    "swift-dependencies": "/Volumes/Files/Projects/journalog-webbycms-v2/iOS-Dev/.build/arm64-apple-macosx/debug/Journalog.build/ExploreScreen.swiftdeps",
+    "diagnostics": "/Volumes/Files/Projects/journalog-webbycms-v2/iOS-Dev/.build/arm64-apple-macosx/debug/Journalog.build/ExploreScreen.dia"
+  },
+  "/Volumes/Files/Projects/journalog-webbycms-v2/iOS-Dev/Sources/Journalog/UI/Screens/FeedScreen.swift": {
+    "dependencies": "/Volumes/Files/Projects/journalog-webbycms-v2/iOS-Dev/.build/arm64-apple-macosx/debug/Journalog.build/FeedScreen.d",
+    "object": "/Volumes/Files/Projects/journalog-webbycms-v2/iOS-Dev/.build/arm64-apple-macosx/debug/Journalog.build/FeedScreen.swift.o",
+    "swiftmodule": "/Volumes/Files/Projects/journalog-webbycms-v2/iOS-Dev/.build/arm64-apple-macosx/debug/Journalog.build/FeedScreen~partial.swiftmodule",
+    "swift-dependencies": "/Volumes/Files/Projects/journalog-webbycms-v2/iOS-Dev/.build/arm64-apple-macosx/debug/Journalog.build/FeedScreen.swiftdeps",
+    "diagnostics": "/Volumes/Files/Projects/journalog-webbycms-v2/iOS-Dev/.build/arm64-apple-macosx/debug/Journalog.build/FeedScreen.dia"
+  },
+  "/Volumes/Files/Projects/journalog-webbycms-v2/iOS-Dev/Sources/Journalog/UI/Screens/GiftModalView.swift": {
+    "dependencies": "/Volumes/Files/Projects/journalog-webbycms-v2/iOS-Dev/.build/arm64-apple-macosx/debug/Journalog.build/GiftModalView.d",
+    "object": "/Volumes/Files/Projects/journalog-webbycms-v2/iOS-Dev/.build/arm64-apple-macosx/debug/Journalog.build/GiftModalView.swift.o",
+    "swiftmodule": "/Volumes/Files/Projects/journalog-webbycms-v2/iOS-Dev/.build/arm64-apple-macosx/debug/Journalog.build/GiftModalView~partial.swiftmodule",
+    "swift-dependencies": "/Volumes/Files/Projects/journalog-webbycms-v2/iOS-Dev/.build/arm64-apple-macosx/debug/Journalog.build/GiftModalView.swiftdeps",
+    "diagnostics": "/Volumes/Files/Projects/journalog-webbycms-v2/iOS-Dev/.build/arm64-apple-macosx/debug/Journalog.build/GiftModalView.dia"
+  },
+  "/Volumes/Files/Projects/journalog-webbycms-v2/iOS-Dev/Sources/Journalog/UI/Screens/MainTabView.swift": {
+    "dependencies": "/Volumes/Files/Projects/journalog-webbycms-v2/iOS-Dev/.build/arm64-apple-macosx/debug/Journalog.build/MainTabView.d",
+    "object": "/Volumes/Files/Projects/journalog-webbycms-v2/iOS-Dev/.build/arm64-apple-macosx/debug/Journalog.build/MainTabView.swift.o",
+    "swiftmodule": "/Volumes/Files/Projects/journalog-webbycms-v2/iOS-Dev/.build/arm64-apple-macosx/debug/Journalog.build/MainTabView~partial.swiftmodule",
+    "swift-dependencies": "/Volumes/Files/Projects/journalog-webbycms-v2/iOS-Dev/.build/arm64-apple-macosx/debug/Journalog.build/MainTabView.swiftdeps",
+    "diagnostics": "/Volumes/Files/Projects/journalog-webbycms-v2/iOS-Dev/.build/arm64-apple-macosx/debug/Journalog.build/MainTabView.dia"
+  },
+  "/Volumes/Files/Projects/journalog-webbycms-v2/iOS-Dev/Sources/Journalog/UI/Screens/MessengerScreen.swift": {
+    "dependencies": "/Volumes/Files/Projects/journalog-webbycms-v2/iOS-Dev/.build/arm64-apple-macosx/debug/Journalog.build/MessengerScreen.d",
+    "object": "/Volumes/Files/Projects/journalog-webbycms-v2/iOS-Dev/.build/arm64-apple-macosx/debug/Journalog.build/MessengerScreen.swift.o",
+    "swiftmodule": "/Volumes/Files/Projects/journalog-webbycms-v2/iOS-Dev/.build/arm64-apple-macosx/debug/Journalog.build/MessengerScreen~partial.swiftmodule",
+    "swift-dependencies": "/Volumes/Files/Projects/journalog-webbycms-v2/iOS-Dev/.build/arm64-apple-macosx/debug/Journalog.build/MessengerScreen.swiftdeps",
+    "diagnostics": "/Volumes/Files/Projects/journalog-webbycms-v2/iOS-Dev/.build/arm64-apple-macosx/debug/Journalog.build/MessengerScreen.dia"
+  },
+  "/Volumes/Files/Projects/journalog-webbycms-v2/iOS-Dev/Sources/Journalog/UI/Screens/NotificationsScreen.swift": {
+    "dependencies": "/Volumes/Files/Projects/journalog-webbycms-v2/iOS-Dev/.build/arm64-apple-macosx/debug/Journalog.build/NotificationsScreen.d",
+    "object": "/Volumes/Files/Projects/journalog-webbycms-v2/iOS-Dev/.build/arm64-apple-macosx/debug/Journalog.build/NotificationsScreen.swift.o",
+    "swiftmodule": "/Volumes/Files/Projects/journalog-webbycms-v2/iOS-Dev/.build/arm64-apple-macosx/debug/Journalog.build/NotificationsScreen~partial.swiftmodule",
+    "swift-dependencies": "/Volumes/Files/Projects/journalog-webbycms-v2/iOS-Dev/.build/arm64-apple-macosx/debug/Journalog.build/NotificationsScreen.swiftdeps",
+    "diagnostics": "/Volumes/Files/Projects/journalog-webbycms-v2/iOS-Dev/.build/arm64-apple-macosx/debug/Journalog.build/NotificationsScreen.dia"
+  },
+  "/Volumes/Files/Projects/journalog-webbycms-v2/iOS-Dev/Sources/Journalog/UI/Screens/PostDetailScreen.swift": {
+    "dependencies": "/Volumes/Files/Projects/journalog-webbycms-v2/iOS-Dev/.build/arm64-apple-macosx/debug/Journalog.build/PostDetailScreen.d",
+    "object": "/Volumes/Files/Projects/journalog-webbycms-v2/iOS-Dev/.build/arm64-apple-macosx/debug/Journalog.build/PostDetailScreen.swift.o",
+    "swiftmodule": "/Volumes/Files/Projects/journalog-webbycms-v2/iOS-Dev/.build/arm64-apple-macosx/debug/Journalog.build/PostDetailScreen~partial.swiftmodule",
+    "swift-dependencies": "/Volumes/Files/Projects/journalog-webbycms-v2/iOS-Dev/.build/arm64-apple-macosx/debug/Journalog.build/PostDetailScreen.swiftdeps",
+    "diagnostics": "/Volumes/Files/Projects/journalog-webbycms-v2/iOS-Dev/.build/arm64-apple-macosx/debug/Journalog.build/PostDetailScreen.dia"
+  },
+  "/Volumes/Files/Projects/journalog-webbycms-v2/iOS-Dev/Sources/Journalog/UI/Screens/ProfileScreen.swift": {
+    "dependencies": "/Volumes/Files/Projects/journalog-webbycms-v2/iOS-Dev/.build/arm64-apple-macosx/debug/Journalog.build/ProfileScreen.d",
+    "object": "/Volumes/Files/Projects/journalog-webbycms-v2/iOS-Dev/.build/arm64-apple-macosx/debug/Journalog.build/ProfileScreen.swift.o",
+    "swiftmodule": "/Volumes/Files/Projects/journalog-webbycms-v2/iOS-Dev/.build/arm64-apple-macosx/debug/Journalog.build/ProfileScreen~partial.swiftmodule",
+    "swift-dependencies": "/Volumes/Files/Projects/journalog-webbycms-v2/iOS-Dev/.build/arm64-apple-macosx/debug/Journalog.build/ProfileScreen.swiftdeps",
+    "diagnostics": "/Volumes/Files/Projects/journalog-webbycms-v2/iOS-Dev/.build/arm64-apple-macosx/debug/Journalog.build/ProfileScreen.dia"
+  },
+  "/Volumes/Files/Projects/journalog-webbycms-v2/iOS-Dev/Sources/Journalog/UI/Screens/SettingsScreen.swift": {
+    "dependencies": "/Volumes/Files/Projects/journalog-webbycms-v2/iOS-Dev/.build/arm64-apple-macosx/debug/Journalog.build/SettingsScreen.d",
+    "object": "/Volumes/Files/Projects/journalog-webbycms-v2/iOS-Dev/.build/arm64-apple-macosx/debug/Journalog.build/SettingsScreen.swift.o",
+    "swiftmodule": "/Volumes/Files/Projects/journalog-webbycms-v2/iOS-Dev/.build/arm64-apple-macosx/debug/Journalog.build/SettingsScreen~partial.swiftmodule",
+    "swift-dependencies": "/Volumes/Files/Projects/journalog-webbycms-v2/iOS-Dev/.build/arm64-apple-macosx/debug/Journalog.build/SettingsScreen.swiftdeps",
+    "diagnostics": "/Volumes/Files/Projects/journalog-webbycms-v2/iOS-Dev/.build/arm64-apple-macosx/debug/Journalog.build/SettingsScreen.dia"
+  },
+  "/Volumes/Files/Projects/journalog-webbycms-v2/iOS-Dev/Sources/Journalog/UI/Screens/SplashScreen.swift": {
+    "dependencies": "/Volumes/Files/Projects/journalog-webbycms-v2/iOS-Dev/.build/arm64-apple-macosx/debug/Journalog.build/SplashScreen.d",
+    "object": "/Volumes/Files/Projects/journalog-webbycms-v2/iOS-Dev/.build/arm64-apple-macosx/debug/Journalog.build/SplashScreen.swift.o",
+    "swiftmodule": "/Volumes/Files/Projects/journalog-webbycms-v2/iOS-Dev/.build/arm64-apple-macosx/debug/Journalog.build/SplashScreen~partial.swiftmodule",
+    "swift-dependencies": "/Volumes/Files/Projects/journalog-webbycms-v2/iOS-Dev/.build/arm64-apple-macosx/debug/Journalog.build/SplashScreen.swiftdeps",
+    "diagnostics": "/Volumes/Files/Projects/journalog-webbycms-v2/iOS-Dev/.build/arm64-apple-macosx/debug/Journalog.build/SplashScreen.dia"
+  },
+  "/Volumes/Files/Projects/journalog-webbycms-v2/iOS-Dev/Sources/Journalog/UI/Screens/StoryCreateScreen.swift": {
+    "dependencies": "/Volumes/Files/Projects/journalog-webbycms-v2/iOS-Dev/.build/arm64-apple-macosx/debug/Journalog.build/StoryCreateScreen.d",
+    "object": "/Volumes/Files/Projects/journalog-webbycms-v2/iOS-Dev/.build/arm64-apple-macosx/debug/Journalog.build/StoryCreateScreen.swift.o",
+    "swiftmodule": "/Volumes/Files/Projects/journalog-webbycms-v2/iOS-Dev/.build/arm64-apple-macosx/debug/Journalog.build/StoryCreateScreen~partial.swiftmodule",
+    "swift-dependencies": "/Volumes/Files/Projects/journalog-webbycms-v2/iOS-Dev/.build/arm64-apple-macosx/debug/Journalog.build/StoryCreateScreen.swiftdeps",
+    "diagnostics": "/Volumes/Files/Projects/journalog-webbycms-v2/iOS-Dev/.build/arm64-apple-macosx/debug/Journalog.build/StoryCreateScreen.dia"
+  },
+  "/Volumes/Files/Projects/journalog-webbycms-v2/iOS-Dev/Sources/Journalog/UI/Screens/StoryViewerScreen.swift": {
+    "dependencies": "/Volumes/Files/Projects/journalog-webbycms-v2/iOS-Dev/.build/arm64-apple-macosx/debug/Journalog.build/StoryViewerScreen.d",
+    "object": "/Volumes/Files/Projects/journalog-webbycms-v2/iOS-Dev/.build/arm64-apple-macosx/debug/Journalog.build/StoryViewerScreen.swift.o",
+    "swiftmodule": "/Volumes/Files/Projects/journalog-webbycms-v2/iOS-Dev/.build/arm64-apple-macosx/debug/Journalog.build/StoryViewerScreen~partial.swiftmodule",
+    "swift-dependencies": "/Volumes/Files/Projects/journalog-webbycms-v2/iOS-Dev/.build/arm64-apple-macosx/debug/Journalog.build/StoryViewerScreen.swiftdeps",
+    "diagnostics": "/Volumes/Files/Projects/journalog-webbycms-v2/iOS-Dev/.build/arm64-apple-macosx/debug/Journalog.build/StoryViewerScreen.dia"
+  },
+  "/Volumes/Files/Projects/journalog-webbycms-v2/iOS-Dev/Sources/Journalog/UI/Screens/SubscriptionScreen.swift": {
+    "dependencies": "/Volumes/Files/Projects/journalog-webbycms-v2/iOS-Dev/.build/arm64-apple-macosx/debug/Journalog.build/SubscriptionScreen.d",
+    "object": "/Volumes/Files/Projects/journalog-webbycms-v2/iOS-Dev/.build/arm64-apple-macosx/debug/Journalog.build/SubscriptionScreen.swift.o",
+    "swiftmodule": "/Volumes/Files/Projects/journalog-webbycms-v2/iOS-Dev/.build/arm64-apple-macosx/debug/Journalog.build/SubscriptionScreen~partial.swiftmodule",
+    "swift-dependencies": "/Volumes/Files/Projects/journalog-webbycms-v2/iOS-Dev/.build/arm64-apple-macosx/debug/Journalog.build/SubscriptionScreen.swiftdeps",
+    "diagnostics": "/Volumes/Files/Projects/journalog-webbycms-v2/iOS-Dev/.build/arm64-apple-macosx/debug/Journalog.build/SubscriptionScreen.dia"
+  },
+  "/Volumes/Files/Projects/journalog-webbycms-v2/iOS-Dev/Sources/Journalog/UI/Theme.swift": {
+    "dependencies": "/Volumes/Files/Projects/journalog-webbycms-v2/iOS-Dev/.build/arm64-apple-macosx/debug/Journalog.build/Theme.d",
+    "object": "/Volumes/Files/Projects/journalog-webbycms-v2/iOS-Dev/.build/arm64-apple-macosx/debug/Journalog.build/Theme.swift.o",
+    "swiftmodule": "/Volumes/Files/Projects/journalog-webbycms-v2/iOS-Dev/.build/arm64-apple-macosx/debug/Journalog.build/Theme~partial.swiftmodule",
+    "swift-dependencies": "/Volumes/Files/Projects/journalog-webbycms-v2/iOS-Dev/.build/arm64-apple-macosx/debug/Journalog.build/Theme.swiftdeps",
+    "diagnostics": "/Volumes/Files/Projects/journalog-webbycms-v2/iOS-Dev/.build/arm64-apple-macosx/debug/Journalog.build/Theme.dia"
+  }
+}

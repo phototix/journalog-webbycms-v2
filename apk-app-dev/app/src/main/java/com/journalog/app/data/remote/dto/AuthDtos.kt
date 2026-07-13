@@ -25,6 +25,8 @@ data class UserDto(
     val cover: String?,
     val location: String?,
     val website: String?,
+    val birthdate: String?,
+    @SerializedName("gender_pronoun") val genderPronoun: String?,
     @SerializedName("paid_profile") val paidProfile: Boolean,
     @SerializedName("profile_access_price") val profileAccessPrice: Double,
     @SerializedName("profile_access_price_3_months") val profileAccessPrice3Months: Double?,
@@ -41,6 +43,8 @@ data class UserDto(
     @SerializedName("has_subscribed") val hasSubscribed: Boolean?,
     @SerializedName("has_chat_access") val hasChatAccess: Boolean?,
     @SerializedName("role_id") val roleId: Int?,
+    @SerializedName("gender_id") val genderId: Int?,
+    @SerializedName("country_id") val countryId: Int?,
     @SerializedName("is_following") val isFollowing: Boolean?,
     @SerializedName("gifts_received_count") val giftsReceivedCount: Int?,
     @SerializedName("gifts_received_credits") val giftsReceivedCredits: Int?,
@@ -265,6 +269,16 @@ data class UploadResponse(
     val path: String,
     val type: String,
     val thumbnail: String?
+)
+
+data class GenderOption(
+    val id: Int,
+    @SerializedName("gender_name") val name: String
+)
+
+data class CountryOption(
+    val id: Int,
+    val name: String
 )
 
 data class SubscriptionPlan(

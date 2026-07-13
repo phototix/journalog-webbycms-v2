@@ -1,0 +1,1355 @@
+{
+  "builtTestProducts" : [
+
+  ],
+  "copyCommands" : {
+
+  },
+  "explicitTargetDependencyImportCheckingMode" : {
+    "none" : {
+
+    }
+  },
+  "generatedSourceTargetSet" : [
+
+  ],
+  "pluginDescriptions" : [
+
+  ],
+  "swiftCommands" : {
+    "C.JournalogCLI-arm64-apple-macosx-debug.module" : {
+      "executable" : "/Library/Developer/CommandLineTools/usr/bin/swiftc",
+      "fileList" : "/Volumes/Files/Projects/journalog-webbycms-v2/iOS-Dev/.build/arm64-apple-macosx/debug/JournalogCLI.build/sources",
+      "importPath" : "/Volumes/Files/Projects/journalog-webbycms-v2/iOS-Dev/.build/arm64-apple-macosx/debug/Modules",
+      "inputs" : [
+        {
+          "kind" : "file",
+          "name" : "/Volumes/Files/Projects/journalog-webbycms-v2/iOS-Dev/Sources/JournalogCLI/main.swift"
+        },
+        {
+          "kind" : "file",
+          "name" : "/Volumes/Files/Projects/journalog-webbycms-v2/iOS-Dev/.build/arm64-apple-macosx/debug/swift-version--1AB21518FC5DEDBE.txt"
+        },
+        {
+          "kind" : "file",
+          "name" : "/Volumes/Files/Projects/journalog-webbycms-v2/iOS-Dev/.build/arm64-apple-macosx/debug/Modules/JournalogCore.swiftmodule"
+        },
+        {
+          "kind" : "file",
+          "name" : "/Volumes/Files/Projects/journalog-webbycms-v2/iOS-Dev/.build/arm64-apple-macosx/debug/JournalogCLI.build/sources"
+        }
+      ],
+      "isLibrary" : false,
+      "moduleName" : "JournalogCLI",
+      "moduleOutputPath" : "/Volumes/Files/Projects/journalog-webbycms-v2/iOS-Dev/.build/arm64-apple-macosx/debug/Modules/JournalogCLI.swiftmodule",
+      "objects" : [
+        "/Volumes/Files/Projects/journalog-webbycms-v2/iOS-Dev/.build/arm64-apple-macosx/debug/JournalogCLI.build/main.swift.o"
+      ],
+      "otherArguments" : [
+        "-target",
+        "arm64-apple-macosx14.0",
+        "-incremental",
+        "-enable-batch-mode",
+        "-serialize-diagnostics",
+        "-index-store-path",
+        "/Volumes/Files/Projects/journalog-webbycms-v2/iOS-Dev/.build/arm64-apple-macosx/debug/index/store",
+        "-Onone",
+        "-enable-testing",
+        "-j10",
+        "-DSWIFT_PACKAGE",
+        "-DDEBUG",
+        "-DSWIFT_MODULE_RESOURCE_BUNDLE_UNAVAILABLE",
+        "-module-cache-path",
+        "/Volumes/Files/Projects/journalog-webbycms-v2/iOS-Dev/.build/arm64-apple-macosx/debug/ModuleCache",
+        "-parseable-output",
+        "-Xfrontend",
+        "-entry-point-function-name",
+        "-Xfrontend",
+        "JournalogCLI_main",
+        "-parse-as-library",
+        "-swift-version",
+        "6",
+        "-I",
+        "/Library/Developer/CommandLineTools/Library/Developer/Frameworks",
+        "-L",
+        "/Library/Developer/CommandLineTools/Library/Developer/Frameworks",
+        "-plugin-path",
+        "/Library/Developer/CommandLineTools/usr/lib/swift/host/plugins/testing",
+        "-sdk",
+        "/Library/Developer/CommandLineTools/SDKs/MacOSX.sdk",
+        "-g",
+        "-Xcc",
+        "-isysroot",
+        "-Xcc",
+        "/Library/Developer/CommandLineTools/SDKs/MacOSX.sdk",
+        "-Xcc",
+        "-fPIC",
+        "-Xcc",
+        "-g",
+        "-package-name",
+        "ios_dev"
+      ],
+      "outputFileMapPath" : "/Volumes/Files/Projects/journalog-webbycms-v2/iOS-Dev/.build/arm64-apple-macosx/debug/JournalogCLI.build/output-file-map.json",
+      "outputs" : [
+        {
+          "kind" : "file",
+          "name" : "/Volumes/Files/Projects/journalog-webbycms-v2/iOS-Dev/.build/arm64-apple-macosx/debug/JournalogCLI.build/main.swift.o"
+        },
+        {
+          "kind" : "file",
+          "name" : "/Volumes/Files/Projects/journalog-webbycms-v2/iOS-Dev/.build/arm64-apple-macosx/debug/Modules/JournalogCLI.swiftmodule"
+        }
+      ],
+      "prepareForIndexing" : false,
+      "sources" : [
+        "/Volumes/Files/Projects/journalog-webbycms-v2/iOS-Dev/Sources/JournalogCLI/main.swift"
+      ],
+      "tempsPath" : "/Volumes/Files/Projects/journalog-webbycms-v2/iOS-Dev/.build/arm64-apple-macosx/debug/JournalogCLI.build",
+      "wholeModuleOptimization" : false
+    },
+    "C.JournalogCore-arm64-apple-macosx-debug.module" : {
+      "executable" : "/Library/Developer/CommandLineTools/usr/bin/swiftc",
+      "fileList" : "/Volumes/Files/Projects/journalog-webbycms-v2/iOS-Dev/.build/arm64-apple-macosx/debug/JournalogCore.build/sources",
+      "importPath" : "/Volumes/Files/Projects/journalog-webbycms-v2/iOS-Dev/.build/arm64-apple-macosx/debug/Modules",
+      "inputs" : [
+        {
+          "kind" : "file",
+          "name" : "/Volumes/Files/Projects/journalog-webbycms-v2/iOS-Dev/Sources/JournalogCore/DTOs/AdminDtos.swift"
+        },
+        {
+          "kind" : "file",
+          "name" : "/Volumes/Files/Projects/journalog-webbycms-v2/iOS-Dev/Sources/JournalogCore/DTOs/ApiResponse.swift"
+        },
+        {
+          "kind" : "file",
+          "name" : "/Volumes/Files/Projects/journalog-webbycms-v2/iOS-Dev/Sources/JournalogCore/DTOs/AuthDtos.swift"
+        },
+        {
+          "kind" : "file",
+          "name" : "/Volumes/Files/Projects/journalog-webbycms-v2/iOS-Dev/Sources/JournalogCore/DTOs/FeedDtos.swift"
+        },
+        {
+          "kind" : "file",
+          "name" : "/Volumes/Files/Projects/journalog-webbycms-v2/iOS-Dev/Sources/JournalogCore/DTOs/Helpers.swift"
+        },
+        {
+          "kind" : "file",
+          "name" : "/Volumes/Files/Projects/journalog-webbycms-v2/iOS-Dev/Sources/JournalogCore/DTOs/MessengerDtos.swift"
+        },
+        {
+          "kind" : "file",
+          "name" : "/Volumes/Files/Projects/journalog-webbycms-v2/iOS-Dev/Sources/JournalogCore/DTOs/PaymentDtos.swift"
+        },
+        {
+          "kind" : "file",
+          "name" : "/Volumes/Files/Projects/journalog-webbycms-v2/iOS-Dev/Sources/JournalogCore/DTOs/SocialDtos.swift"
+        },
+        {
+          "kind" : "file",
+          "name" : "/Volumes/Files/Projects/journalog-webbycms-v2/iOS-Dev/Sources/JournalogCore/Networking/APIClient.swift"
+        },
+        {
+          "kind" : "file",
+          "name" : "/Volumes/Files/Projects/journalog-webbycms-v2/iOS-Dev/Sources/JournalogCore/Networking/APIError.swift"
+        },
+        {
+          "kind" : "file",
+          "name" : "/Volumes/Files/Projects/journalog-webbycms-v2/iOS-Dev/Sources/JournalogCore/Networking/AuthInterceptor.swift"
+        },
+        {
+          "kind" : "file",
+          "name" : "/Volumes/Files/Projects/journalog-webbycms-v2/iOS-Dev/Sources/JournalogCore/Services/AuthService.swift"
+        },
+        {
+          "kind" : "file",
+          "name" : "/Volumes/Files/Projects/journalog-webbycms-v2/iOS-Dev/Sources/JournalogCore/Services/ExploreService.swift"
+        },
+        {
+          "kind" : "file",
+          "name" : "/Volumes/Files/Projects/journalog-webbycms-v2/iOS-Dev/Sources/JournalogCore/Services/FeedService.swift"
+        },
+        {
+          "kind" : "file",
+          "name" : "/Volumes/Files/Projects/journalog-webbycms-v2/iOS-Dev/Sources/JournalogCore/Services/GiftService.swift"
+        },
+        {
+          "kind" : "file",
+          "name" : "/Volumes/Files/Projects/journalog-webbycms-v2/iOS-Dev/Sources/JournalogCore/Services/MessengerService.swift"
+        },
+        {
+          "kind" : "file",
+          "name" : "/Volumes/Files/Projects/journalog-webbycms-v2/iOS-Dev/Sources/JournalogCore/Services/NotificationService.swift"
+        },
+        {
+          "kind" : "file",
+          "name" : "/Volumes/Files/Projects/journalog-webbycms-v2/iOS-Dev/Sources/JournalogCore/Services/PostService.swift"
+        },
+        {
+          "kind" : "file",
+          "name" : "/Volumes/Files/Projects/journalog-webbycms-v2/iOS-Dev/Sources/JournalogCore/Services/SearchService.swift"
+        },
+        {
+          "kind" : "file",
+          "name" : "/Volumes/Files/Projects/journalog-webbycms-v2/iOS-Dev/Sources/JournalogCore/Services/SettingsService.swift"
+        },
+        {
+          "kind" : "file",
+          "name" : "/Volumes/Files/Projects/journalog-webbycms-v2/iOS-Dev/Sources/JournalogCore/Services/StoryService.swift"
+        },
+        {
+          "kind" : "file",
+          "name" : "/Volumes/Files/Projects/journalog-webbycms-v2/iOS-Dev/Sources/JournalogCore/Services/SubscriptionService.swift"
+        },
+        {
+          "kind" : "file",
+          "name" : "/Volumes/Files/Projects/journalog-webbycms-v2/iOS-Dev/Sources/JournalogCore/Services/UserService.swift"
+        },
+        {
+          "kind" : "file",
+          "name" : "/Volumes/Files/Projects/journalog-webbycms-v2/iOS-Dev/Sources/JournalogCore/Services/WalletService.swift"
+        },
+        {
+          "kind" : "file",
+          "name" : "/Volumes/Files/Projects/journalog-webbycms-v2/iOS-Dev/Sources/JournalogCore/Storage/KeychainManager.swift"
+        },
+        {
+          "kind" : "file",
+          "name" : "/Volumes/Files/Projects/journalog-webbycms-v2/iOS-Dev/Sources/JournalogCore/Storage/SessionManager.swift"
+        },
+        {
+          "kind" : "file",
+          "name" : "/Volumes/Files/Projects/journalog-webbycms-v2/iOS-Dev/.build/arm64-apple-macosx/debug/swift-version--1AB21518FC5DEDBE.txt"
+        },
+        {
+          "kind" : "file",
+          "name" : "/Volumes/Files/Projects/journalog-webbycms-v2/iOS-Dev/.build/arm64-apple-macosx/debug/JournalogCore.build/sources"
+        }
+      ],
+      "isLibrary" : true,
+      "moduleName" : "JournalogCore",
+      "moduleOutputPath" : "/Volumes/Files/Projects/journalog-webbycms-v2/iOS-Dev/.build/arm64-apple-macosx/debug/Modules/JournalogCore.swiftmodule",
+      "objects" : [
+        "/Volumes/Files/Projects/journalog-webbycms-v2/iOS-Dev/.build/arm64-apple-macosx/debug/JournalogCore.build/AdminDtos.swift.o",
+        "/Volumes/Files/Projects/journalog-webbycms-v2/iOS-Dev/.build/arm64-apple-macosx/debug/JournalogCore.build/ApiResponse.swift.o",
+        "/Volumes/Files/Projects/journalog-webbycms-v2/iOS-Dev/.build/arm64-apple-macosx/debug/JournalogCore.build/AuthDtos.swift.o",
+        "/Volumes/Files/Projects/journalog-webbycms-v2/iOS-Dev/.build/arm64-apple-macosx/debug/JournalogCore.build/FeedDtos.swift.o",
+        "/Volumes/Files/Projects/journalog-webbycms-v2/iOS-Dev/.build/arm64-apple-macosx/debug/JournalogCore.build/Helpers.swift.o",
+        "/Volumes/Files/Projects/journalog-webbycms-v2/iOS-Dev/.build/arm64-apple-macosx/debug/JournalogCore.build/MessengerDtos.swift.o",
+        "/Volumes/Files/Projects/journalog-webbycms-v2/iOS-Dev/.build/arm64-apple-macosx/debug/JournalogCore.build/PaymentDtos.swift.o",
+        "/Volumes/Files/Projects/journalog-webbycms-v2/iOS-Dev/.build/arm64-apple-macosx/debug/JournalogCore.build/SocialDtos.swift.o",
+        "/Volumes/Files/Projects/journalog-webbycms-v2/iOS-Dev/.build/arm64-apple-macosx/debug/JournalogCore.build/APIClient.swift.o",
+        "/Volumes/Files/Projects/journalog-webbycms-v2/iOS-Dev/.build/arm64-apple-macosx/debug/JournalogCore.build/APIError.swift.o",
+        "/Volumes/Files/Projects/journalog-webbycms-v2/iOS-Dev/.build/arm64-apple-macosx/debug/JournalogCore.build/AuthInterceptor.swift.o",
+        "/Volumes/Files/Projects/journalog-webbycms-v2/iOS-Dev/.build/arm64-apple-macosx/debug/JournalogCore.build/AuthService.swift.o",
+        "/Volumes/Files/Projects/journalog-webbycms-v2/iOS-Dev/.build/arm64-apple-macosx/debug/JournalogCore.build/ExploreService.swift.o",
+        "/Volumes/Files/Projects/journalog-webbycms-v2/iOS-Dev/.build/arm64-apple-macosx/debug/JournalogCore.build/FeedService.swift.o",
+        "/Volumes/Files/Projects/journalog-webbycms-v2/iOS-Dev/.build/arm64-apple-macosx/debug/JournalogCore.build/GiftService.swift.o",
+        "/Volumes/Files/Projects/journalog-webbycms-v2/iOS-Dev/.build/arm64-apple-macosx/debug/JournalogCore.build/MessengerService.swift.o",
+        "/Volumes/Files/Projects/journalog-webbycms-v2/iOS-Dev/.build/arm64-apple-macosx/debug/JournalogCore.build/NotificationService.swift.o",
+        "/Volumes/Files/Projects/journalog-webbycms-v2/iOS-Dev/.build/arm64-apple-macosx/debug/JournalogCore.build/PostService.swift.o",
+        "/Volumes/Files/Projects/journalog-webbycms-v2/iOS-Dev/.build/arm64-apple-macosx/debug/JournalogCore.build/SearchService.swift.o",
+        "/Volumes/Files/Projects/journalog-webbycms-v2/iOS-Dev/.build/arm64-apple-macosx/debug/JournalogCore.build/SettingsService.swift.o",
+        "/Volumes/Files/Projects/journalog-webbycms-v2/iOS-Dev/.build/arm64-apple-macosx/debug/JournalogCore.build/StoryService.swift.o",
+        "/Volumes/Files/Projects/journalog-webbycms-v2/iOS-Dev/.build/arm64-apple-macosx/debug/JournalogCore.build/SubscriptionService.swift.o",
+        "/Volumes/Files/Projects/journalog-webbycms-v2/iOS-Dev/.build/arm64-apple-macosx/debug/JournalogCore.build/UserService.swift.o",
+        "/Volumes/Files/Projects/journalog-webbycms-v2/iOS-Dev/.build/arm64-apple-macosx/debug/JournalogCore.build/WalletService.swift.o",
+        "/Volumes/Files/Projects/journalog-webbycms-v2/iOS-Dev/.build/arm64-apple-macosx/debug/JournalogCore.build/KeychainManager.swift.o",
+        "/Volumes/Files/Projects/journalog-webbycms-v2/iOS-Dev/.build/arm64-apple-macosx/debug/JournalogCore.build/SessionManager.swift.o"
+      ],
+      "otherArguments" : [
+        "-target",
+        "arm64-apple-macosx14.0",
+        "-incremental",
+        "-enable-batch-mode",
+        "-serialize-diagnostics",
+        "-index-store-path",
+        "/Volumes/Files/Projects/journalog-webbycms-v2/iOS-Dev/.build/arm64-apple-macosx/debug/index/store",
+        "-Onone",
+        "-enable-testing",
+        "-j10",
+        "-DSWIFT_PACKAGE",
+        "-DDEBUG",
+        "-DSWIFT_MODULE_RESOURCE_BUNDLE_UNAVAILABLE",
+        "-module-cache-path",
+        "/Volumes/Files/Projects/journalog-webbycms-v2/iOS-Dev/.build/arm64-apple-macosx/debug/ModuleCache",
+        "-parseable-output",
+        "-parse-as-library",
+        "-emit-objc-header",
+        "-emit-objc-header-path",
+        "/Volumes/Files/Projects/journalog-webbycms-v2/iOS-Dev/.build/arm64-apple-macosx/debug/JournalogCore.build/include/JournalogCore-Swift.h",
+        "-swift-version",
+        "6",
+        "-I",
+        "/Library/Developer/CommandLineTools/Library/Developer/Frameworks",
+        "-L",
+        "/Library/Developer/CommandLineTools/Library/Developer/Frameworks",
+        "-plugin-path",
+        "/Library/Developer/CommandLineTools/usr/lib/swift/host/plugins/testing",
+        "-sdk",
+        "/Library/Developer/CommandLineTools/SDKs/MacOSX.sdk",
+        "-g",
+        "-Xcc",
+        "-isysroot",
+        "-Xcc",
+        "/Library/Developer/CommandLineTools/SDKs/MacOSX.sdk",
+        "-Xcc",
+        "-fPIC",
+        "-Xcc",
+        "-g",
+        "-package-name",
+        "ios_dev"
+      ],
+      "outputFileMapPath" : "/Volumes/Files/Projects/journalog-webbycms-v2/iOS-Dev/.build/arm64-apple-macosx/debug/JournalogCore.build/output-file-map.json",
+      "outputs" : [
+        {
+          "kind" : "file",
+          "name" : "/Volumes/Files/Projects/journalog-webbycms-v2/iOS-Dev/.build/arm64-apple-macosx/debug/JournalogCore.build/AdminDtos.swift.o"
+        },
+        {
+          "kind" : "file",
+          "name" : "/Volumes/Files/Projects/journalog-webbycms-v2/iOS-Dev/.build/arm64-apple-macosx/debug/JournalogCore.build/ApiResponse.swift.o"
+        },
+        {
+          "kind" : "file",
+          "name" : "/Volumes/Files/Projects/journalog-webbycms-v2/iOS-Dev/.build/arm64-apple-macosx/debug/JournalogCore.build/AuthDtos.swift.o"
+        },
+        {
+          "kind" : "file",
+          "name" : "/Volumes/Files/Projects/journalog-webbycms-v2/iOS-Dev/.build/arm64-apple-macosx/debug/JournalogCore.build/FeedDtos.swift.o"
+        },
+        {
+          "kind" : "file",
+          "name" : "/Volumes/Files/Projects/journalog-webbycms-v2/iOS-Dev/.build/arm64-apple-macosx/debug/JournalogCore.build/Helpers.swift.o"
+        },
+        {
+          "kind" : "file",
+          "name" : "/Volumes/Files/Projects/journalog-webbycms-v2/iOS-Dev/.build/arm64-apple-macosx/debug/JournalogCore.build/MessengerDtos.swift.o"
+        },
+        {
+          "kind" : "file",
+          "name" : "/Volumes/Files/Projects/journalog-webbycms-v2/iOS-Dev/.build/arm64-apple-macosx/debug/JournalogCore.build/PaymentDtos.swift.o"
+        },
+        {
+          "kind" : "file",
+          "name" : "/Volumes/Files/Projects/journalog-webbycms-v2/iOS-Dev/.build/arm64-apple-macosx/debug/JournalogCore.build/SocialDtos.swift.o"
+        },
+        {
+          "kind" : "file",
+          "name" : "/Volumes/Files/Projects/journalog-webbycms-v2/iOS-Dev/.build/arm64-apple-macosx/debug/JournalogCore.build/APIClient.swift.o"
+        },
+        {
+          "kind" : "file",
+          "name" : "/Volumes/Files/Projects/journalog-webbycms-v2/iOS-Dev/.build/arm64-apple-macosx/debug/JournalogCore.build/APIError.swift.o"
+        },
+        {
+          "kind" : "file",
+          "name" : "/Volumes/Files/Projects/journalog-webbycms-v2/iOS-Dev/.build/arm64-apple-macosx/debug/JournalogCore.build/AuthInterceptor.swift.o"
+        },
+        {
+          "kind" : "file",
+          "name" : "/Volumes/Files/Projects/journalog-webbycms-v2/iOS-Dev/.build/arm64-apple-macosx/debug/JournalogCore.build/AuthService.swift.o"
+        },
+        {
+          "kind" : "file",
+          "name" : "/Volumes/Files/Projects/journalog-webbycms-v2/iOS-Dev/.build/arm64-apple-macosx/debug/JournalogCore.build/ExploreService.swift.o"
+        },
+        {
+          "kind" : "file",
+          "name" : "/Volumes/Files/Projects/journalog-webbycms-v2/iOS-Dev/.build/arm64-apple-macosx/debug/JournalogCore.build/FeedService.swift.o"
+        },
+        {
+          "kind" : "file",
+          "name" : "/Volumes/Files/Projects/journalog-webbycms-v2/iOS-Dev/.build/arm64-apple-macosx/debug/JournalogCore.build/GiftService.swift.o"
+        },
+        {
+          "kind" : "file",
+          "name" : "/Volumes/Files/Projects/journalog-webbycms-v2/iOS-Dev/.build/arm64-apple-macosx/debug/JournalogCore.build/MessengerService.swift.o"
+        },
+        {
+          "kind" : "file",
+          "name" : "/Volumes/Files/Projects/journalog-webbycms-v2/iOS-Dev/.build/arm64-apple-macosx/debug/JournalogCore.build/NotificationService.swift.o"
+        },
+        {
+          "kind" : "file",
+          "name" : "/Volumes/Files/Projects/journalog-webbycms-v2/iOS-Dev/.build/arm64-apple-macosx/debug/JournalogCore.build/PostService.swift.o"
+        },
+        {
+          "kind" : "file",
+          "name" : "/Volumes/Files/Projects/journalog-webbycms-v2/iOS-Dev/.build/arm64-apple-macosx/debug/JournalogCore.build/SearchService.swift.o"
+        },
+        {
+          "kind" : "file",
+          "name" : "/Volumes/Files/Projects/journalog-webbycms-v2/iOS-Dev/.build/arm64-apple-macosx/debug/JournalogCore.build/SettingsService.swift.o"
+        },
+        {
+          "kind" : "file",
+          "name" : "/Volumes/Files/Projects/journalog-webbycms-v2/iOS-Dev/.build/arm64-apple-macosx/debug/JournalogCore.build/StoryService.swift.o"
+        },
+        {
+          "kind" : "file",
+          "name" : "/Volumes/Files/Projects/journalog-webbycms-v2/iOS-Dev/.build/arm64-apple-macosx/debug/JournalogCore.build/SubscriptionService.swift.o"
+        },
+        {
+          "kind" : "file",
+          "name" : "/Volumes/Files/Projects/journalog-webbycms-v2/iOS-Dev/.build/arm64-apple-macosx/debug/JournalogCore.build/UserService.swift.o"
+        },
+        {
+          "kind" : "file",
+          "name" : "/Volumes/Files/Projects/journalog-webbycms-v2/iOS-Dev/.build/arm64-apple-macosx/debug/JournalogCore.build/WalletService.swift.o"
+        },
+        {
+          "kind" : "file",
+          "name" : "/Volumes/Files/Projects/journalog-webbycms-v2/iOS-Dev/.build/arm64-apple-macosx/debug/JournalogCore.build/KeychainManager.swift.o"
+        },
+        {
+          "kind" : "file",
+          "name" : "/Volumes/Files/Projects/journalog-webbycms-v2/iOS-Dev/.build/arm64-apple-macosx/debug/JournalogCore.build/SessionManager.swift.o"
+        },
+        {
+          "kind" : "file",
+          "name" : "/Volumes/Files/Projects/journalog-webbycms-v2/iOS-Dev/.build/arm64-apple-macosx/debug/Modules/JournalogCore.swiftmodule"
+        }
+      ],
+      "prepareForIndexing" : false,
+      "sources" : [
+        "/Volumes/Files/Projects/journalog-webbycms-v2/iOS-Dev/Sources/JournalogCore/DTOs/AdminDtos.swift",
+        "/Volumes/Files/Projects/journalog-webbycms-v2/iOS-Dev/Sources/JournalogCore/DTOs/ApiResponse.swift",
+        "/Volumes/Files/Projects/journalog-webbycms-v2/iOS-Dev/Sources/JournalogCore/DTOs/AuthDtos.swift",
+        "/Volumes/Files/Projects/journalog-webbycms-v2/iOS-Dev/Sources/JournalogCore/DTOs/FeedDtos.swift",
+        "/Volumes/Files/Projects/journalog-webbycms-v2/iOS-Dev/Sources/JournalogCore/DTOs/Helpers.swift",
+        "/Volumes/Files/Projects/journalog-webbycms-v2/iOS-Dev/Sources/JournalogCore/DTOs/MessengerDtos.swift",
+        "/Volumes/Files/Projects/journalog-webbycms-v2/iOS-Dev/Sources/JournalogCore/DTOs/PaymentDtos.swift",
+        "/Volumes/Files/Projects/journalog-webbycms-v2/iOS-Dev/Sources/JournalogCore/DTOs/SocialDtos.swift",
+        "/Volumes/Files/Projects/journalog-webbycms-v2/iOS-Dev/Sources/JournalogCore/Networking/APIClient.swift",
+        "/Volumes/Files/Projects/journalog-webbycms-v2/iOS-Dev/Sources/JournalogCore/Networking/APIError.swift",
+        "/Volumes/Files/Projects/journalog-webbycms-v2/iOS-Dev/Sources/JournalogCore/Networking/AuthInterceptor.swift",
+        "/Volumes/Files/Projects/journalog-webbycms-v2/iOS-Dev/Sources/JournalogCore/Services/AuthService.swift",
+        "/Volumes/Files/Projects/journalog-webbycms-v2/iOS-Dev/Sources/JournalogCore/Services/ExploreService.swift",
+        "/Volumes/Files/Projects/journalog-webbycms-v2/iOS-Dev/Sources/JournalogCore/Services/FeedService.swift",
+        "/Volumes/Files/Projects/journalog-webbycms-v2/iOS-Dev/Sources/JournalogCore/Services/GiftService.swift",
+        "/Volumes/Files/Projects/journalog-webbycms-v2/iOS-Dev/Sources/JournalogCore/Services/MessengerService.swift",
+        "/Volumes/Files/Projects/journalog-webbycms-v2/iOS-Dev/Sources/JournalogCore/Services/NotificationService.swift",
+        "/Volumes/Files/Projects/journalog-webbycms-v2/iOS-Dev/Sources/JournalogCore/Services/PostService.swift",
+        "/Volumes/Files/Projects/journalog-webbycms-v2/iOS-Dev/Sources/JournalogCore/Services/SearchService.swift",
+        "/Volumes/Files/Projects/journalog-webbycms-v2/iOS-Dev/Sources/JournalogCore/Services/SettingsService.swift",
+        "/Volumes/Files/Projects/journalog-webbycms-v2/iOS-Dev/Sources/JournalogCore/Services/StoryService.swift",
+        "/Volumes/Files/Projects/journalog-webbycms-v2/iOS-Dev/Sources/JournalogCore/Services/SubscriptionService.swift",
+        "/Volumes/Files/Projects/journalog-webbycms-v2/iOS-Dev/Sources/JournalogCore/Services/UserService.swift",
+        "/Volumes/Files/Projects/journalog-webbycms-v2/iOS-Dev/Sources/JournalogCore/Services/WalletService.swift",
+        "/Volumes/Files/Projects/journalog-webbycms-v2/iOS-Dev/Sources/JournalogCore/Storage/KeychainManager.swift",
+        "/Volumes/Files/Projects/journalog-webbycms-v2/iOS-Dev/Sources/JournalogCore/Storage/SessionManager.swift"
+      ],
+      "tempsPath" : "/Volumes/Files/Projects/journalog-webbycms-v2/iOS-Dev/.build/arm64-apple-macosx/debug/JournalogCore.build",
+      "wholeModuleOptimization" : false
+    },
+    "C.JournalogUI-arm64-apple-macosx-debug.module" : {
+      "executable" : "/Library/Developer/CommandLineTools/usr/bin/swiftc",
+      "fileList" : "/Volumes/Files/Projects/journalog-webbycms-v2/iOS-Dev/.build/arm64-apple-macosx/debug/JournalogUI.build/sources",
+      "importPath" : "/Volumes/Files/Projects/journalog-webbycms-v2/iOS-Dev/.build/arm64-apple-macosx/debug/Modules",
+      "inputs" : [
+        {
+          "kind" : "file",
+          "name" : "/Volumes/Files/Projects/journalog-webbycms-v2/iOS-Dev/Sources/JournalogUI/UI/Components/LoadingView.swift"
+        },
+        {
+          "kind" : "file",
+          "name" : "/Volumes/Files/Projects/journalog-webbycms-v2/iOS-Dev/Sources/JournalogUI/UI/Components/PollView.swift"
+        },
+        {
+          "kind" : "file",
+          "name" : "/Volumes/Files/Projects/journalog-webbycms-v2/iOS-Dev/Sources/JournalogUI/UI/Components/PostCardView.swift"
+        },
+        {
+          "kind" : "file",
+          "name" : "/Volumes/Files/Projects/journalog-webbycms-v2/iOS-Dev/Sources/JournalogUI/UI/Components/UserRowView.swift"
+        },
+        {
+          "kind" : "file",
+          "name" : "/Volumes/Files/Projects/journalog-webbycms-v2/iOS-Dev/Sources/JournalogUI/UI/Navigation/AppNavigation.swift"
+        },
+        {
+          "kind" : "file",
+          "name" : "/Volumes/Files/Projects/journalog-webbycms-v2/iOS-Dev/Sources/JournalogUI/UI/Screens/AuthScreen.swift"
+        },
+        {
+          "kind" : "file",
+          "name" : "/Volumes/Files/Projects/journalog-webbycms-v2/iOS-Dev/Sources/JournalogUI/UI/Screens/ConversationScreen.swift"
+        },
+        {
+          "kind" : "file",
+          "name" : "/Volumes/Files/Projects/journalog-webbycms-v2/iOS-Dev/Sources/JournalogUI/UI/Screens/CreatePostScreen.swift"
+        },
+        {
+          "kind" : "file",
+          "name" : "/Volumes/Files/Projects/journalog-webbycms-v2/iOS-Dev/Sources/JournalogUI/UI/Screens/ExploreScreen.swift"
+        },
+        {
+          "kind" : "file",
+          "name" : "/Volumes/Files/Projects/journalog-webbycms-v2/iOS-Dev/Sources/JournalogUI/UI/Screens/FeedScreen.swift"
+        },
+        {
+          "kind" : "file",
+          "name" : "/Volumes/Files/Projects/journalog-webbycms-v2/iOS-Dev/Sources/JournalogUI/UI/Screens/GiftModalView.swift"
+        },
+        {
+          "kind" : "file",
+          "name" : "/Volumes/Files/Projects/journalog-webbycms-v2/iOS-Dev/Sources/JournalogUI/UI/Screens/MainTabView.swift"
+        },
+        {
+          "kind" : "file",
+          "name" : "/Volumes/Files/Projects/journalog-webbycms-v2/iOS-Dev/Sources/JournalogUI/UI/Screens/MessengerScreen.swift"
+        },
+        {
+          "kind" : "file",
+          "name" : "/Volumes/Files/Projects/journalog-webbycms-v2/iOS-Dev/Sources/JournalogUI/UI/Screens/NotificationsScreen.swift"
+        },
+        {
+          "kind" : "file",
+          "name" : "/Volumes/Files/Projects/journalog-webbycms-v2/iOS-Dev/Sources/JournalogUI/UI/Screens/PostDetailScreen.swift"
+        },
+        {
+          "kind" : "file",
+          "name" : "/Volumes/Files/Projects/journalog-webbycms-v2/iOS-Dev/Sources/JournalogUI/UI/Screens/ProfileScreen.swift"
+        },
+        {
+          "kind" : "file",
+          "name" : "/Volumes/Files/Projects/journalog-webbycms-v2/iOS-Dev/Sources/JournalogUI/UI/Screens/SettingsScreen.swift"
+        },
+        {
+          "kind" : "file",
+          "name" : "/Volumes/Files/Projects/journalog-webbycms-v2/iOS-Dev/Sources/JournalogUI/UI/Screens/SplashScreen.swift"
+        },
+        {
+          "kind" : "file",
+          "name" : "/Volumes/Files/Projects/journalog-webbycms-v2/iOS-Dev/Sources/JournalogUI/UI/Screens/StoryCreateScreen.swift"
+        },
+        {
+          "kind" : "file",
+          "name" : "/Volumes/Files/Projects/journalog-webbycms-v2/iOS-Dev/Sources/JournalogUI/UI/Screens/StoryViewerScreen.swift"
+        },
+        {
+          "kind" : "file",
+          "name" : "/Volumes/Files/Projects/journalog-webbycms-v2/iOS-Dev/Sources/JournalogUI/UI/Screens/SubscriptionScreen.swift"
+        },
+        {
+          "kind" : "file",
+          "name" : "/Volumes/Files/Projects/journalog-webbycms-v2/iOS-Dev/Sources/JournalogUI/UI/Theme.swift"
+        },
+        {
+          "kind" : "file",
+          "name" : "/Volumes/Files/Projects/journalog-webbycms-v2/iOS-Dev/.build/arm64-apple-macosx/debug/swift-version--1AB21518FC5DEDBE.txt"
+        },
+        {
+          "kind" : "file",
+          "name" : "/Volumes/Files/Projects/journalog-webbycms-v2/iOS-Dev/.build/arm64-apple-macosx/debug/Modules/JournalogCore.swiftmodule"
+        },
+        {
+          "kind" : "file",
+          "name" : "/Volumes/Files/Projects/journalog-webbycms-v2/iOS-Dev/.build/arm64-apple-macosx/debug/JournalogUI.build/sources"
+        }
+      ],
+      "isLibrary" : true,
+      "moduleName" : "JournalogUI",
+      "moduleOutputPath" : "/Volumes/Files/Projects/journalog-webbycms-v2/iOS-Dev/.build/arm64-apple-macosx/debug/Modules/JournalogUI.swiftmodule",
+      "objects" : [
+        "/Volumes/Files/Projects/journalog-webbycms-v2/iOS-Dev/.build/arm64-apple-macosx/debug/JournalogUI.build/LoadingView.swift.o",
+        "/Volumes/Files/Projects/journalog-webbycms-v2/iOS-Dev/.build/arm64-apple-macosx/debug/JournalogUI.build/PollView.swift.o",
+        "/Volumes/Files/Projects/journalog-webbycms-v2/iOS-Dev/.build/arm64-apple-macosx/debug/JournalogUI.build/PostCardView.swift.o",
+        "/Volumes/Files/Projects/journalog-webbycms-v2/iOS-Dev/.build/arm64-apple-macosx/debug/JournalogUI.build/UserRowView.swift.o",
+        "/Volumes/Files/Projects/journalog-webbycms-v2/iOS-Dev/.build/arm64-apple-macosx/debug/JournalogUI.build/AppNavigation.swift.o",
+        "/Volumes/Files/Projects/journalog-webbycms-v2/iOS-Dev/.build/arm64-apple-macosx/debug/JournalogUI.build/AuthScreen.swift.o",
+        "/Volumes/Files/Projects/journalog-webbycms-v2/iOS-Dev/.build/arm64-apple-macosx/debug/JournalogUI.build/ConversationScreen.swift.o",
+        "/Volumes/Files/Projects/journalog-webbycms-v2/iOS-Dev/.build/arm64-apple-macosx/debug/JournalogUI.build/CreatePostScreen.swift.o",
+        "/Volumes/Files/Projects/journalog-webbycms-v2/iOS-Dev/.build/arm64-apple-macosx/debug/JournalogUI.build/ExploreScreen.swift.o",
+        "/Volumes/Files/Projects/journalog-webbycms-v2/iOS-Dev/.build/arm64-apple-macosx/debug/JournalogUI.build/FeedScreen.swift.o",
+        "/Volumes/Files/Projects/journalog-webbycms-v2/iOS-Dev/.build/arm64-apple-macosx/debug/JournalogUI.build/GiftModalView.swift.o",
+        "/Volumes/Files/Projects/journalog-webbycms-v2/iOS-Dev/.build/arm64-apple-macosx/debug/JournalogUI.build/MainTabView.swift.o",
+        "/Volumes/Files/Projects/journalog-webbycms-v2/iOS-Dev/.build/arm64-apple-macosx/debug/JournalogUI.build/MessengerScreen.swift.o",
+        "/Volumes/Files/Projects/journalog-webbycms-v2/iOS-Dev/.build/arm64-apple-macosx/debug/JournalogUI.build/NotificationsScreen.swift.o",
+        "/Volumes/Files/Projects/journalog-webbycms-v2/iOS-Dev/.build/arm64-apple-macosx/debug/JournalogUI.build/PostDetailScreen.swift.o",
+        "/Volumes/Files/Projects/journalog-webbycms-v2/iOS-Dev/.build/arm64-apple-macosx/debug/JournalogUI.build/ProfileScreen.swift.o",
+        "/Volumes/Files/Projects/journalog-webbycms-v2/iOS-Dev/.build/arm64-apple-macosx/debug/JournalogUI.build/SettingsScreen.swift.o",
+        "/Volumes/Files/Projects/journalog-webbycms-v2/iOS-Dev/.build/arm64-apple-macosx/debug/JournalogUI.build/SplashScreen.swift.o",
+        "/Volumes/Files/Projects/journalog-webbycms-v2/iOS-Dev/.build/arm64-apple-macosx/debug/JournalogUI.build/StoryCreateScreen.swift.o",
+        "/Volumes/Files/Projects/journalog-webbycms-v2/iOS-Dev/.build/arm64-apple-macosx/debug/JournalogUI.build/StoryViewerScreen.swift.o",
+        "/Volumes/Files/Projects/journalog-webbycms-v2/iOS-Dev/.build/arm64-apple-macosx/debug/JournalogUI.build/SubscriptionScreen.swift.o",
+        "/Volumes/Files/Projects/journalog-webbycms-v2/iOS-Dev/.build/arm64-apple-macosx/debug/JournalogUI.build/Theme.swift.o"
+      ],
+      "otherArguments" : [
+        "-target",
+        "arm64-apple-macosx14.0",
+        "-incremental",
+        "-enable-batch-mode",
+        "-serialize-diagnostics",
+        "-index-store-path",
+        "/Volumes/Files/Projects/journalog-webbycms-v2/iOS-Dev/.build/arm64-apple-macosx/debug/index/store",
+        "-Onone",
+        "-enable-testing",
+        "-j10",
+        "-DSWIFT_PACKAGE",
+        "-DDEBUG",
+        "-DSWIFT_MODULE_RESOURCE_BUNDLE_UNAVAILABLE",
+        "-module-cache-path",
+        "/Volumes/Files/Projects/journalog-webbycms-v2/iOS-Dev/.build/arm64-apple-macosx/debug/ModuleCache",
+        "-parseable-output",
+        "-parse-as-library",
+        "-emit-objc-header",
+        "-emit-objc-header-path",
+        "/Volumes/Files/Projects/journalog-webbycms-v2/iOS-Dev/.build/arm64-apple-macosx/debug/JournalogUI.build/include/JournalogUI-Swift.h",
+        "-swift-version",
+        "6",
+        "-I",
+        "/Library/Developer/CommandLineTools/Library/Developer/Frameworks",
+        "-L",
+        "/Library/Developer/CommandLineTools/Library/Developer/Frameworks",
+        "-plugin-path",
+        "/Library/Developer/CommandLineTools/usr/lib/swift/host/plugins/testing",
+        "-sdk",
+        "/Library/Developer/CommandLineTools/SDKs/MacOSX.sdk",
+        "-g",
+        "-Xcc",
+        "-isysroot",
+        "-Xcc",
+        "/Library/Developer/CommandLineTools/SDKs/MacOSX.sdk",
+        "-Xcc",
+        "-fPIC",
+        "-Xcc",
+        "-g",
+        "-package-name",
+        "ios_dev"
+      ],
+      "outputFileMapPath" : "/Volumes/Files/Projects/journalog-webbycms-v2/iOS-Dev/.build/arm64-apple-macosx/debug/JournalogUI.build/output-file-map.json",
+      "outputs" : [
+        {
+          "kind" : "file",
+          "name" : "/Volumes/Files/Projects/journalog-webbycms-v2/iOS-Dev/.build/arm64-apple-macosx/debug/JournalogUI.build/LoadingView.swift.o"
+        },
+        {
+          "kind" : "file",
+          "name" : "/Volumes/Files/Projects/journalog-webbycms-v2/iOS-Dev/.build/arm64-apple-macosx/debug/JournalogUI.build/PollView.swift.o"
+        },
+        {
+          "kind" : "file",
+          "name" : "/Volumes/Files/Projects/journalog-webbycms-v2/iOS-Dev/.build/arm64-apple-macosx/debug/JournalogUI.build/PostCardView.swift.o"
+        },
+        {
+          "kind" : "file",
+          "name" : "/Volumes/Files/Projects/journalog-webbycms-v2/iOS-Dev/.build/arm64-apple-macosx/debug/JournalogUI.build/UserRowView.swift.o"
+        },
+        {
+          "kind" : "file",
+          "name" : "/Volumes/Files/Projects/journalog-webbycms-v2/iOS-Dev/.build/arm64-apple-macosx/debug/JournalogUI.build/AppNavigation.swift.o"
+        },
+        {
+          "kind" : "file",
+          "name" : "/Volumes/Files/Projects/journalog-webbycms-v2/iOS-Dev/.build/arm64-apple-macosx/debug/JournalogUI.build/AuthScreen.swift.o"
+        },
+        {
+          "kind" : "file",
+          "name" : "/Volumes/Files/Projects/journalog-webbycms-v2/iOS-Dev/.build/arm64-apple-macosx/debug/JournalogUI.build/ConversationScreen.swift.o"
+        },
+        {
+          "kind" : "file",
+          "name" : "/Volumes/Files/Projects/journalog-webbycms-v2/iOS-Dev/.build/arm64-apple-macosx/debug/JournalogUI.build/CreatePostScreen.swift.o"
+        },
+        {
+          "kind" : "file",
+          "name" : "/Volumes/Files/Projects/journalog-webbycms-v2/iOS-Dev/.build/arm64-apple-macosx/debug/JournalogUI.build/ExploreScreen.swift.o"
+        },
+        {
+          "kind" : "file",
+          "name" : "/Volumes/Files/Projects/journalog-webbycms-v2/iOS-Dev/.build/arm64-apple-macosx/debug/JournalogUI.build/FeedScreen.swift.o"
+        },
+        {
+          "kind" : "file",
+          "name" : "/Volumes/Files/Projects/journalog-webbycms-v2/iOS-Dev/.build/arm64-apple-macosx/debug/JournalogUI.build/GiftModalView.swift.o"
+        },
+        {
+          "kind" : "file",
+          "name" : "/Volumes/Files/Projects/journalog-webbycms-v2/iOS-Dev/.build/arm64-apple-macosx/debug/JournalogUI.build/MainTabView.swift.o"
+        },
+        {
+          "kind" : "file",
+          "name" : "/Volumes/Files/Projects/journalog-webbycms-v2/iOS-Dev/.build/arm64-apple-macosx/debug/JournalogUI.build/MessengerScreen.swift.o"
+        },
+        {
+          "kind" : "file",
+          "name" : "/Volumes/Files/Projects/journalog-webbycms-v2/iOS-Dev/.build/arm64-apple-macosx/debug/JournalogUI.build/NotificationsScreen.swift.o"
+        },
+        {
+          "kind" : "file",
+          "name" : "/Volumes/Files/Projects/journalog-webbycms-v2/iOS-Dev/.build/arm64-apple-macosx/debug/JournalogUI.build/PostDetailScreen.swift.o"
+        },
+        {
+          "kind" : "file",
+          "name" : "/Volumes/Files/Projects/journalog-webbycms-v2/iOS-Dev/.build/arm64-apple-macosx/debug/JournalogUI.build/ProfileScreen.swift.o"
+        },
+        {
+          "kind" : "file",
+          "name" : "/Volumes/Files/Projects/journalog-webbycms-v2/iOS-Dev/.build/arm64-apple-macosx/debug/JournalogUI.build/SettingsScreen.swift.o"
+        },
+        {
+          "kind" : "file",
+          "name" : "/Volumes/Files/Projects/journalog-webbycms-v2/iOS-Dev/.build/arm64-apple-macosx/debug/JournalogUI.build/SplashScreen.swift.o"
+        },
+        {
+          "kind" : "file",
+          "name" : "/Volumes/Files/Projects/journalog-webbycms-v2/iOS-Dev/.build/arm64-apple-macosx/debug/JournalogUI.build/StoryCreateScreen.swift.o"
+        },
+        {
+          "kind" : "file",
+          "name" : "/Volumes/Files/Projects/journalog-webbycms-v2/iOS-Dev/.build/arm64-apple-macosx/debug/JournalogUI.build/StoryViewerScreen.swift.o"
+        },
+        {
+          "kind" : "file",
+          "name" : "/Volumes/Files/Projects/journalog-webbycms-v2/iOS-Dev/.build/arm64-apple-macosx/debug/JournalogUI.build/SubscriptionScreen.swift.o"
+        },
+        {
+          "kind" : "file",
+          "name" : "/Volumes/Files/Projects/journalog-webbycms-v2/iOS-Dev/.build/arm64-apple-macosx/debug/JournalogUI.build/Theme.swift.o"
+        },
+        {
+          "kind" : "file",
+          "name" : "/Volumes/Files/Projects/journalog-webbycms-v2/iOS-Dev/.build/arm64-apple-macosx/debug/Modules/JournalogUI.swiftmodule"
+        }
+      ],
+      "prepareForIndexing" : false,
+      "sources" : [
+        "/Volumes/Files/Projects/journalog-webbycms-v2/iOS-Dev/Sources/JournalogUI/UI/Components/LoadingView.swift",
+        "/Volumes/Files/Projects/journalog-webbycms-v2/iOS-Dev/Sources/JournalogUI/UI/Components/PollView.swift",
+        "/Volumes/Files/Projects/journalog-webbycms-v2/iOS-Dev/Sources/JournalogUI/UI/Components/PostCardView.swift",
+        "/Volumes/Files/Projects/journalog-webbycms-v2/iOS-Dev/Sources/JournalogUI/UI/Components/UserRowView.swift",
+        "/Volumes/Files/Projects/journalog-webbycms-v2/iOS-Dev/Sources/JournalogUI/UI/Navigation/AppNavigation.swift",
+        "/Volumes/Files/Projects/journalog-webbycms-v2/iOS-Dev/Sources/JournalogUI/UI/Screens/AuthScreen.swift",
+        "/Volumes/Files/Projects/journalog-webbycms-v2/iOS-Dev/Sources/JournalogUI/UI/Screens/ConversationScreen.swift",
+        "/Volumes/Files/Projects/journalog-webbycms-v2/iOS-Dev/Sources/JournalogUI/UI/Screens/CreatePostScreen.swift",
+        "/Volumes/Files/Projects/journalog-webbycms-v2/iOS-Dev/Sources/JournalogUI/UI/Screens/ExploreScreen.swift",
+        "/Volumes/Files/Projects/journalog-webbycms-v2/iOS-Dev/Sources/JournalogUI/UI/Screens/FeedScreen.swift",
+        "/Volumes/Files/Projects/journalog-webbycms-v2/iOS-Dev/Sources/JournalogUI/UI/Screens/GiftModalView.swift",
+        "/Volumes/Files/Projects/journalog-webbycms-v2/iOS-Dev/Sources/JournalogUI/UI/Screens/MainTabView.swift",
+        "/Volumes/Files/Projects/journalog-webbycms-v2/iOS-Dev/Sources/JournalogUI/UI/Screens/MessengerScreen.swift",
+        "/Volumes/Files/Projects/journalog-webbycms-v2/iOS-Dev/Sources/JournalogUI/UI/Screens/NotificationsScreen.swift",
+        "/Volumes/Files/Projects/journalog-webbycms-v2/iOS-Dev/Sources/JournalogUI/UI/Screens/PostDetailScreen.swift",
+        "/Volumes/Files/Projects/journalog-webbycms-v2/iOS-Dev/Sources/JournalogUI/UI/Screens/ProfileScreen.swift",
+        "/Volumes/Files/Projects/journalog-webbycms-v2/iOS-Dev/Sources/JournalogUI/UI/Screens/SettingsScreen.swift",
+        "/Volumes/Files/Projects/journalog-webbycms-v2/iOS-Dev/Sources/JournalogUI/UI/Screens/SplashScreen.swift",
+        "/Volumes/Files/Projects/journalog-webbycms-v2/iOS-Dev/Sources/JournalogUI/UI/Screens/StoryCreateScreen.swift",
+        "/Volumes/Files/Projects/journalog-webbycms-v2/iOS-Dev/Sources/JournalogUI/UI/Screens/StoryViewerScreen.swift",
+        "/Volumes/Files/Projects/journalog-webbycms-v2/iOS-Dev/Sources/JournalogUI/UI/Screens/SubscriptionScreen.swift",
+        "/Volumes/Files/Projects/journalog-webbycms-v2/iOS-Dev/Sources/JournalogUI/UI/Theme.swift"
+      ],
+      "tempsPath" : "/Volumes/Files/Projects/journalog-webbycms-v2/iOS-Dev/.build/arm64-apple-macosx/debug/JournalogUI.build",
+      "wholeModuleOptimization" : false
+    }
+  },
+  "swiftFrontendCommands" : {
+
+  },
+  "swiftTargetScanArgs" : {
+    "JournalogCLI" : [
+      "/Library/Developer/CommandLineTools/usr/bin/swiftc",
+      "-module-name",
+      "JournalogCLI",
+      "-package-name",
+      "ios_dev",
+      "-c",
+      "/Volumes/Files/Projects/journalog-webbycms-v2/iOS-Dev/Sources/JournalogCLI/main.swift",
+      "-I",
+      "/Volumes/Files/Projects/journalog-webbycms-v2/iOS-Dev/.build/arm64-apple-macosx/debug/Modules",
+      "-target",
+      "arm64-apple-macosx14.0",
+      "-incremental",
+      "-enable-batch-mode",
+      "-serialize-diagnostics",
+      "-index-store-path",
+      "/Volumes/Files/Projects/journalog-webbycms-v2/iOS-Dev/.build/arm64-apple-macosx/debug/index/store",
+      "-Onone",
+      "-enable-testing",
+      "-j10",
+      "-DSWIFT_PACKAGE",
+      "-DDEBUG",
+      "-DSWIFT_MODULE_RESOURCE_BUNDLE_UNAVAILABLE",
+      "-module-cache-path",
+      "/Volumes/Files/Projects/journalog-webbycms-v2/iOS-Dev/.build/arm64-apple-macosx/debug/ModuleCache",
+      "-parseable-output",
+      "-Xfrontend",
+      "-entry-point-function-name",
+      "-Xfrontend",
+      "JournalogCLI_main",
+      "-parse-as-library",
+      "-swift-version",
+      "6",
+      "-I",
+      "/Library/Developer/CommandLineTools/Library/Developer/Frameworks",
+      "-L",
+      "/Library/Developer/CommandLineTools/Library/Developer/Frameworks",
+      "-plugin-path",
+      "/Library/Developer/CommandLineTools/usr/lib/swift/host/plugins/testing",
+      "-sdk",
+      "/Library/Developer/CommandLineTools/SDKs/MacOSX.sdk",
+      "-g",
+      "-Xcc",
+      "-isysroot",
+      "-Xcc",
+      "/Library/Developer/CommandLineTools/SDKs/MacOSX.sdk",
+      "-Xcc",
+      "-fPIC",
+      "-Xcc",
+      "-g",
+      "-package-name",
+      "ios_dev",
+      "-driver-use-frontend-path",
+      "/Library/Developer/CommandLineTools/usr/bin/swiftc"
+    ],
+    "JournalogCore" : [
+      "/Library/Developer/CommandLineTools/usr/bin/swiftc",
+      "-module-name",
+      "JournalogCore",
+      "-package-name",
+      "ios_dev",
+      "-c",
+      "/Volumes/Files/Projects/journalog-webbycms-v2/iOS-Dev/Sources/JournalogCore/DTOs/AdminDtos.swift",
+      "/Volumes/Files/Projects/journalog-webbycms-v2/iOS-Dev/Sources/JournalogCore/DTOs/ApiResponse.swift",
+      "/Volumes/Files/Projects/journalog-webbycms-v2/iOS-Dev/Sources/JournalogCore/DTOs/AuthDtos.swift",
+      "/Volumes/Files/Projects/journalog-webbycms-v2/iOS-Dev/Sources/JournalogCore/DTOs/FeedDtos.swift",
+      "/Volumes/Files/Projects/journalog-webbycms-v2/iOS-Dev/Sources/JournalogCore/DTOs/Helpers.swift",
+      "/Volumes/Files/Projects/journalog-webbycms-v2/iOS-Dev/Sources/JournalogCore/DTOs/MessengerDtos.swift",
+      "/Volumes/Files/Projects/journalog-webbycms-v2/iOS-Dev/Sources/JournalogCore/DTOs/PaymentDtos.swift",
+      "/Volumes/Files/Projects/journalog-webbycms-v2/iOS-Dev/Sources/JournalogCore/DTOs/SocialDtos.swift",
+      "/Volumes/Files/Projects/journalog-webbycms-v2/iOS-Dev/Sources/JournalogCore/Networking/APIClient.swift",
+      "/Volumes/Files/Projects/journalog-webbycms-v2/iOS-Dev/Sources/JournalogCore/Networking/APIError.swift",
+      "/Volumes/Files/Projects/journalog-webbycms-v2/iOS-Dev/Sources/JournalogCore/Networking/AuthInterceptor.swift",
+      "/Volumes/Files/Projects/journalog-webbycms-v2/iOS-Dev/Sources/JournalogCore/Services/AuthService.swift",
+      "/Volumes/Files/Projects/journalog-webbycms-v2/iOS-Dev/Sources/JournalogCore/Services/ExploreService.swift",
+      "/Volumes/Files/Projects/journalog-webbycms-v2/iOS-Dev/Sources/JournalogCore/Services/FeedService.swift",
+      "/Volumes/Files/Projects/journalog-webbycms-v2/iOS-Dev/Sources/JournalogCore/Services/GiftService.swift",
+      "/Volumes/Files/Projects/journalog-webbycms-v2/iOS-Dev/Sources/JournalogCore/Services/MessengerService.swift",
+      "/Volumes/Files/Projects/journalog-webbycms-v2/iOS-Dev/Sources/JournalogCore/Services/NotificationService.swift",
+      "/Volumes/Files/Projects/journalog-webbycms-v2/iOS-Dev/Sources/JournalogCore/Services/PostService.swift",
+      "/Volumes/Files/Projects/journalog-webbycms-v2/iOS-Dev/Sources/JournalogCore/Services/SearchService.swift",
+      "/Volumes/Files/Projects/journalog-webbycms-v2/iOS-Dev/Sources/JournalogCore/Services/SettingsService.swift",
+      "/Volumes/Files/Projects/journalog-webbycms-v2/iOS-Dev/Sources/JournalogCore/Services/StoryService.swift",
+      "/Volumes/Files/Projects/journalog-webbycms-v2/iOS-Dev/Sources/JournalogCore/Services/SubscriptionService.swift",
+      "/Volumes/Files/Projects/journalog-webbycms-v2/iOS-Dev/Sources/JournalogCore/Services/UserService.swift",
+      "/Volumes/Files/Projects/journalog-webbycms-v2/iOS-Dev/Sources/JournalogCore/Services/WalletService.swift",
+      "/Volumes/Files/Projects/journalog-webbycms-v2/iOS-Dev/Sources/JournalogCore/Storage/KeychainManager.swift",
+      "/Volumes/Files/Projects/journalog-webbycms-v2/iOS-Dev/Sources/JournalogCore/Storage/SessionManager.swift",
+      "-I",
+      "/Volumes/Files/Projects/journalog-webbycms-v2/iOS-Dev/.build/arm64-apple-macosx/debug/Modules",
+      "-target",
+      "arm64-apple-macosx14.0",
+      "-incremental",
+      "-enable-batch-mode",
+      "-serialize-diagnostics",
+      "-index-store-path",
+      "/Volumes/Files/Projects/journalog-webbycms-v2/iOS-Dev/.build/arm64-apple-macosx/debug/index/store",
+      "-Onone",
+      "-enable-testing",
+      "-j10",
+      "-DSWIFT_PACKAGE",
+      "-DDEBUG",
+      "-DSWIFT_MODULE_RESOURCE_BUNDLE_UNAVAILABLE",
+      "-module-cache-path",
+      "/Volumes/Files/Projects/journalog-webbycms-v2/iOS-Dev/.build/arm64-apple-macosx/debug/ModuleCache",
+      "-parseable-output",
+      "-parse-as-library",
+      "-emit-objc-header",
+      "-emit-objc-header-path",
+      "/Volumes/Files/Projects/journalog-webbycms-v2/iOS-Dev/.build/arm64-apple-macosx/debug/JournalogCore.build/include/JournalogCore-Swift.h",
+      "-swift-version",
+      "6",
+      "-I",
+      "/Library/Developer/CommandLineTools/Library/Developer/Frameworks",
+      "-L",
+      "/Library/Developer/CommandLineTools/Library/Developer/Frameworks",
+      "-plugin-path",
+      "/Library/Developer/CommandLineTools/usr/lib/swift/host/plugins/testing",
+      "-sdk",
+      "/Library/Developer/CommandLineTools/SDKs/MacOSX.sdk",
+      "-g",
+      "-Xcc",
+      "-isysroot",
+      "-Xcc",
+      "/Library/Developer/CommandLineTools/SDKs/MacOSX.sdk",
+      "-Xcc",
+      "-fPIC",
+      "-Xcc",
+      "-g",
+      "-package-name",
+      "ios_dev",
+      "-driver-use-frontend-path",
+      "/Library/Developer/CommandLineTools/usr/bin/swiftc"
+    ],
+    "JournalogUI" : [
+      "/Library/Developer/CommandLineTools/usr/bin/swiftc",
+      "-module-name",
+      "JournalogUI",
+      "-package-name",
+      "ios_dev",
+      "-c",
+      "/Volumes/Files/Projects/journalog-webbycms-v2/iOS-Dev/Sources/JournalogUI/UI/Components/LoadingView.swift",
+      "/Volumes/Files/Projects/journalog-webbycms-v2/iOS-Dev/Sources/JournalogUI/UI/Components/PollView.swift",
+      "/Volumes/Files/Projects/journalog-webbycms-v2/iOS-Dev/Sources/JournalogUI/UI/Components/PostCardView.swift",
+      "/Volumes/Files/Projects/journalog-webbycms-v2/iOS-Dev/Sources/JournalogUI/UI/Components/UserRowView.swift",
+      "/Volumes/Files/Projects/journalog-webbycms-v2/iOS-Dev/Sources/JournalogUI/UI/Navigation/AppNavigation.swift",
+      "/Volumes/Files/Projects/journalog-webbycms-v2/iOS-Dev/Sources/JournalogUI/UI/Screens/AuthScreen.swift",
+      "/Volumes/Files/Projects/journalog-webbycms-v2/iOS-Dev/Sources/JournalogUI/UI/Screens/ConversationScreen.swift",
+      "/Volumes/Files/Projects/journalog-webbycms-v2/iOS-Dev/Sources/JournalogUI/UI/Screens/CreatePostScreen.swift",
+      "/Volumes/Files/Projects/journalog-webbycms-v2/iOS-Dev/Sources/JournalogUI/UI/Screens/ExploreScreen.swift",
+      "/Volumes/Files/Projects/journalog-webbycms-v2/iOS-Dev/Sources/JournalogUI/UI/Screens/FeedScreen.swift",
+      "/Volumes/Files/Projects/journalog-webbycms-v2/iOS-Dev/Sources/JournalogUI/UI/Screens/GiftModalView.swift",
+      "/Volumes/Files/Projects/journalog-webbycms-v2/iOS-Dev/Sources/JournalogUI/UI/Screens/MainTabView.swift",
+      "/Volumes/Files/Projects/journalog-webbycms-v2/iOS-Dev/Sources/JournalogUI/UI/Screens/MessengerScreen.swift",
+      "/Volumes/Files/Projects/journalog-webbycms-v2/iOS-Dev/Sources/JournalogUI/UI/Screens/NotificationsScreen.swift",
+      "/Volumes/Files/Projects/journalog-webbycms-v2/iOS-Dev/Sources/JournalogUI/UI/Screens/PostDetailScreen.swift",
+      "/Volumes/Files/Projects/journalog-webbycms-v2/iOS-Dev/Sources/JournalogUI/UI/Screens/ProfileScreen.swift",
+      "/Volumes/Files/Projects/journalog-webbycms-v2/iOS-Dev/Sources/JournalogUI/UI/Screens/SettingsScreen.swift",
+      "/Volumes/Files/Projects/journalog-webbycms-v2/iOS-Dev/Sources/JournalogUI/UI/Screens/SplashScreen.swift",
+      "/Volumes/Files/Projects/journalog-webbycms-v2/iOS-Dev/Sources/JournalogUI/UI/Screens/StoryCreateScreen.swift",
+      "/Volumes/Files/Projects/journalog-webbycms-v2/iOS-Dev/Sources/JournalogUI/UI/Screens/StoryViewerScreen.swift",
+      "/Volumes/Files/Projects/journalog-webbycms-v2/iOS-Dev/Sources/JournalogUI/UI/Screens/SubscriptionScreen.swift",
+      "/Volumes/Files/Projects/journalog-webbycms-v2/iOS-Dev/Sources/JournalogUI/UI/Theme.swift",
+      "-I",
+      "/Volumes/Files/Projects/journalog-webbycms-v2/iOS-Dev/.build/arm64-apple-macosx/debug/Modules",
+      "-target",
+      "arm64-apple-macosx14.0",
+      "-incremental",
+      "-enable-batch-mode",
+      "-serialize-diagnostics",
+      "-index-store-path",
+      "/Volumes/Files/Projects/journalog-webbycms-v2/iOS-Dev/.build/arm64-apple-macosx/debug/index/store",
+      "-Onone",
+      "-enable-testing",
+      "-j10",
+      "-DSWIFT_PACKAGE",
+      "-DDEBUG",
+      "-DSWIFT_MODULE_RESOURCE_BUNDLE_UNAVAILABLE",
+      "-module-cache-path",
+      "/Volumes/Files/Projects/journalog-webbycms-v2/iOS-Dev/.build/arm64-apple-macosx/debug/ModuleCache",
+      "-parseable-output",
+      "-parse-as-library",
+      "-emit-objc-header",
+      "-emit-objc-header-path",
+      "/Volumes/Files/Projects/journalog-webbycms-v2/iOS-Dev/.build/arm64-apple-macosx/debug/JournalogUI.build/include/JournalogUI-Swift.h",
+      "-swift-version",
+      "6",
+      "-I",
+      "/Library/Developer/CommandLineTools/Library/Developer/Frameworks",
+      "-L",
+      "/Library/Developer/CommandLineTools/Library/Developer/Frameworks",
+      "-plugin-path",
+      "/Library/Developer/CommandLineTools/usr/lib/swift/host/plugins/testing",
+      "-sdk",
+      "/Library/Developer/CommandLineTools/SDKs/MacOSX.sdk",
+      "-g",
+      "-Xcc",
+      "-isysroot",
+      "-Xcc",
+      "/Library/Developer/CommandLineTools/SDKs/MacOSX.sdk",
+      "-Xcc",
+      "-fPIC",
+      "-Xcc",
+      "-g",
+      "-package-name",
+      "ios_dev",
+      "-driver-use-frontend-path",
+      "/Library/Developer/CommandLineTools/usr/bin/swiftc"
+    ]
+  },
+  "targetDependencyMap" : {
+    "JournalogCLI" : [
+      "JournalogCore"
+    ],
+    "JournalogCore" : [
+
+    ],
+    "JournalogUI" : [
+      "JournalogCore"
+    ]
+  },
+  "testDiscoveryCommands" : {
+
+  },
+  "testEntryPointCommands" : {
+
+  },
+  "traitConfiguration" : {
+    "default" : {
+
+    }
+  },
+  "writeCommands" : {
+    "/Volumes/Files/Projects/journalog-webbycms-v2/iOS-Dev/.build/arm64-apple-macosx/debug/JournalogCLI-entitlement.plist" : {
+      "alwaysOutOfDate" : false,
+      "inputs" : [
+        {
+          "kind" : "virtual",
+          "name" : "<entitlement-plist>"
+        },
+        {
+          "kind" : "virtual",
+          "name" : "<com.apple.security.get-task-allow>"
+        }
+      ],
+      "outputFilePath" : "/Volumes/Files/Projects/journalog-webbycms-v2/iOS-Dev/.build/arm64-apple-macosx/debug/JournalogCLI-entitlement.plist"
+    },
+    "/Volumes/Files/Projects/journalog-webbycms-v2/iOS-Dev/.build/arm64-apple-macosx/debug/JournalogCLI.build/sources" : {
+      "alwaysOutOfDate" : false,
+      "inputs" : [
+        {
+          "kind" : "virtual",
+          "name" : "<sources-file-list>"
+        },
+        {
+          "kind" : "file",
+          "name" : "/Volumes/Files/Projects/journalog-webbycms-v2/iOS-Dev/Sources/JournalogCLI/main.swift"
+        }
+      ],
+      "outputFilePath" : "/Volumes/Files/Projects/journalog-webbycms-v2/iOS-Dev/.build/arm64-apple-macosx/debug/JournalogCLI.build/sources"
+    },
+    "/Volumes/Files/Projects/journalog-webbycms-v2/iOS-Dev/.build/arm64-apple-macosx/debug/JournalogCLI.product/Objects.LinkFileList" : {
+      "alwaysOutOfDate" : false,
+      "inputs" : [
+        {
+          "kind" : "virtual",
+          "name" : "<link-file-list>"
+        },
+        {
+          "kind" : "file",
+          "name" : "/Volumes/Files/Projects/journalog-webbycms-v2/iOS-Dev/.build/arm64-apple-macosx/debug/JournalogCLI.build/main.swift.o"
+        },
+        {
+          "kind" : "file",
+          "name" : "/Volumes/Files/Projects/journalog-webbycms-v2/iOS-Dev/.build/arm64-apple-macosx/debug/JournalogCore.build/APIClient.swift.o"
+        },
+        {
+          "kind" : "file",
+          "name" : "/Volumes/Files/Projects/journalog-webbycms-v2/iOS-Dev/.build/arm64-apple-macosx/debug/JournalogCore.build/APIError.swift.o"
+        },
+        {
+          "kind" : "file",
+          "name" : "/Volumes/Files/Projects/journalog-webbycms-v2/iOS-Dev/.build/arm64-apple-macosx/debug/JournalogCore.build/AdminDtos.swift.o"
+        },
+        {
+          "kind" : "file",
+          "name" : "/Volumes/Files/Projects/journalog-webbycms-v2/iOS-Dev/.build/arm64-apple-macosx/debug/JournalogCore.build/ApiResponse.swift.o"
+        },
+        {
+          "kind" : "file",
+          "name" : "/Volumes/Files/Projects/journalog-webbycms-v2/iOS-Dev/.build/arm64-apple-macosx/debug/JournalogCore.build/AuthDtos.swift.o"
+        },
+        {
+          "kind" : "file",
+          "name" : "/Volumes/Files/Projects/journalog-webbycms-v2/iOS-Dev/.build/arm64-apple-macosx/debug/JournalogCore.build/AuthInterceptor.swift.o"
+        },
+        {
+          "kind" : "file",
+          "name" : "/Volumes/Files/Projects/journalog-webbycms-v2/iOS-Dev/.build/arm64-apple-macosx/debug/JournalogCore.build/AuthService.swift.o"
+        },
+        {
+          "kind" : "file",
+          "name" : "/Volumes/Files/Projects/journalog-webbycms-v2/iOS-Dev/.build/arm64-apple-macosx/debug/JournalogCore.build/ExploreService.swift.o"
+        },
+        {
+          "kind" : "file",
+          "name" : "/Volumes/Files/Projects/journalog-webbycms-v2/iOS-Dev/.build/arm64-apple-macosx/debug/JournalogCore.build/FeedDtos.swift.o"
+        },
+        {
+          "kind" : "file",
+          "name" : "/Volumes/Files/Projects/journalog-webbycms-v2/iOS-Dev/.build/arm64-apple-macosx/debug/JournalogCore.build/FeedService.swift.o"
+        },
+        {
+          "kind" : "file",
+          "name" : "/Volumes/Files/Projects/journalog-webbycms-v2/iOS-Dev/.build/arm64-apple-macosx/debug/JournalogCore.build/GiftService.swift.o"
+        },
+        {
+          "kind" : "file",
+          "name" : "/Volumes/Files/Projects/journalog-webbycms-v2/iOS-Dev/.build/arm64-apple-macosx/debug/JournalogCore.build/Helpers.swift.o"
+        },
+        {
+          "kind" : "file",
+          "name" : "/Volumes/Files/Projects/journalog-webbycms-v2/iOS-Dev/.build/arm64-apple-macosx/debug/JournalogCore.build/KeychainManager.swift.o"
+        },
+        {
+          "kind" : "file",
+          "name" : "/Volumes/Files/Projects/journalog-webbycms-v2/iOS-Dev/.build/arm64-apple-macosx/debug/JournalogCore.build/MessengerDtos.swift.o"
+        },
+        {
+          "kind" : "file",
+          "name" : "/Volumes/Files/Projects/journalog-webbycms-v2/iOS-Dev/.build/arm64-apple-macosx/debug/JournalogCore.build/MessengerService.swift.o"
+        },
+        {
+          "kind" : "file",
+          "name" : "/Volumes/Files/Projects/journalog-webbycms-v2/iOS-Dev/.build/arm64-apple-macosx/debug/JournalogCore.build/NotificationService.swift.o"
+        },
+        {
+          "kind" : "file",
+          "name" : "/Volumes/Files/Projects/journalog-webbycms-v2/iOS-Dev/.build/arm64-apple-macosx/debug/JournalogCore.build/PaymentDtos.swift.o"
+        },
+        {
+          "kind" : "file",
+          "name" : "/Volumes/Files/Projects/journalog-webbycms-v2/iOS-Dev/.build/arm64-apple-macosx/debug/JournalogCore.build/PostService.swift.o"
+        },
+        {
+          "kind" : "file",
+          "name" : "/Volumes/Files/Projects/journalog-webbycms-v2/iOS-Dev/.build/arm64-apple-macosx/debug/JournalogCore.build/SearchService.swift.o"
+        },
+        {
+          "kind" : "file",
+          "name" : "/Volumes/Files/Projects/journalog-webbycms-v2/iOS-Dev/.build/arm64-apple-macosx/debug/JournalogCore.build/SessionManager.swift.o"
+        },
+        {
+          "kind" : "file",
+          "name" : "/Volumes/Files/Projects/journalog-webbycms-v2/iOS-Dev/.build/arm64-apple-macosx/debug/JournalogCore.build/SettingsService.swift.o"
+        },
+        {
+          "kind" : "file",
+          "name" : "/Volumes/Files/Projects/journalog-webbycms-v2/iOS-Dev/.build/arm64-apple-macosx/debug/JournalogCore.build/SocialDtos.swift.o"
+        },
+        {
+          "kind" : "file",
+          "name" : "/Volumes/Files/Projects/journalog-webbycms-v2/iOS-Dev/.build/arm64-apple-macosx/debug/JournalogCore.build/StoryService.swift.o"
+        },
+        {
+          "kind" : "file",
+          "name" : "/Volumes/Files/Projects/journalog-webbycms-v2/iOS-Dev/.build/arm64-apple-macosx/debug/JournalogCore.build/SubscriptionService.swift.o"
+        },
+        {
+          "kind" : "file",
+          "name" : "/Volumes/Files/Projects/journalog-webbycms-v2/iOS-Dev/.build/arm64-apple-macosx/debug/JournalogCore.build/UserService.swift.o"
+        },
+        {
+          "kind" : "file",
+          "name" : "/Volumes/Files/Projects/journalog-webbycms-v2/iOS-Dev/.build/arm64-apple-macosx/debug/JournalogCore.build/WalletService.swift.o"
+        }
+      ],
+      "outputFilePath" : "/Volumes/Files/Projects/journalog-webbycms-v2/iOS-Dev/.build/arm64-apple-macosx/debug/JournalogCLI.product/Objects.LinkFileList"
+    },
+    "/Volumes/Files/Projects/journalog-webbycms-v2/iOS-Dev/.build/arm64-apple-macosx/debug/JournalogCore.build/sources" : {
+      "alwaysOutOfDate" : false,
+      "inputs" : [
+        {
+          "kind" : "virtual",
+          "name" : "<sources-file-list>"
+        },
+        {
+          "kind" : "file",
+          "name" : "/Volumes/Files/Projects/journalog-webbycms-v2/iOS-Dev/Sources/JournalogCore/DTOs/AdminDtos.swift"
+        },
+        {
+          "kind" : "file",
+          "name" : "/Volumes/Files/Projects/journalog-webbycms-v2/iOS-Dev/Sources/JournalogCore/DTOs/ApiResponse.swift"
+        },
+        {
+          "kind" : "file",
+          "name" : "/Volumes/Files/Projects/journalog-webbycms-v2/iOS-Dev/Sources/JournalogCore/DTOs/AuthDtos.swift"
+        },
+        {
+          "kind" : "file",
+          "name" : "/Volumes/Files/Projects/journalog-webbycms-v2/iOS-Dev/Sources/JournalogCore/DTOs/FeedDtos.swift"
+        },
+        {
+          "kind" : "file",
+          "name" : "/Volumes/Files/Projects/journalog-webbycms-v2/iOS-Dev/Sources/JournalogCore/DTOs/Helpers.swift"
+        },
+        {
+          "kind" : "file",
+          "name" : "/Volumes/Files/Projects/journalog-webbycms-v2/iOS-Dev/Sources/JournalogCore/DTOs/MessengerDtos.swift"
+        },
+        {
+          "kind" : "file",
+          "name" : "/Volumes/Files/Projects/journalog-webbycms-v2/iOS-Dev/Sources/JournalogCore/DTOs/PaymentDtos.swift"
+        },
+        {
+          "kind" : "file",
+          "name" : "/Volumes/Files/Projects/journalog-webbycms-v2/iOS-Dev/Sources/JournalogCore/DTOs/SocialDtos.swift"
+        },
+        {
+          "kind" : "file",
+          "name" : "/Volumes/Files/Projects/journalog-webbycms-v2/iOS-Dev/Sources/JournalogCore/Networking/APIClient.swift"
+        },
+        {
+          "kind" : "file",
+          "name" : "/Volumes/Files/Projects/journalog-webbycms-v2/iOS-Dev/Sources/JournalogCore/Networking/APIError.swift"
+        },
+        {
+          "kind" : "file",
+          "name" : "/Volumes/Files/Projects/journalog-webbycms-v2/iOS-Dev/Sources/JournalogCore/Networking/AuthInterceptor.swift"
+        },
+        {
+          "kind" : "file",
+          "name" : "/Volumes/Files/Projects/journalog-webbycms-v2/iOS-Dev/Sources/JournalogCore/Services/AuthService.swift"
+        },
+        {
+          "kind" : "file",
+          "name" : "/Volumes/Files/Projects/journalog-webbycms-v2/iOS-Dev/Sources/JournalogCore/Services/ExploreService.swift"
+        },
+        {
+          "kind" : "file",
+          "name" : "/Volumes/Files/Projects/journalog-webbycms-v2/iOS-Dev/Sources/JournalogCore/Services/FeedService.swift"
+        },
+        {
+          "kind" : "file",
+          "name" : "/Volumes/Files/Projects/journalog-webbycms-v2/iOS-Dev/Sources/JournalogCore/Services/GiftService.swift"
+        },
+        {
+          "kind" : "file",
+          "name" : "/Volumes/Files/Projects/journalog-webbycms-v2/iOS-Dev/Sources/JournalogCore/Services/MessengerService.swift"
+        },
+        {
+          "kind" : "file",
+          "name" : "/Volumes/Files/Projects/journalog-webbycms-v2/iOS-Dev/Sources/JournalogCore/Services/NotificationService.swift"
+        },
+        {
+          "kind" : "file",
+          "name" : "/Volumes/Files/Projects/journalog-webbycms-v2/iOS-Dev/Sources/JournalogCore/Services/PostService.swift"
+        },
+        {
+          "kind" : "file",
+          "name" : "/Volumes/Files/Projects/journalog-webbycms-v2/iOS-Dev/Sources/JournalogCore/Services/SearchService.swift"
+        },
+        {
+          "kind" : "file",
+          "name" : "/Volumes/Files/Projects/journalog-webbycms-v2/iOS-Dev/Sources/JournalogCore/Services/SettingsService.swift"
+        },
+        {
+          "kind" : "file",
+          "name" : "/Volumes/Files/Projects/journalog-webbycms-v2/iOS-Dev/Sources/JournalogCore/Services/StoryService.swift"
+        },
+        {
+          "kind" : "file",
+          "name" : "/Volumes/Files/Projects/journalog-webbycms-v2/iOS-Dev/Sources/JournalogCore/Services/SubscriptionService.swift"
+        },
+        {
+          "kind" : "file",
+          "name" : "/Volumes/Files/Projects/journalog-webbycms-v2/iOS-Dev/Sources/JournalogCore/Services/UserService.swift"
+        },
+        {
+          "kind" : "file",
+          "name" : "/Volumes/Files/Projects/journalog-webbycms-v2/iOS-Dev/Sources/JournalogCore/Services/WalletService.swift"
+        },
+        {
+          "kind" : "file",
+          "name" : "/Volumes/Files/Projects/journalog-webbycms-v2/iOS-Dev/Sources/JournalogCore/Storage/KeychainManager.swift"
+        },
+        {
+          "kind" : "file",
+          "name" : "/Volumes/Files/Projects/journalog-webbycms-v2/iOS-Dev/Sources/JournalogCore/Storage/SessionManager.swift"
+        }
+      ],
+      "outputFilePath" : "/Volumes/Files/Projects/journalog-webbycms-v2/iOS-Dev/.build/arm64-apple-macosx/debug/JournalogCore.build/sources"
+    },
+    "/Volumes/Files/Projects/journalog-webbycms-v2/iOS-Dev/.build/arm64-apple-macosx/debug/JournalogUI.build/sources" : {
+      "alwaysOutOfDate" : false,
+      "inputs" : [
+        {
+          "kind" : "virtual",
+          "name" : "<sources-file-list>"
+        },
+        {
+          "kind" : "file",
+          "name" : "/Volumes/Files/Projects/journalog-webbycms-v2/iOS-Dev/Sources/JournalogUI/UI/Components/LoadingView.swift"
+        },
+        {
+          "kind" : "file",
+          "name" : "/Volumes/Files/Projects/journalog-webbycms-v2/iOS-Dev/Sources/JournalogUI/UI/Components/PollView.swift"
+        },
+        {
+          "kind" : "file",
+          "name" : "/Volumes/Files/Projects/journalog-webbycms-v2/iOS-Dev/Sources/JournalogUI/UI/Components/PostCardView.swift"
+        },
+        {
+          "kind" : "file",
+          "name" : "/Volumes/Files/Projects/journalog-webbycms-v2/iOS-Dev/Sources/JournalogUI/UI/Components/UserRowView.swift"
+        },
+        {
+          "kind" : "file",
+          "name" : "/Volumes/Files/Projects/journalog-webbycms-v2/iOS-Dev/Sources/JournalogUI/UI/Navigation/AppNavigation.swift"
+        },
+        {
+          "kind" : "file",
+          "name" : "/Volumes/Files/Projects/journalog-webbycms-v2/iOS-Dev/Sources/JournalogUI/UI/Screens/AuthScreen.swift"
+        },
+        {
+          "kind" : "file",
+          "name" : "/Volumes/Files/Projects/journalog-webbycms-v2/iOS-Dev/Sources/JournalogUI/UI/Screens/ConversationScreen.swift"
+        },
+        {
+          "kind" : "file",
+          "name" : "/Volumes/Files/Projects/journalog-webbycms-v2/iOS-Dev/Sources/JournalogUI/UI/Screens/CreatePostScreen.swift"
+        },
+        {
+          "kind" : "file",
+          "name" : "/Volumes/Files/Projects/journalog-webbycms-v2/iOS-Dev/Sources/JournalogUI/UI/Screens/ExploreScreen.swift"
+        },
+        {
+          "kind" : "file",
+          "name" : "/Volumes/Files/Projects/journalog-webbycms-v2/iOS-Dev/Sources/JournalogUI/UI/Screens/FeedScreen.swift"
+        },
+        {
+          "kind" : "file",
+          "name" : "/Volumes/Files/Projects/journalog-webbycms-v2/iOS-Dev/Sources/JournalogUI/UI/Screens/GiftModalView.swift"
+        },
+        {
+          "kind" : "file",
+          "name" : "/Volumes/Files/Projects/journalog-webbycms-v2/iOS-Dev/Sources/JournalogUI/UI/Screens/MainTabView.swift"
+        },
+        {
+          "kind" : "file",
+          "name" : "/Volumes/Files/Projects/journalog-webbycms-v2/iOS-Dev/Sources/JournalogUI/UI/Screens/MessengerScreen.swift"
+        },
+        {
+          "kind" : "file",
+          "name" : "/Volumes/Files/Projects/journalog-webbycms-v2/iOS-Dev/Sources/JournalogUI/UI/Screens/NotificationsScreen.swift"
+        },
+        {
+          "kind" : "file",
+          "name" : "/Volumes/Files/Projects/journalog-webbycms-v2/iOS-Dev/Sources/JournalogUI/UI/Screens/PostDetailScreen.swift"
+        },
+        {
+          "kind" : "file",
+          "name" : "/Volumes/Files/Projects/journalog-webbycms-v2/iOS-Dev/Sources/JournalogUI/UI/Screens/ProfileScreen.swift"
+        },
+        {
+          "kind" : "file",
+          "name" : "/Volumes/Files/Projects/journalog-webbycms-v2/iOS-Dev/Sources/JournalogUI/UI/Screens/SettingsScreen.swift"
+        },
+        {
+          "kind" : "file",
+          "name" : "/Volumes/Files/Projects/journalog-webbycms-v2/iOS-Dev/Sources/JournalogUI/UI/Screens/SplashScreen.swift"
+        },
+        {
+          "kind" : "file",
+          "name" : "/Volumes/Files/Projects/journalog-webbycms-v2/iOS-Dev/Sources/JournalogUI/UI/Screens/StoryCreateScreen.swift"
+        },
+        {
+          "kind" : "file",
+          "name" : "/Volumes/Files/Projects/journalog-webbycms-v2/iOS-Dev/Sources/JournalogUI/UI/Screens/StoryViewerScreen.swift"
+        },
+        {
+          "kind" : "file",
+          "name" : "/Volumes/Files/Projects/journalog-webbycms-v2/iOS-Dev/Sources/JournalogUI/UI/Screens/SubscriptionScreen.swift"
+        },
+        {
+          "kind" : "file",
+          "name" : "/Volumes/Files/Projects/journalog-webbycms-v2/iOS-Dev/Sources/JournalogUI/UI/Theme.swift"
+        }
+      ],
+      "outputFilePath" : "/Volumes/Files/Projects/journalog-webbycms-v2/iOS-Dev/.build/arm64-apple-macosx/debug/JournalogUI.build/sources"
+    },
+    "/Volumes/Files/Projects/journalog-webbycms-v2/iOS-Dev/.build/arm64-apple-macosx/debug/swift-version--1AB21518FC5DEDBE.txt" : {
+      "alwaysOutOfDate" : true,
+      "inputs" : [
+        {
+          "kind" : "virtual",
+          "name" : "<swift-get-version>"
+        },
+        {
+          "kind" : "file",
+          "name" : "/Library/Developer/CommandLineTools/usr/bin/swiftc"
+        }
+      ],
+      "outputFilePath" : "/Volumes/Files/Projects/journalog-webbycms-v2/iOS-Dev/.build/arm64-apple-macosx/debug/swift-version--1AB21518FC5DEDBE.txt"
+    }
+  }
+}

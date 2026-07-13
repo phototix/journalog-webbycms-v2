@@ -2,6 +2,9 @@
 
 namespace App\Http\Controllers\Api;
 
+use App\Http\Controllers\SettingsController as WebSettingsController;
+use App\Model\Country;
+use App\Model\UserGender;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Validation\Rule;
@@ -25,17 +28,12 @@ class SettingsController extends ApiController
                 'website' => $user->website,
                 'birthdate' => $user->birthdate,
                 'gender_pronoun' => $user->gender_pronoun,
+                'gender_id' => $user->gender_id,
+                'country_id' => $user->country_id,
                 'paid_profile' => (bool) $user->paid_profile,
                 'profile_access_price' => (float) $user->profile_access_price,
                 'public_profile' => (bool) $user->public_profile,
                 'open_profile' => (bool) $user->open_profile,
-                'first_name' => $user->first_name,
-                'last_name' => $user->last_name,
-                'billing_address' => $user->billing_address,
-                'city' => $user->city,
-                'country' => $user->country,
-                'state' => $user->state,
-                'postcode' => $user->postcode,
             ],
         ]);
     }
@@ -49,18 +47,14 @@ class SettingsController extends ApiController
             'bio' => 'nullable|string|max:2000',
             'location' => 'nullable|string|max:255',
             'website' => 'nullable|url|max:255',
+            'birthdate' => 'nullable|date',
+            'gender_id' => 'nullable|exists:user_genders,id',
             'gender_pronoun' => 'nullable|string|max:50',
+            'country_id' => 'nullable|exists:countries,id',
             'profile_access_price' => 'nullable|numeric|min:0',
             'paid_profile' => 'nullable|boolean',
             'public_profile' => 'nullable|boolean',
             'open_profile' => 'nullable|boolean',
-            'first_name' => 'nullable|string|max:255',
-            'last_name' => 'nullable|string|max:255',
-            'billing_address' => 'nullable|string|max:500',
-            'city' => 'nullable|string|max:255',
-            'country' => 'nullable|string|max:255',
-            'state' => 'nullable|string|max:255',
-            'postcode' => 'nullable|string|max:20',
         ]);
 
         $user->update($validated);
@@ -86,5 +80,33 @@ class SettingsController extends ApiController
         ]);
 
         return $this->success(null, 'Password updated');
+    }
+
+    public function uploadProfileAsset(Request $request, $type)
+    {
+        $controller = new WebSettingsController();
+        $result = $controller->uploadProfileAsset($request);
+
+        $decoded = json_decode($result->getContent(), true);
+
+        if (isset($decoded['success']) && $decoded['success']) {
+            return $this->success([
+                'assetSrc' => $decoded['assetSrc'],
+            ], 'Upload successful');
+        }
+
+        return $this->error($decoded['message'] ?? 'Upload failed', 400);
+    }
+
+    public function genders()
+    {
+        $genders = UserGender::all(['id', 'gender_name']);
+        return $this->success($genders);
+    }
+
+    public function countries()
+    {
+        $countries = Country::all(['id', 'name']);
+        return $this->success($countries);
     }
 }

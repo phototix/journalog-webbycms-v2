@@ -35,7 +35,8 @@ import kotlinx.coroutines.launch
 fun SettingsScreen(
     tokenManager: TokenManager,
     onBack: () -> Unit,
-    onLogout: () -> Unit
+    onLogout: () -> Unit,
+    onEditProfile: () -> Unit = {}
 ) {
     val scope = rememberCoroutineScope()
     val context = LocalContext.current
@@ -88,7 +89,7 @@ fun SettingsScreen(
             SettingsItem(
                 icon = Icons.Outlined.Person,
                 title = "Edit Profile",
-                onClick = { }
+                onClick = onEditProfile
             )
             SettingsItem(
                 icon = Icons.Outlined.Notifications,

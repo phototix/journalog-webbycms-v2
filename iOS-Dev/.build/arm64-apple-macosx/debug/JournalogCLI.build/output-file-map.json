@@ -1,0 +1,12 @@
+{
+  "": {
+    "swift-dependencies": "/Volumes/Files/Projects/journalog-webbycms-v2/iOS-Dev/.build/arm64-apple-macosx/debug/JournalogCLI.build/primary.swiftdeps"
+  },
+  "/Volumes/Files/Projects/journalog-webbycms-v2/iOS-Dev/Sources/JournalogCLI/main.swift": {
+    "dependencies": "/Volumes/Files/Projects/journalog-webbycms-v2/iOS-Dev/.build/arm64-apple-macosx/debug/JournalogCLI.build/main.d",
+    "object": "/Volumes/Files/Projects/journalog-webbycms-v2/iOS-Dev/.build/arm64-apple-macosx/debug/JournalogCLI.build/main.swift.o",
+    "swiftmodule": "/Volumes/Files/Projects/journalog-webbycms-v2/iOS-Dev/.build/arm64-apple-macosx/debug/JournalogCLI.build/main~partial.swiftmodule",
+    "swift-dependencies": "/Volumes/Files/Projects/journalog-webbycms-v2/iOS-Dev/.build/arm64-apple-macosx/debug/JournalogCLI.build/main.swiftdeps",
+    "diagnostics": "/Volumes/Files/Projects/journalog-webbycms-v2/iOS-Dev/.build/arm64-apple-macosx/debug/JournalogCLI.build/main.dia"
+  }
+}

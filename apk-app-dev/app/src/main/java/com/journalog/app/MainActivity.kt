@@ -29,6 +29,7 @@ import com.journalog.app.feature.messenger.MessengerScreen
 import com.journalog.app.feature.messenger.ConversationScreen
 import com.journalog.app.feature.profile.ProfileScreen
 import com.journalog.app.feature.notifications.NotificationsScreen
+import com.journalog.app.feature.settings.EditProfileScreen
 import com.journalog.app.feature.settings.SettingsScreen
 import com.journalog.app.feature.splash.SplashScreen
 import com.journalog.app.feature.story.StoryCreateScreen
@@ -215,6 +216,9 @@ fun MainContent(tokenManager: TokenManager, launchToken: String? = null) {
                 SettingsScreen(
                     tokenManager = tokenManager,
                     onBack = { navController.popBackStack() },
+                    onEditProfile = {
+                        navController.navigate(NavRoutes.EditProfile.route)
+                    },
                     onLogout = {
                         scope.launch {
                             tokenManager.clearSession()
@@ -259,6 +263,12 @@ fun MainContent(tokenManager: TokenManager, launchToken: String? = null) {
                     tokenManager = tokenManager,
                     onBack = { navController.popBackStack() },
                     onStoryCreated = { navController.popBackStack() }
+                )
+            }
+
+            composable(NavRoutes.EditProfile.route) {
+                EditProfileScreen(
+                    onBack = { navController.popBackStack() }
                 )
             }
         }

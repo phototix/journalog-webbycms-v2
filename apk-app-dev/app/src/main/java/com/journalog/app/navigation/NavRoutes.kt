@@ -22,4 +22,5 @@ sealed class NavRoutes(val route: String) {
         fun createRoute(userId: Int) = "story/$userId"
     }
     data object StoryCreate : NavRoutes("story/create")
+    data object EditProfile : NavRoutes("settings/edit-profile")
 }

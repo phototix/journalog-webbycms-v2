@@ -1,0 +1,3 @@
+module Journalog {
+    header "/Volumes/Files/Projects/journalog-webbycms-v2/iOS-Dev/.build/arm64-apple-macosx/debug/Journalog.build/include/Journalog-Swift.h"
+}
