@@ -143,18 +143,28 @@ APK_SOURCE="$APK_PUBLIC_DIR/${APP_NAME}-v${VERSION_STR}.apk"
 echo "  Copying APK to server..."
 sshpass -p "$SSH_PASS" ssh -o StrictHostKeyChecking=no "$SSH_USER@$SSH_HOST" "
   mkdir -p $REMOTE_DIR/public/apk
-  chmod 755 $REMOTE_DIR/public/apk
+  echo '$SSH_PASS' | sudo -S chmod 777 $REMOTE_DIR/public/apk 2>/dev/null || true
 "
-sshpass -p "$SSH_PASS" scp -o StrictHostKeyChecking=no \
+if sshpass -p "$SSH_PASS" scp -o StrictHostKeyChecking=no \
   "$APK_SOURCE" \
-  "$SSH_USER@$SSH_HOST:$REMOTE_DIR/public/apk/"
+  "$SSH_USER@$SSH_HOST:$REMOTE_DIR/public/apk/"; then
+    echo "  APK copied successfully"
+else
+    echo "  ⚠ SCP failed, trying sudo on server..."
+    sshpass -p "$SSH_PASS" ssh -o StrictHostKeyChecking=no "$SSH_USER@$SSH_HOST" "
+      echo '$SSH_PASS' | sudo -S cp /dev/null $REMOTE_DIR/public/apk/journalog-v${VERSION_STR}.apk 2>/dev/null || true
+    "
+    sshpass -p "$SSH_PASS" scp -o StrictHostKeyChecking=no \
+      "$APK_SOURCE" \
+      "$SSH_USER@$SSH_HOST:$REMOTE_DIR/public/apk/"
+fi
 
 echo "  Pulling latest code on server..."
 sshpass -p "$SSH_PASS" ssh -o StrictHostKeyChecking=no "$SSH_USER@$SSH_HOST" "
   cd $REMOTE_DIR
   git pull origin main 2>&1
+  echo '$SSH_PASS' | sudo -S chmod 755 $REMOTE_DIR/public/apk 2>/dev/null || true
   ls -t public/apk/*.apk 2>/dev/null | tail -n +6 | xargs rm -f 2>/dev/null || true
-  chmod 644 public/apk/*.apk 2>/dev/null || true
   echo 'Server deploy complete'
 "
 echo "  → Production server updated"
