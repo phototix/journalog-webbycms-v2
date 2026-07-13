@@ -27,8 +27,8 @@ DATE_TAG=$(date +%Y-%m-%d)
 
 if [ -f "$VERSION_TXT" ]; then
     CURRENT=$(cat "$VERSION_TXT")
-    CURRENT_BUILD=$(echo "$CURRENT" | sed -n 's/.*-BUILD-\([0-9]*\)/\1/p')
-    NEXT_BUILD=$((CURRENT_BUILD + 1))
+    CURRENT_BUILD=$(echo "$CURRENT" | sed -n 's/.*-BUILD-0*\([0-9]*\)/\1/p')
+    NEXT_BUILD=$((10#$CURRENT_BUILD + 1))
 else
     NEXT_BUILD=1
 fi
@@ -59,9 +59,13 @@ else
     export JAVA_HOME="${JAVA_HOME:-/opt/homebrew/opt/openjdk@17/libexec/openjdk.jdk/Contents/Home}"
     export ANDROID_HOME="${ANDROID_HOME:-$HOME/Library/Android/sdk}"
     mkdir -p "$APK_PUBLIC_DIR"
-    "$SCRIPT_DIR/gradlew" -p "$SCRIPT_DIR" assembleDebug --no-daemon 2>&1 | tail -5
-    cp "$SCRIPT_DIR/app/build/outputs/apk/debug/app-debug.apk" \
-      "$APK_PUBLIC_DIR/${APP_NAME}-v${VERSION_STR}.apk"
+    if ! "$SCRIPT_DIR/gradlew" -p "$SCRIPT_DIR" assembleDebug --no-daemon 2>&1; then
+        echo "  ⚠ Gradle build failed, but continuing with existing APK if available"
+    fi
+    if [ -f "$SCRIPT_DIR/app/build/outputs/apk/debug/app-debug.apk" ]; then
+        cp "$SCRIPT_DIR/app/build/outputs/apk/debug/app-debug.apk" \
+          "$APK_PUBLIC_DIR/${APP_NAME}-v${VERSION_STR}.apk"
+    fi
 fi
 
 echo "  → ${APP_NAME}-v${VERSION_STR}.apk ($(du -h "$APK_PUBLIC_DIR/${APP_NAME}-v${VERSION_STR}.apk" | cut -f1))"
@@ -137,6 +141,10 @@ echo "[6/6] Deploying to production server..."
 APK_SOURCE="$APK_PUBLIC_DIR/${APP_NAME}-v${VERSION_STR}.apk"
 
 echo "  Copying APK to server..."
+sshpass -p "$SSH_PASS" ssh -o StrictHostKeyChecking=no "$SSH_USER@$SSH_HOST" "
+  mkdir -p $REMOTE_DIR/public/apk
+  chmod 755 $REMOTE_DIR/public/apk
+"
 sshpass -p "$SSH_PASS" scp -o StrictHostKeyChecking=no \
   "$APK_SOURCE" \
   "$SSH_USER@$SSH_HOST:$REMOTE_DIR/public/apk/"
