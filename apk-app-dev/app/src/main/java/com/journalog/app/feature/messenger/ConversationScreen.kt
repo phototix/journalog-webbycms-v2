@@ -79,10 +79,7 @@ fun ConversationScreen(
         }
     }
 
-    LaunchedEffect(Unit) {
-        android.util.Log.d("Journalog-Feed", "ConversationScreen started userId=$userId")
-        loadMessages()
-    }
+    LaunchedEffect(Unit) { loadMessages() }
 
     // Scroll-to-top pagination
     val shouldLoadPrev = remember {
