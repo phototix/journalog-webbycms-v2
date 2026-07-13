@@ -37,6 +37,7 @@ fun GiftModal(
     val api = remember { ApiClient.create(ApiService::class.java) }
     var giftData by remember { mutableStateOf<GiftListData?>(null) }
     var selectedGift by remember { mutableStateOf<GiftDto?>(null) }
+    var balance by remember { mutableDoubleStateOf(0.0) }
     var isSending by remember { mutableStateOf(false) }
     var error by remember { mutableStateOf<String?>(null) }
     val scope = rememberCoroutineScope()
@@ -46,6 +47,15 @@ fun GiftModal(
             val response = api.getGifts()
             if (response.isSuccessful) {
                 giftData = response.body()?.data
+            }
+        } catch (_: Exception) { }
+    }
+
+    LaunchedEffect(Unit) {
+        try {
+            val resp = api.getWalletBalance()
+            if (resp.isSuccessful) {
+                balance = resp.body()?.data?.total ?: 0.0
             }
         } catch (_: Exception) { }
     }
@@ -65,7 +75,7 @@ fun GiftModal(
 
             giftData?.let { data ->
                 Text(
-                    "Balance: ${data.balance.toInt()} credits",
+                    "Balance: ${balance.toInt()} credits",
                     style = MaterialTheme.typography.bodyMedium,
                     color = MaterialTheme.colorScheme.primary,
                     modifier = Modifier.padding(bottom = 12.dp)
