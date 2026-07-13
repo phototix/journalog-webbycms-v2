@@ -13,7 +13,7 @@ SSH_USER="webbycms"
 SSH_PASS="Quidents64"
 REMOTE_DIR="/var/www/webbypage/just-friends.webbypage.com"
 
-LARAVEL_APP_URL="${APP_URL:-https://journalog.webbypage.com}"
+LARAVEL_APP_URL="${APP_URL:-https://journal.webbypage.com}"
 
 header() {
     echo ""
@@ -197,6 +197,18 @@ step6_deploy() {
         echo "  ⚠ SCP failed, aborting deploy"
         exit 1
     fi
+
+    echo "  Copying version metadata to server..."
+    sshpass -p "$SSH_PASS" ssh -o StrictHostKeyChecking=no "$SSH_USER@$SSH_HOST" "
+      echo '$SSH_PASS' | sudo -S mkdir -p $REMOTE_DIR/storage/app
+      echo '$SSH_PASS' | sudo -S chmod 777 $REMOTE_DIR/storage/app
+    " 2>&1 | grep -v "^\[sudo\]" || true
+    sshpass -p "$SSH_PASS" scp -o StrictHostKeyChecking=no \
+      "$VERSION_FILE" \
+      "$SSH_USER@$SSH_HOST:$REMOTE_DIR/storage/app/apk-version.json"
+    sshpass -p "$SSH_PASS" ssh -o StrictHostKeyChecking=no "$SSH_USER@$SSH_HOST" "
+      echo '$SSH_PASS' | sudo -S chmod 644 $REMOTE_DIR/storage/app/apk-version.json
+    " 2>&1 | grep -v "^\[sudo\]" || true
 
     echo "  Pulling latest code on server..."
     sshpass -p "$SSH_PASS" ssh -o StrictHostKeyChecking=no "$SSH_USER@$SSH_HOST" "
