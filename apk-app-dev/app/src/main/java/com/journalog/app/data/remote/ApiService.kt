@@ -2,6 +2,7 @@ package com.journalog.app.data.remote
 
 import com.journalog.app.core.network.ApiResponse
 import com.journalog.app.data.remote.dto.*
+import kotlin.jvm.JvmSuppressWildcards
 import retrofit2.Response
 import retrofit2.http.*
 
@@ -29,7 +30,7 @@ interface ApiService {
 
     // Posts
     @POST("posts")
-    suspend fun createPost(@Body body: Map<String, Any>): Response<ApiResponse<Map<String, PostDto>>>
+    suspend fun createPost(@Body body: Map<String, @JvmSuppressWildcards Any>): Response<ApiResponse<Map<String, PostDto>>>
 
     @GET("posts/{id}")
     suspend fun getPost(@Path("id") id: Int): Response<ApiResponse<Map<String, PostDto>>>
