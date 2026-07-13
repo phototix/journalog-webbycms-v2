@@ -1,6 +1,7 @@
 package com.journalog.app.navigation
 
 sealed class NavRoutes(val route: String) {
+    data object Splash : NavRoutes("splash")
     data object Auth : NavRoutes("auth")
     data object Feed : NavRoutes("feed")
     data object Explore : NavRoutes("explore")
@@ -16,5 +17,8 @@ sealed class NavRoutes(val route: String) {
     }
     data object Conversation : NavRoutes("conversation/{userId}/{userName}") {
         fun createRoute(userId: Int, userName: String) = "conversation/$userId/$userName"
+    }
+    data object StoryViewer : NavRoutes("story/{userId}") {
+        fun createRoute(userId: Int) = "story/$userId"
     }
 }

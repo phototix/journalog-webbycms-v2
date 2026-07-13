@@ -101,6 +101,8 @@ data class StoryItemDto(
     val type: String,
     val url: String,
     val thumbnail: String?,
+    val text: String?,
+    val length: Int?,
     @SerializedName("created_at") val createdAt: String?
 )
 
@@ -234,4 +236,12 @@ data class ExploreUsersData(
     val users: List<ExploreUserDto>,
     @SerializedName("has_more") val hasMore: Boolean,
     @SerializedName("next_page") val nextPage: Int?
+)
+
+data class PaginatedMessages(
+    val data: List<MessageDto>
+)
+
+data class PaginatedNotifications(
+    val data: List<NotificationDto>
 )

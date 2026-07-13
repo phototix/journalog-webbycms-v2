@@ -29,6 +29,8 @@ import com.journalog.app.feature.messenger.ConversationScreen
 import com.journalog.app.feature.profile.ProfileScreen
 import com.journalog.app.feature.notifications.NotificationsScreen
 import com.journalog.app.feature.settings.SettingsScreen
+import com.journalog.app.feature.splash.SplashScreen
+import com.journalog.app.feature.story.StoryViewerScreen
 import com.journalog.app.navigation.BottomNavBar
 import com.journalog.app.navigation.NavRoutes
 import kotlinx.coroutines.launch
@@ -53,31 +55,26 @@ fun MainContent(tokenManager: TokenManager) {
     val navController = rememberNavController()
     val scope = rememberCoroutineScope()
 
-    var isLoggedIn by remember { mutableStateOf(false) }
     var currentUsername by remember { mutableStateOf("") }
     var isAdmin by remember { mutableStateOf(false) }
 
     LaunchedEffect(Unit) {
-        val token = tokenManager.getToken()
-        if (!token.isNullOrEmpty()) {
-            ApiClient.setToken(token)
-            isLoggedIn = true
-            isAdmin = tokenManager.isAdmin()
-        }
-    }
-
-    LaunchedEffect(isLoggedIn) {
-        if (isLoggedIn) {
-            tokenManager.usernameFlow.collect { username ->
-                if (username != null) currentUsername = username
-            }
+        tokenManager.usernameFlow.collect { username ->
+            if (username != null) currentUsername = username
         }
     }
 
     val navBackStackEntry by navController.currentBackStackEntryAsState()
     val currentRoute = navBackStackEntry?.destination?.route
 
-    val showBottomBar = isLoggedIn && currentRoute != null && !currentRoute.startsWith("auth")
+    val showBottomBar = currentRoute != null
+        && currentRoute != NavRoutes.Splash.route
+        && currentRoute != NavRoutes.Auth.route
+        && currentRoute != NavRoutes.Settings.route
+        && currentRoute != NavRoutes.Notifications.route
+        && currentRoute != NavRoutes.PostDetail.route
+        && currentRoute != NavRoutes.StoryViewer.route
+        && !currentRoute.startsWith("conversation")
 
     Box(modifier = Modifier.fillMaxSize()) {
         Scaffold(
@@ -101,16 +98,37 @@ fun MainContent(tokenManager: TokenManager) {
         ) { innerPadding ->
             NavHost(
             navController = navController,
-            startDestination = if (isLoggedIn) NavRoutes.Feed.route else NavRoutes.Auth.route,
+            startDestination = NavRoutes.Splash.route,
             modifier = Modifier.padding(innerPadding)
         ) {
+            composable(NavRoutes.Splash.route) {
+                SplashScreen(
+                    tokenManager = tokenManager,
+                    onNavigateHome = {
+                        scope.launch {
+                            isAdmin = tokenManager.isAdmin()
+                            navController.navigate(NavRoutes.Feed.route) {
+                                popUpTo(NavRoutes.Splash.route) { inclusive = true }
+                            }
+                        }
+                    },
+                    onNavigateAuth = {
+                        navController.navigate(NavRoutes.Auth.route) {
+                            popUpTo(NavRoutes.Splash.route) { inclusive = true }
+                        }
+                    }
+                )
+            }
+
             composable(NavRoutes.Auth.route) {
                 AuthScreen(
                     tokenManager = tokenManager,
                     onLoggedIn = {
-                        isLoggedIn = true
-                        navController.navigate(NavRoutes.Feed.route) {
-                            popUpTo(NavRoutes.Auth.route) { inclusive = true }
+                        scope.launch {
+                            isAdmin = tokenManager.isAdmin()
+                            navController.navigate(NavRoutes.Feed.route) {
+                                popUpTo(NavRoutes.Auth.route) { inclusive = true }
+                            }
                         }
                     }
                 )
@@ -123,6 +141,9 @@ fun MainContent(tokenManager: TokenManager) {
                     },
                     onProfileClick = { username ->
                         navController.navigate(NavRoutes.Profile.createRoute(username))
+                    },
+                    onStoryClick = { userId ->
+                        navController.navigate(NavRoutes.StoryViewer.createRoute(userId))
                     }
                 )
             }
@@ -178,7 +199,6 @@ fun MainContent(tokenManager: TokenManager) {
                         scope.launch {
                             tokenManager.clearSession()
                             ApiClient.setToken(null)
-                            isLoggedIn = false
                             navController.navigate(NavRoutes.Auth.route) {
                                 popUpTo(0) { inclusive = true }
                             }
@@ -190,8 +210,12 @@ fun MainContent(tokenManager: TokenManager) {
             composable(
                 NavRoutes.PostDetail.route,
                 arguments = listOf(navArgument("postId") { type = NavType.IntType })
-            ) {
-                PostDetailScreen(onBack = { navController.popBackStack() })
+            ) { backStackEntry ->
+                val postId = backStackEntry.arguments?.getInt("postId") ?: 0
+                PostDetailScreen(
+                    postId = postId,
+                    onBack = { navController.popBackStack() }
+                )
             }
 
             composable(
@@ -209,6 +233,19 @@ fun MainContent(tokenManager: TokenManager) {
                     onBack = { navController.popBackStack() }
                 )
             }
+
+            composable(
+                NavRoutes.StoryViewer.route,
+                arguments = listOf(
+                    navArgument("userId") { type = NavType.IntType }
+                )
+            ) { backStackEntry ->
+                val userId = backStackEntry.arguments?.getInt("userId") ?: 0
+                StoryViewerScreen(
+                    userId = userId,
+                    onBack = { navController.popBackStack() }
+                )
+            }
         }
     }
 
@@ -217,6 +254,6 @@ fun MainContent(tokenManager: TokenManager) {
 }
 
 @Composable
-private fun PostDetailScreen(onBack: () -> Unit) {
-    com.journalog.app.feature.feed.PostDetailScreen(onBack = onBack)
+private fun PostDetailScreen(postId: Int, onBack: () -> Unit) {
+    com.journalog.app.feature.feed.PostDetailScreen(postId = postId, onBack = onBack)
 }

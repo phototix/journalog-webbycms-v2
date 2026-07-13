@@ -16,6 +16,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Brush
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
@@ -26,18 +27,21 @@ import com.journalog.app.core.network.ApiClient
 import com.journalog.app.data.remote.ApiService
 import com.journalog.app.data.remote.dto.PostDto
 import com.journalog.app.data.remote.dto.StoryGroupDto
+import android.util.Log
 import kotlinx.coroutines.launch
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun FeedScreen(
     onPostClick: (Int) -> Unit,
-    onProfileClick: (String) -> Unit
+    onProfileClick: (String) -> Unit,
+    onStoryClick: (Int) -> Unit
 ) {
     val api = remember { ApiClient.create(ApiService::class.java) }
     var posts by remember { mutableStateOf<List<PostDto>>(emptyList()) }
     var stories by remember { mutableStateOf<List<StoryGroupDto>>(emptyList()) }
     var isLoading by remember { mutableStateOf(true) }
+    val likedPosts = remember { mutableStateMapOf<Int, Boolean>() }
     val scope = rememberCoroutineScope()
 
     fun loadFeed() {
@@ -46,9 +50,14 @@ fun FeedScreen(
             try {
                 val resp = api.getFeed()
                 if (resp.isSuccessful) {
-                    resp.body()?.data?.let { posts = it.posts ?: emptyList() }
+                    resp.body()?.data?.let { feedData ->
+                        posts = feedData.posts ?: emptyList()
+                        feedData.posts?.forEach { likedPosts[it.id] = it.hasLiked }
+                    }
                 }
-            } catch (_: Throwable) { }
+            } catch (e: Throwable) {
+                Log.e("Journalog-Feed", "loadFeed failed", e)
+            }
             isLoading = false
         }
     }
@@ -69,7 +78,9 @@ fun FeedScreen(
                     }
                 }
             }
-        } catch (_: Throwable) { }
+        } catch (e: Throwable) {
+            Log.e("Journalog-Feed", "stories feed failed", e)
+        }
     }
 
     LazyColumn(
@@ -77,7 +88,7 @@ fun FeedScreen(
         contentPadding = PaddingValues(bottom = 8.dp)
     ) {
         item {
-            StoriesRow(stories = stories, onProfileClick = onProfileClick)
+            StoriesRow(stories = stories, onStoryClick = onStoryClick)
         }
 
         if (isLoading && posts.isEmpty()) {
@@ -99,8 +110,17 @@ fun FeedScreen(
             items(posts, key = { it.id }) { post ->
                 PostCard(
                     post = post,
+                    hasLiked = likedPosts[post.id] ?: post.hasLiked,
                     onLike = {
-                        scope.launch { try { api.toggleLike(post.id) } catch (_: Exception) {} }
+                        val current = likedPosts[post.id] ?: post.hasLiked
+                        likedPosts[post.id] = !current
+                        scope.launch {
+                            try {
+                                api.toggleLike(post.id)
+                            } catch (_: Exception) {
+                                likedPosts[post.id] = current
+                            }
+                        }
                     },
                     onComment = { onPostClick(post.id) },
                     onProfileClick = { post.user?.let { onProfileClick(it.username) } }
@@ -110,7 +130,7 @@ fun FeedScreen(
     }
 }
 
-private fun parseStories(list: List<*>): List<StoryGroupDto> {
+fun parseStories(list: List<*>): List<StoryGroupDto> {
     val result = mutableListOf<StoryGroupDto>()
     for (item in list) {
         if (item !is Map<*, *>) continue
@@ -137,6 +157,8 @@ private fun parseStories(list: List<*>): List<StoryGroupDto> {
                     type = sm["type"] as? String ?: "image",
                     url = sm["src"] as? String ?: "",
                     thumbnail = sm["preview"] as? String,
+                    text = sm["text"] as? String,
+                    length = sm["length"] as? Int,
                     createdAt = timeStr
                 )
             }
@@ -151,13 +173,13 @@ private fun parseStories(list: List<*>): List<StoryGroupDto> {
                 hasUnseen = !seen,
                 stories = storyItems
             ))
-        } catch (_: Exception) { continue }
+        } catch (e: Exception) { Log.w("Journalog-Feed", "parseStories item skipped", e); continue }
     }
     return result
 }
 
 @Composable
-fun StoriesRow(stories: List<StoryGroupDto>, onProfileClick: (String) -> Unit) {
+fun StoriesRow(stories: List<StoryGroupDto>, onStoryClick: (Int) -> Unit) {
     LazyRow(
         modifier = Modifier.padding(vertical = 8.dp),
         contentPadding = PaddingValues(horizontal = 12.dp),
@@ -188,16 +210,15 @@ fun StoriesRow(stories: List<StoryGroupDto>, onProfileClick: (String) -> Unit) {
             items(stories, key = { it.user.id }) { group ->
                 Column(
                     horizontalAlignment = Alignment.CenterHorizontally,
-                    modifier = Modifier.clickable { onProfileClick(group.user.username) }
+                    modifier = Modifier.clickable { onStoryClick(group.user.id) }
                 ) {
+                    val ringBrush: Brush = if (group.hasUnseen) StoryGradient
+                        else Brush.linearGradient(listOf(MaterialTheme.colorScheme.outline, MaterialTheme.colorScheme.outline))
                     Box(
                         modifier = Modifier
                             .size(64.dp)
                             .clip(CircleShape)
-                            .background(
-                                if (group.hasUnseen) StoryGradient
-                                else Brush.linearGradient(listOf(MaterialTheme.colorScheme.outline))
-                            )
+                            .background(ringBrush)
                             .padding(2.dp)
                     ) {
                         val avatarUrl = group.user.avatar ?: ""
@@ -231,6 +252,7 @@ fun StoriesRow(stories: List<StoryGroupDto>, onProfileClick: (String) -> Unit) {
 @Composable
 fun PostCard(
     post: PostDto,
+    hasLiked: Boolean = post.hasLiked,
     onLike: () -> Unit,
     onComment: () -> Unit,
     onProfileClick: () -> Unit
@@ -287,9 +309,9 @@ fun PostCard(
             ) {
                 IconButton(onClick = onLike) {
                     Icon(
-                        imageVector = if (post.hasLiked) Icons.Filled.Favorite else Icons.Outlined.Favorite,
+                        imageVector = if (hasLiked) Icons.Filled.Favorite else Icons.Outlined.Favorite,
                         contentDescription = "Like",
-                        tint = if (post.hasLiked) MaterialTheme.colorScheme.primary else MaterialTheme.colorScheme.onSurface
+                        tint = if (hasLiked) MaterialTheme.colorScheme.primary else MaterialTheme.colorScheme.onSurface
                     )
                 }
                 IconButton(onClick = onComment) {
@@ -299,7 +321,8 @@ fun PostCard(
             }
 
             if (post.likesCount > 0) {
-                Text("${post.likesCount} likes", style = MaterialTheme.typography.bodyMedium,
+                Text("${post.likesCount + if (hasLiked != post.hasLiked) (if (hasLiked) 1 else -1) else 0} likes",
+                    style = MaterialTheme.typography.bodyMedium,
                     fontWeight = FontWeight.SemiBold, modifier = Modifier.padding(horizontal = 12.dp, vertical = 2.dp))
             }
             if (!post.text.isNullOrBlank()) {

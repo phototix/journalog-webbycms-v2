@@ -33,7 +33,7 @@ fun NotificationsScreen(onBack: () -> Unit) {
             val response = api.getNotifications()
             if (response.isSuccessful) {
                 val data = response.body()?.data
-                val list = data?.get("notifications") as? List<*> ?: emptyList<Any>()
+                notifications = data?.get("notifications")?.data ?: emptyList()
             }
         } catch (_: Exception) {}
     }

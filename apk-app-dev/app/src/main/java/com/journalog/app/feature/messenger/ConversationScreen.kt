@@ -40,7 +40,7 @@ fun ConversationScreen(
             try {
                 val response = api.getMessages(userId)
                 if (response.isSuccessful) {
-                    messages = response.body()?.data?.get("messages") ?: emptyList()
+                    messages = response.body()?.data?.get("messages")?.data ?: emptyList()
                 }
             } catch (_: Exception) {}
         }

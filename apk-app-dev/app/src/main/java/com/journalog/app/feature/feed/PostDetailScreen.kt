@@ -28,12 +28,31 @@ import kotlinx.coroutines.launch
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun PostDetailScreen(onBack: () -> Unit) {
+fun PostDetailScreen(
+    postId: Int,
+    onBack: () -> Unit
+) {
     val api = remember { ApiClient.create(ApiService::class.java) }
     var post by remember { mutableStateOf<PostDto?>(null) }
     var comments by remember { mutableStateOf<List<CommentDto>>(emptyList()) }
+    var isLoading by remember { mutableStateOf(true) }
     var showGiftModal by remember { mutableStateOf(false) }
     val scope = rememberCoroutineScope()
+
+    LaunchedEffect(postId) {
+        isLoading = true
+        try {
+            val resp = api.getPost(postId)
+            if (resp.isSuccessful) {
+                post = resp.body()?.data?.get("post")
+            }
+            val commentsResp = api.getComments(postId)
+            if (commentsResp.isSuccessful) {
+                comments = commentsResp.body()?.data?.get("comments") ?: emptyList()
+            }
+        } catch (_: Exception) {}
+        isLoading = false
+    }
 
     Scaffold(
         topBar = {
@@ -47,53 +66,69 @@ fun PostDetailScreen(onBack: () -> Unit) {
             )
         }
     ) { padding ->
-        LazyColumn(
-            modifier = Modifier
-                .fillMaxSize()
-                .padding(padding)
-        ) {
-            post?.let { p ->
-                item {
-                    PostCard(
-                        post = p,
-                        onLike = {
-                            scope.launch { try { api.toggleLike(p.id) } catch (_: Exception) {} }
-                        },
-                        onComment = { },
-                        onProfileClick = { }
-                    )
-                }
-
-                // Poll display
-                if (p.poll != null && p.poll.answers != null) {
+        if (isLoading && post == null) {
+            Box(
+                modifier = Modifier.fillMaxSize().padding(padding),
+                contentAlignment = Alignment.Center
+            ) {
+                CircularProgressIndicator()
+            }
+        } else if (post == null) {
+            Box(
+                modifier = Modifier.fillMaxSize().padding(padding),
+                contentAlignment = Alignment.Center
+            ) {
+                Text("Post not found", style = MaterialTheme.typography.bodyLarge)
+            }
+        } else {
+            LazyColumn(
+                modifier = Modifier
+                    .fillMaxSize()
+                    .padding(padding)
+            ) {
+                post?.let { p ->
                     item {
-                        PollDisplay(poll = p.poll, postId = p.id, api = api)
+                        PostCard(
+                            post = p,
+                            onLike = {
+                                scope.launch { try { api.toggleLike(p.id) } catch (_: Exception) {} }
+                            },
+                            onComment = { },
+                            onProfileClick = { }
+                        )
                     }
-                }
 
-                // Gift button
-                item {
-                    Row(
-                        modifier = Modifier
-                            .fillMaxWidth()
-                            .padding(horizontal = 12.dp, vertical = 4.dp),
-                        horizontalArrangement = Arrangement.spacedBy(8.dp)
-                    ) {
-                        TextButton(onClick = { showGiftModal = true }) {
-                            Icon(Icons.Filled.CardGiftcard, contentDescription = null)
-                            Spacer(modifier = Modifier.width(4.dp))
-                            Text("Send Gift")
+                    // Poll display
+                    if (p.poll != null && p.poll.answers != null) {
+                        item {
+                            PollDisplay(poll = p.poll, postId = p.id, api = api)
+                        }
+                    }
+
+                    // Gift button
+                    item {
+                        Row(
+                            modifier = Modifier
+                                .fillMaxWidth()
+                                .padding(horizontal = 12.dp, vertical = 4.dp),
+                            horizontalArrangement = Arrangement.spacedBy(8.dp)
+                        ) {
+                            TextButton(onClick = { showGiftModal = true }) {
+                                Icon(Icons.Filled.CardGiftcard, contentDescription = null)
+                                Spacer(modifier = Modifier.width(4.dp))
+                                Text("Send Gift")
+                            }
                         }
                     }
                 }
-            }
 
-            item {
-                HorizontalDivider(modifier = Modifier.padding(vertical = 8.dp))
-            }
+                item {
+                    HorizontalDivider(modifier = Modifier.padding(vertical = 8.dp))
+                }
 
-            items(comments) { comment ->
-                CommentItem(comment)
+                items(comments) { comment ->
+                    CommentItem(comment)
+                }
             }
         }
     }

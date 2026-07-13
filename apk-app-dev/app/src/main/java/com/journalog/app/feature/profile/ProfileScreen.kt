@@ -15,9 +15,12 @@ import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import coil.compose.AsyncImage
 import com.journalog.app.core.network.ApiClient
 import com.journalog.app.data.remote.ApiService
@@ -39,6 +42,7 @@ fun ProfileScreen(
     var posts by remember { mutableStateOf<List<PostDto>>(emptyList()) }
     var isLoading by remember { mutableStateOf(true) }
     var error by remember { mutableStateOf<String?>(null) }
+    var selectedTab by remember { mutableIntStateOf(0) }
     val scope = rememberCoroutineScope()
 
     LaunchedEffect(username) {
@@ -122,7 +126,8 @@ fun ProfileScreen(
                     }
                 }
 
-                Column(modifier = Modifier.padding(horizontal = 16.dp, vertical = 8.dp)) {
+                Spacer(modifier = Modifier.height(8.dp))
+                Column(modifier = Modifier.padding(horizontal = 16.dp)) {
                     Row(verticalAlignment = Alignment.CenterVertically) {
                         Text(u.name, style = MaterialTheme.typography.titleMedium, fontWeight = FontWeight.Bold)
                         if (u.isVerified == true) {
@@ -137,6 +142,7 @@ fun ProfileScreen(
                     }
                 }
 
+                Spacer(modifier = Modifier.height(8.dp))
                 Button(
                     onClick = {
                         scope.launch { try { api.toggleFollow(username) } catch (_: Exception) {} }
@@ -147,10 +153,12 @@ fun ProfileScreen(
                     Text(if (u.isFollowing == true) "Following" else if (u.hasSubscribed == true) "Subscribed" else "Follow")
                 }
 
-                TabRow(selectedTabIndex = 0) {
-                    Tab(selected = true, onClick = { }) { Text("Posts") }
-                    Tab(selected = false, onClick = { }) { Text("Media") }
+                Spacer(modifier = Modifier.height(8.dp))
+                TabRow(selectedTabIndex = selectedTab) {
+                    Tab(selected = selectedTab == 0, onClick = { selectedTab = 0 }) { Text("Posts") }
+                    Tab(selected = selectedTab == 1, onClick = { selectedTab = 1 }) { Text("Media") }
                 }
+                Spacer(modifier = Modifier.height(4.dp))
             }
         }
 
@@ -166,34 +174,62 @@ fun ProfileScreen(
         }
 
         if (!isLoading && user != null && posts.isNotEmpty()) {
-            var rowCount = (posts.size + 2) / 3
-            val chunked = posts.take(12).chunked(3)
-            items(chunked) { rowItems ->
-                Row(
-                    modifier = Modifier.fillMaxWidth().padding(horizontal = 1.dp),
-                    horizontalArrangement = Arrangement.spacedBy(2.dp)
-                ) {
-                    rowItems.forEach { post ->
-                        Box(
-                            modifier = Modifier
-                                .weight(1f)
-                                .aspectRatio(1f)
-                                .clickable { onPostClick(post.id) }
-                                .background(MaterialTheme.colorScheme.surfaceVariant)
-                        ) {
-                            post.media?.firstOrNull()?.let { media ->
-                                AsyncImage(
-                                    model = media.thumbnail ?: media.url,
-                                    contentDescription = null,
-                                    modifier = Modifier.fillMaxSize(),
-                                    contentScale = ContentScale.Crop
-                                )
+            val filteredPosts = if (selectedTab == 1) {
+                posts.filter { !it.media.isNullOrEmpty() }
+            } else {
+                posts
+            }
+
+            if (filteredPosts.isEmpty()) {
+                item {
+                    Box(
+                        modifier = Modifier.fillMaxWidth().padding(32.dp),
+                        contentAlignment = Alignment.Center
+                    ) {
+                        Text("No media posts", color = MaterialTheme.colorScheme.onSurfaceVariant)
+                    }
+                }
+            } else {
+                val chunked = filteredPosts.take(12).chunked(3)
+                items(chunked) { rowItems ->
+                    Row(
+                        modifier = Modifier.fillMaxWidth().padding(horizontal = 1.dp),
+                        horizontalArrangement = Arrangement.spacedBy(2.dp)
+                    ) {
+                        rowItems.forEach { post ->
+                            Box(
+                                modifier = Modifier
+                                    .weight(1f)
+                                    .aspectRatio(1f)
+                                    .clickable { onPostClick(post.id) }
+                                    .background(MaterialTheme.colorScheme.surfaceVariant),
+                                contentAlignment = Alignment.Center
+                            ) {
+                                val mediaUrl = post.media?.firstOrNull()?.let { it.thumbnail ?: it.url }
+                                if (mediaUrl != null) {
+                                    AsyncImage(
+                                        model = mediaUrl,
+                                        contentDescription = null,
+                                        modifier = Modifier.fillMaxSize(),
+                                        contentScale = ContentScale.Crop
+                                    )
+                                } else {
+                                    val firstChar = post.text?.firstOrNull()?.uppercase() ?: "?"
+                                    Text(
+                                        firstChar,
+                                        fontSize = 24.sp,
+                                        fontWeight = FontWeight.Bold,
+                                        color = MaterialTheme.colorScheme.onSurfaceVariant,
+                                        textAlign = TextAlign.Center
+                                    )
+                                }
                             }
                         }
+                        repeat(3 - rowItems.size) {
+                            Spacer(modifier = Modifier.weight(1f))
+                        }
                     }
-                    repeat(3 - rowItems.size) {
-                        Spacer(modifier = Modifier.weight(1f))
-                    }
+                    Spacer(modifier = Modifier.height(2.dp))
                 }
             }
         }

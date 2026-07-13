@@ -71,14 +71,14 @@ interface ApiService {
     suspend fun getConversations(): Response<ApiResponse<Map<String, List<ConversationDto>>>>
 
     @GET("conversations/{userId}/messages")
-    suspend fun getMessages(@Path("userId") userId: Int): Response<ApiResponse<Map<String, List<MessageDto>>>>
+    suspend fun getMessages(@Path("userId") userId: Int): Response<ApiResponse<Map<String, PaginatedMessages>>>
 
     @POST("messages")
     suspend fun sendMessage(@Body body: Map<String, Any>): Response<ApiResponse<Map<String, MessageDto>>>
 
     // Notifications
     @GET("notifications")
-    suspend fun getNotifications(): Response<ApiResponse<Map<String, Any>>>
+    suspend fun getNotifications(): Response<ApiResponse<Map<String, PaginatedNotifications>>>
 
     @POST("notifications/read-all")
     suspend fun markAllNotificationsRead(): Response<ApiResponse<Unit>>
