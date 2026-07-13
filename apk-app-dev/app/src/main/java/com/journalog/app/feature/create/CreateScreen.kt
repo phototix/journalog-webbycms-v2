@@ -1,9 +1,9 @@
 package com.journalog.app.feature.create
 
 import android.net.Uri
+import android.provider.OpenableColumns
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
-import androidx.activity.result.PickVisualMediaRequest
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
@@ -25,6 +25,9 @@ import coil.compose.AsyncImage
 import com.journalog.app.core.network.ApiClient
 import com.journalog.app.data.remote.ApiService
 import kotlinx.coroutines.launch
+import okhttp3.MediaType.Companion.toMediaTypeOrNull
+import okhttp3.MultipartBody
+import okhttp3.RequestBody.Companion.toRequestBody
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -136,8 +139,43 @@ fun CreateScreen() {
                     isUploading = true
                     error = null
                     try {
-                        val text = mapOf("text" to caption)
-                        api.createPost(text)
+                        val body = mutableMapOf<String, Any>("text" to caption)
+
+                        if (price.isNotBlank()) {
+                            body["price"] = price.toDoubleOrNull() ?: 0.0
+                        }
+
+                        // Upload media if selected
+                        if (selectedUri != null) {
+                            val uri = selectedUri!!
+                            val contentResolver = context.contentResolver
+                            val mimeType = contentResolver.getType(uri) ?: "image/jpeg"
+                            val cursor = contentResolver.query(uri, null, null, null, null)
+                            var fileName = "post_media"
+                            cursor?.use {
+                                if (it.moveToFirst()) {
+                                    val nameIdx = it.getColumnIndex(OpenableColumns.DISPLAY_NAME)
+                                    if (nameIdx >= 0) fileName = it.getString(nameIdx)
+                                }
+                            }
+
+                            val inputStream = contentResolver.openInputStream(uri)
+                            val bytes = inputStream?.readBytes() ?: throw Exception("Could not read file")
+                            inputStream?.close()
+
+                            val requestBody = bytes.toRequestBody(mimeType.toMediaTypeOrNull())
+                            val part = MultipartBody.Part.createFormData("file", fileName, requestBody)
+                            val uploadResp = api.uploadAttachment("post", part)
+
+                            if (uploadResp.isSuccessful) {
+                                val attachmentId = uploadResp.body()?.data?.attachmentID
+                                if (attachmentId != null) {
+                                    body["attachment_ids"] = listOf(attachmentId)
+                                }
+                            }
+                        }
+
+                        api.createPost(body)
                     } catch (e: Exception) {
                         error = e.message ?: "Failed to create post"
                     } finally {

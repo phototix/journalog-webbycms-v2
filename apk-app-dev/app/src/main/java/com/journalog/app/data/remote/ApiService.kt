@@ -64,6 +64,9 @@ interface ApiService {
     @GET("stories/feed")
     suspend fun getStoriesFeed(): Response<ApiResponse<Map<String, List<Any>>>>
 
+    @POST("stories")
+    suspend fun createStory(@Body body: Map<String, @JvmSuppressWildcards Any>): Response<ApiResponse<Map<String, Any>>>
+
     @POST("stories/{id}/view")
     suspend fun viewStory(@Path("id") id: String): Response<ApiResponse<Unit>>
 
@@ -122,4 +125,26 @@ interface ApiService {
 
     @PUT("settings/profile")
     suspend fun updateProfile(@Body body: Map<String, Any>): Response<ApiResponse<Unit>>
+
+    // Attachment upload
+    @Multipart
+    @POST("attachment/upload/{type}")
+    suspend fun uploadAttachment(
+        @Path("type") type: String,
+        @Part file: okhttp3.MultipartBody.Part
+    ): Response<ApiResponse<UploadResponse>>
+
+    // Wallet
+    @GET("wallet/balance")
+    suspend fun getWalletBalance(): Response<ApiResponse<WalletBalance>>
+
+    // Subscriptions
+    @GET("subscriptions/plans/{username}")
+    suspend fun getSubscriptionPlans(@Path("username") username: String): Response<ApiResponse<SubscriptionPlan>>
+
+    @POST("subscriptions/subscribe")
+    suspend fun subscribe(@Body body: SubscribeRequest): Response<ApiResponse<SubscriptionData>>
+
+    @POST("subscriptions/cancel")
+    suspend fun cancelSubscription(@Body body: Map<String, Int>): Response<ApiResponse<Unit>>
 }

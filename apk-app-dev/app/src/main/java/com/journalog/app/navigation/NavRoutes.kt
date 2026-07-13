@@ -21,4 +21,5 @@ sealed class NavRoutes(val route: String) {
     data object StoryViewer : NavRoutes("story/{userId}") {
         fun createRoute(userId: Int) = "story/$userId"
     }
+    data object StoryCreate : NavRoutes("story/create")
 }

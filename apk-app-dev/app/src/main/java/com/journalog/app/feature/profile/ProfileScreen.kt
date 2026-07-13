@@ -26,16 +26,19 @@ import com.journalog.app.core.network.ApiClient
 import com.journalog.app.data.remote.ApiService
 import com.journalog.app.data.remote.dto.PostDto
 import com.journalog.app.data.remote.dto.UserDto
+import com.journalog.app.data.remote.dto.SubscribeRequest
 import kotlinx.coroutines.launch
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun ProfileScreen(
     username: String,
+    currentUsername: String? = null,
     onBack: () -> Unit,
     onSettingsClick: () -> Unit,
     onNotificationsClick: () -> Unit,
-    onPostClick: (Int) -> Unit
+    onPostClick: (Int) -> Unit,
+    onSubscribeClick: ((UserDto) -> Unit)? = null
 ) {
     val api = remember { ApiClient.create(ApiService::class.java) }
     var user by remember { mutableStateOf<UserDto?>(null) }
@@ -143,14 +146,77 @@ fun ProfileScreen(
                 }
 
                 Spacer(modifier = Modifier.height(8.dp))
-                Button(
-                    onClick = {
-                        scope.launch { try { api.toggleFollow(username) } catch (_: Exception) {} }
-                    },
-                    modifier = Modifier.fillMaxWidth().padding(horizontal = 16.dp, vertical = 4.dp).height(36.dp),
-                    shape = CircleShape
-                ) {
-                    Text(if (u.isFollowing == true) "Following" else if (u.hasSubscribed == true) "Subscribed" else "Follow")
+
+                val isOwnProfile = currentUsername == username
+                if (!isOwnProfile) {
+                    var dropdownExpanded by remember { mutableStateOf(false) }
+
+                    if (u.paidProfile && u.openProfile != true) {
+                        Box {
+                            Button(
+                                onClick = { dropdownExpanded = true },
+                                modifier = Modifier.fillMaxWidth().padding(horizontal = 16.dp, vertical = 4.dp).height(36.dp),
+                                shape = CircleShape
+                            ) {
+                                Text(
+                                    if (u.hasSubscribed == true) "Subscribed"
+                                    else "Subscribe \$${u.profileAccessPrice}/mo"
+                                )
+                                Icon(Icons.Filled.ArrowDropDown, contentDescription = null)
+                            }
+                            DropdownMenu(
+                                expanded = dropdownExpanded,
+                                onDismissRequest = { dropdownExpanded = false }
+                            ) {
+                                if (u.hasSubscribed == true) {
+                                    DropdownMenuItem(
+                                        text = { Text("Unsubscribe") },
+                                        onClick = {
+                                            dropdownExpanded = false
+                                            scope.launch {
+                                                try { api.cancelSubscription(mapOf("creator_user_id" to u.id)) } catch (_: Exception) {}
+                                            }
+                                        }
+                                    )
+                                } else {
+                                    DropdownMenuItem(
+                                        text = { Text("Subscribe - \$${u.profileAccessPrice}/mo") },
+                                        onClick = {
+                                            dropdownExpanded = false
+                                            onSubscribeClick?.invoke(u)
+                                        }
+                                    )
+                                }
+                                if (u.isFollowing == true) {
+                                    DropdownMenuItem(
+                                        text = { Text("Unfollow") },
+                                        onClick = {
+                                            dropdownExpanded = false
+                                            scope.launch { try { api.toggleFollow(username) } catch (_: Exception) {} }
+                                        }
+                                    )
+                                } else {
+                                    DropdownMenuItem(
+                                        text = { Text("Follow") },
+                                        onClick = {
+                                            dropdownExpanded = false
+                                            scope.launch { try { api.toggleFollow(username) } catch (_: Exception) {} }
+                                        }
+                                    )
+                                }
+                            }
+                        }
+                    } else {
+                        Button(
+                            onClick = {
+                                scope.launch { try { api.toggleFollow(username) } catch (_: Exception) {} }
+                            },
+                            modifier = Modifier.fillMaxWidth().padding(horizontal = 16.dp, vertical = 4.dp).height(36.dp),
+                            shape = CircleShape
+                        ) {
+                            Text(if (u.isFollowing == true) "Following" else "Follow")
+                        }
+                    }
                 }
 
                 Spacer(modifier = Modifier.height(8.dp))

@@ -30,7 +30,9 @@ import com.journalog.app.feature.profile.ProfileScreen
 import com.journalog.app.feature.notifications.NotificationsScreen
 import com.journalog.app.feature.settings.SettingsScreen
 import com.journalog.app.feature.splash.SplashScreen
+import com.journalog.app.feature.story.StoryCreateScreen
 import com.journalog.app.feature.story.StoryViewerScreen
+import com.journalog.app.feature.subscription.SubscriptionScreen
 import com.journalog.app.navigation.BottomNavBar
 import com.journalog.app.navigation.NavRoutes
 import kotlinx.coroutines.launch
@@ -59,6 +61,7 @@ fun MainContent(tokenManager: TokenManager, launchToken: String? = null) {
     var currentUsername by remember { mutableStateOf("") }
     var isAdmin by remember { mutableStateOf(false) }
     var storyViewerUserId by remember { mutableStateOf<Int?>(null) }
+    var subscribeToUser by remember { mutableStateOf<com.journalog.app.data.remote.dto.UserDto?>(null) }
 
     LaunchedEffect(Unit) {
         tokenManager.usernameFlow.collect { username ->
@@ -149,7 +152,7 @@ fun MainContent(tokenManager: TokenManager, launchToken: String? = null) {
                         storyViewerUserId = userId
                     },
                     onCreateStory = {
-                        navController.navigate(NavRoutes.Create.route)
+                        navController.navigate(NavRoutes.StoryCreate.route)
                     }
                 )
             }
@@ -184,11 +187,15 @@ fun MainContent(tokenManager: TokenManager, launchToken: String? = null) {
                 val username = backStackEntry.arguments?.getString("username") ?: ""
                 ProfileScreen(
                     username = username,
+                    currentUsername = currentUsername,
                     onBack = { navController.popBackStack() },
                     onSettingsClick = { navController.navigate(NavRoutes.Settings.route) },
                     onNotificationsClick = { navController.navigate(NavRoutes.Notifications.route) },
                     onPostClick = { postId ->
                         navController.navigate(NavRoutes.PostDetail.createRoute(postId))
+                    },
+                    onSubscribeClick = { user ->
+                        subscribeToUser = user
                     }
                 )
             }
@@ -240,17 +247,11 @@ fun MainContent(tokenManager: TokenManager, launchToken: String? = null) {
                 )
             }
 
-            composable(
-                NavRoutes.StoryViewer.route,
-                arguments = listOf(
-                    navArgument("userId") { type = NavType.IntType }
-                )
-            ) { backStackEntry ->
-                val userId = backStackEntry.arguments?.getInt("userId") ?: 0
-                android.util.Log.d("Journalog-Feed", "StoryViewer composable rendered userId=$userId")
-                StoryViewerScreen(
-                    userId = userId,
-                    onBack = { navController.popBackStack() }
+            composable(NavRoutes.StoryCreate.route) {
+                StoryCreateScreen(
+                    tokenManager = tokenManager,
+                    onBack = { navController.popBackStack() },
+                    onStoryCreated = { navController.popBackStack() }
                 )
             }
         }
@@ -260,6 +261,14 @@ fun MainContent(tokenManager: TokenManager, launchToken: String? = null) {
             StoryViewerScreen(
                 userId = userId,
                 onBack = { storyViewerUserId = null }
+            )
+        }
+
+        subscribeToUser?.let { user ->
+            SubscriptionScreen(
+                creator = user,
+                onBack = { subscribeToUser = null },
+                onSubscribed = { subscribeToUser = null }
             )
         }
 

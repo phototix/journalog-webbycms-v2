@@ -27,6 +27,9 @@ data class UserDto(
     val website: String?,
     @SerializedName("paid_profile") val paidProfile: Boolean,
     @SerializedName("profile_access_price") val profileAccessPrice: Double,
+    @SerializedName("profile_access_price_3_months") val profileAccessPrice3Months: Double?,
+    @SerializedName("profile_access_price_6_months") val profileAccessPrice6Months: Double?,
+    @SerializedName("profile_access_price_12_months") val profileAccessPrice12Months: Double?,
     @SerializedName("public_profile") val publicProfile: Boolean,
     @SerializedName("open_profile") val openProfile: Boolean,
     @SerializedName("email_verified_at") val emailVerifiedAt: String?,
@@ -246,4 +249,35 @@ data class PaginatedMessages(
 
 data class PaginatedNotifications(
     val data: List<NotificationDto>
+)
+
+data class UploadResponse(
+    @SerializedName("attachmentID") val attachmentID: String,
+    val path: String,
+    val type: String,
+    val thumbnail: String?
+)
+
+data class SubscriptionPlan(
+    val price: Double,
+    @SerializedName("price_3_months") val price3Months: Double,
+    @SerializedName("price_6_months") val price6Months: Double,
+    @SerializedName("price_12_months") val price12Months: Double,
+    @SerializedName("has_subscribed") val hasSubscribed: Boolean
+)
+
+data class SubscribeRequest(
+    @SerializedName("recipient_user_id") val recipientUserId: Int,
+    val plan: String
+)
+
+data class SubscriptionData(
+    val id: Int?,
+    val status: String?,
+    @SerializedName("expires_at") val expiresAt: String?
+)
+
+data class WalletBalance(
+    val total: Double,
+    @SerializedName("pendingBalance") val pendingBalance: Double?
 )

@@ -87,5 +87,16 @@ Route::prefix('v1')->group(function () {
         Route::put('/settings/profile', [\App\Http\Controllers\Api\SettingsController::class, 'updateProfile']);
         Route::put('/settings/password', [\App\Http\Controllers\Api\SettingsController::class, 'updatePassword']);
 
+        // Attachment upload (mobile API)
+        Route::post('/attachment/upload/{type}', [\App\Http\Controllers\Api\AttachmentApiController::class, 'upload']);
+
+        // Wallet
+        Route::get('/wallet/balance', [\App\Http\Controllers\Api\WalletController::class, 'balance']);
+
+        // Subscriptions
+        Route::get('/subscriptions/plans/{username}', [\App\Http\Controllers\Api\SubscriptionController::class, 'plans']);
+        Route::post('/subscriptions/subscribe', [\App\Http\Controllers\Api\SubscriptionController::class, 'subscribe']);
+        Route::post('/subscriptions/cancel', [\App\Http\Controllers\Api\SubscriptionController::class, 'cancel']);
+
     });
 });
