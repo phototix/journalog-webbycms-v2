@@ -121,7 +121,7 @@
         <div class="menu-divider"></div>
         @if(Auth::check())
             <li>
-                <a class="scroll-link d-flex align-items-center" href="{{url('/apk/latest')}}" target="_blank">
+                <a class="scroll-link d-flex align-items-center" href="{{url('/apk/latest') . '?t=' . time()}}" target="_blank">
                     @include('elements.icon',['icon'=>'logo-android','variant'=>'medium','centered'=>false,'classes'=>'mr-2'])
                     {{__('Download APK')}}</a>
             </li>

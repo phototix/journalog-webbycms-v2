@@ -188,7 +188,7 @@
             @endif
         @endif
         <li class="nav-item mt-1">
-            <a role="button" class="btn btn-round btn-primary btn-block" href="{{url('/apk/latest')}}" target="_blank">
+            <a role="button" class="btn btn-round btn-primary btn-block" href="{{url('/apk/latest') . '?t=' . time()}}" target="_blank">
                 <span class="d-none d-md-block d-xl-block d-lg-block ml-2 text-truncate">@include('elements.icon',['icon'=>'logo-android','centered'=>false,'classes'=>'mr-1']) {{__('Download')}}</span>
                 <span class="d-block d-md-none d-flex align-items-center justify-content-center">@include('elements.icon',['icon'=>'logo-android','variant'=>'medium','classes'=>'flex-shrink-0'])</span>
             </a>
