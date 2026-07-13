@@ -81,18 +81,13 @@ fun PostDetailScreen(
     }
 
     LaunchedEffect(postId) {
-        android.util.Log.d("Journalog-Feed", "PostDetail LaunchedEffect postId=$postId")
         isLoading = true
         try {
             val resp = api.getPost(postId)
-            android.util.Log.d("Journalog-Feed", "post resp ok=${resp.isSuccessful}")
             if (resp.isSuccessful) {
                 post = resp.body()?.data?.get("post")
-                android.util.Log.d("Journalog-Feed", "post loaded id=${post?.id}")
             }
-        } catch (e: Exception) {
-            android.util.Log.e("Journalog-Feed", "post load failed", e)
-        }
+        } catch (_: Exception) {}
         loadComments()
         isLoading = false
     }
