@@ -309,3 +309,19 @@ data class WalletBalance(
     val total: Double,
     @SerializedName("pendingBalance") val pendingBalance: Double?
 )
+
+data class ChatMessageData(
+    val id: Int,
+    val text: String?,
+    @SerializedName("sender_id") val senderId: Int,
+    @SerializedName("receiver_id") val receiverId: Int,
+    @SerializedName("is_mine") val isMine: Boolean,
+    @SerializedName("created_at") val createdAt: String?
+)
+
+data class ChatbotResponse(
+    @SerializedName("user_message") val userMessage: ChatMessageData?,
+    @SerializedName("bot_message") val botMessage: ChatMessageData?,
+    val response: String?,
+    val error: String?
+)

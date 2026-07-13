@@ -142,6 +142,10 @@ interface ApiService {
     @GET("wallet/balance")
     suspend fun getWalletBalance(): Response<ApiResponse<WalletBalance>>
 
+    // Chatbot
+    @POST("chatbot/send")
+    suspend fun sendChatbotMessage(@Body body: Map<String, String>): Response<ApiResponse<ChatbotResponse>>
+
     // Subscriptions
     @GET("subscriptions/plans/{username}")
     suspend fun getSubscriptionPlans(@Path("username") username: String): Response<ApiResponse<SubscriptionPlan>>

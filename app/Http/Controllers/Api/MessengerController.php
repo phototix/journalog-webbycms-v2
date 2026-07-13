@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Api;
 use App\Model\User;
 use App\Model\UserMessage;
 use App\Providers\GenericHelperServiceProvider;
+use App\Services\ChatbotService;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
@@ -73,6 +74,50 @@ class MessengerController extends ApiController
                 'unread_count' => $unreadCount,
             ];
         }, $contacts);
+
+        // Inject bot conversation for all users if AI is enabled
+        if (getSetting('ai.open_ai_enabled')) {
+            $botUser = User::where('is_bot', true)->first();
+            if ($botUser) {
+                $botInList = false;
+                foreach ($conversations as $conv) {
+                    if ($conv['contact_id'] === (int) $botUser->id) {
+                        $botInList = true;
+                        break;
+                    }
+                }
+                if (!$botInList) {
+                    $botMessage = UserMessage::where(function ($q) use ($userID, $botUser) {
+                        $q->where('sender_id', $userID)->where('receiver_id', $botUser->id);
+                    })->orWhere(function ($q) use ($userID, $botUser) {
+                        $q->where('sender_id', $botUser->id)->where('receiver_id', $userID);
+                    })->orderBy('created_at', 'desc')->first();
+
+                    array_unshift($conversations, [
+                        'contact_id' => (int) $botUser->id,
+                        'name' => $botUser->name,
+                        'avatar' => GenericHelperServiceProvider::getStorageAvatarPath($botUser->avatar),
+                        'last_message' => $botMessage ? $botMessage->message : 'Ask me anything!',
+                        'last_message_date' => $botMessage ? $botMessage->created_at : now()->toDateTimeString(),
+                        'unread_count' => 0,
+                    ]);
+                } else {
+                    // Move bot to front
+                    $botIdx = null;
+                    foreach ($conversations as $i => $conv) {
+                        if ($conv['contact_id'] === (int) $botUser->id) {
+                            $botIdx = $i;
+                            break;
+                        }
+                    }
+                    if ($botIdx !== null && $botIdx > 0) {
+                        $botConv = $conversations[$botIdx];
+                        unset($conversations[$botIdx]);
+                        array_unshift($conversations, $botConv);
+                    }
+                }
+            }
+        }
 
         return $this->success([
             'conversations' => array_values($conversations),

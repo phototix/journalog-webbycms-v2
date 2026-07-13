@@ -100,6 +100,9 @@ Route::prefix('v1')->group(function () {
         // Wallet
         Route::get('/wallet/balance', [\App\Http\Controllers\Api\WalletController::class, 'balance']);
 
+        // Chatbot
+        Route::post('/chatbot/send', [\App\Http\Controllers\Api\ChatbotController::class, 'send']);
+
         // Subscriptions
         Route::get('/subscriptions/plans/{username}', [\App\Http\Controllers\Api\SubscriptionController::class, 'plans']);
         Route::post('/subscriptions/subscribe', [\App\Http\Controllers\Api\SubscriptionController::class, 'subscribe']);

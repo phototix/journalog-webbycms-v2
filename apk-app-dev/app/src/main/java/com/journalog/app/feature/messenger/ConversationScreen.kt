@@ -1,10 +1,10 @@
 package com.journalog.app.feature.messenger
 
+import android.widget.TextView
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.lazy.rememberLazyListState
-import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
@@ -15,16 +15,16 @@ import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.clip
-import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.graphics.toArgb
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.unit.dp
-import coil.compose.AsyncImage
-import android.util.Log
+import androidx.compose.ui.viewinterop.AndroidView
 import com.journalog.app.core.common.DateFormatter
 import com.journalog.app.core.network.ApiClient
 import com.journalog.app.data.remote.ApiService
 import com.journalog.app.data.remote.dto.MessageDto
+import io.noties.markwon.Markwon
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 
@@ -37,6 +37,8 @@ fun ConversationScreen(
     onBack: () -> Unit
 ) {
     val api = remember { ApiClient.create(ApiService::class.java) }
+    val context = LocalContext.current
+    val markwon = remember { Markwon.create(context) }
     var messages by remember { mutableStateOf<List<MessageDto>>(emptyList()) }
     var inputText by remember { mutableStateOf("") }
     var currentPage by remember { mutableIntStateOf(1) }
@@ -46,34 +48,28 @@ fun ConversationScreen(
     var isSending by remember { mutableStateOf(false) }
     val scope = rememberCoroutineScope()
     val listState = rememberLazyListState()
+    val isBot = remember { userName.contains("Bot", ignoreCase = true) }
 
     fun loadMessages(page: Int = 1, append: Boolean = false) {
         scope.launch {
             if (page == 1) isLoading = true else isLoadingMore = true
             try {
-                android.util.Log.d("Journalog-Feed", "loadMessages page=$page append=$append")
                 val resp = api.getMessages(userId, page, 10)
-                android.util.Log.d("Journalog-Feed", "getMessages ok=${resp.isSuccessful} code=${resp.code()}")
                 if (resp.isSuccessful) {
                     val data = resp.body()?.data
                     val newMsgs = data?.messages?.data?.reversed() ?: emptyList()
-                    android.util.Log.d("Journalog-Feed", "newMsgs count=${newMsgs.size}")
                     messages = if (append) newMsgs + messages else newMsgs
                     hasMore = data?.hasMore ?: false
                     currentPage = page
                     if (page == 1) {
                         scope.launch {
                             try {
-                                if (messages.isNotEmpty()) {
-                                    listState.scrollToItem(messages.size - 1)
-                                }
+                                if (messages.isNotEmpty()) listState.scrollToItem(messages.size - 1)
                             } catch (_: Exception) {}
                         }
                     }
                 }
-            } catch (e: Exception) {
-                android.util.Log.e("Journalog-Feed", "loadMessages failed", e)
-            }
+            } catch (_: Exception) {}
             isLoading = false
             isLoadingMore = false
         }
@@ -92,7 +88,7 @@ fun ConversationScreen(
         if (shouldLoadPrev.value) loadMessages(currentPage + 1, append = true)
     }
 
-    // Background polling every 5s, stops after 3 consecutive failures
+    // Background polling (5s)
     var pollFailCount by remember { mutableIntStateOf(0) }
     LaunchedEffect(Unit) {
         while (true) {
@@ -111,12 +107,8 @@ fun ConversationScreen(
                             scope.launch { listState.scrollToItem(messages.size - 1) }
                         }
                     }
-                } else {
-                    pollFailCount++
-                }
-            } catch (_: Exception) {
-                pollFailCount++
-            }
+                } else { pollFailCount++ }
+            } catch (_: Exception) { pollFailCount++ }
         }
     }
 
@@ -125,9 +117,18 @@ fun ConversationScreen(
         isSending = true
         scope.launch {
             try {
-                api.sendMessage(mapOf("receiver_id" to userId, "message" to inputText))
-                inputText = ""
-                loadMessages(page = 1, append = false)
+                if (isBot) {
+                    // Use chatbot API for bot conversations
+                    val resp = api.sendChatbotMessage(mapOf("message" to inputText))
+                    if (resp.isSuccessful) {
+                        inputText = ""
+                        loadMessages(page = 1, append = false)
+                    }
+                } else {
+                    api.sendMessage(mapOf("receiver_id" to userId, "message" to inputText))
+                    inputText = ""
+                    loadMessages(page = 1, append = false)
+                }
             } catch (_: Exception) {}
             isSending = false
         }
@@ -136,20 +137,7 @@ fun ConversationScreen(
     Scaffold(
         topBar = {
             TopAppBar(
-                title = {
-                    Row(verticalAlignment = Alignment.CenterVertically) {
-                        if (avatar.isNotBlank()) {
-                            AsyncImage(
-                                model = avatar,
-                                contentDescription = null,
-                                modifier = Modifier.size(32.dp).clip(CircleShape),
-                                contentScale = ContentScale.Crop
-                            )
-                            Spacer(modifier = Modifier.width(8.dp))
-                        }
-                        Text(userName)
-                    }
-                },
+                title = { Text(userName) },
                 navigationIcon = {
                     IconButton(onClick = onBack) {
                         Icon(Icons.AutoMirrored.Filled.ArrowBack, contentDescription = "Back")
@@ -183,20 +171,12 @@ fun ConversationScreen(
     ) { padding ->
         Box(modifier = Modifier.fillMaxSize().padding(padding)) {
             if (messages.isEmpty() && !isLoading) {
-                Box(
-                    modifier = Modifier.fillMaxSize(),
-                    contentAlignment = Alignment.Center
-                ) {
-                    Text(
-                        "No messages yet. Send a message to start!",
-                        color = MaterialTheme.colorScheme.onSurfaceVariant
-                    )
+                Box(Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
+                    Text("No messages yet. Send a message to start!",
+                        color = MaterialTheme.colorScheme.onSurfaceVariant)
                 }
             } else if (messages.isEmpty() && isLoading) {
-                Box(
-                    modifier = Modifier.fillMaxSize(),
-                    contentAlignment = Alignment.Center
-                ) {
+                Box(Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
                     CircularProgressIndicator(modifier = Modifier.size(24.dp))
                 }
             } else {
@@ -206,38 +186,19 @@ fun ConversationScreen(
                     contentPadding = PaddingValues(12.dp),
                     verticalArrangement = Arrangement.spacedBy(4.dp)
                 ) {
-                    item {
-                        if (hasMore && !isLoading) {
-                            Box(
-                                modifier = Modifier.fillMaxWidth().padding(8.dp),
-                                contentAlignment = Alignment.Center
-                            ) {
-                                Text("Load older messages", style = MaterialTheme.typography.labelSmall,
-                                    color = MaterialTheme.colorScheme.onSurfaceVariant)
-                            }
-                        }
-                    }
-
                     items(messages, key = { it.id }) { msg ->
                         Column {
-                            MessageBubble(msg)
+                            if (isBot && !msg.isMine) {
+                                MarkdownBubble(markwon = markwon, text = msg.text ?: "", isMine = false)
+                            } else {
+                                MessageBubble(msg = msg, isMine = msg.isMine)
+                            }
                             Text(
                                 DateFormatter.formatRelativeTime(msg.createdAt),
                                 style = MaterialTheme.typography.labelSmall,
                                 color = MaterialTheme.colorScheme.onSurfaceVariant,
                                 modifier = Modifier.padding(horizontal = 14.dp, vertical = 2.dp)
                             )
-                        }
-                    }
-
-                    if (isLoadingMore) {
-                        item {
-                            Box(
-                                modifier = Modifier.fillMaxWidth().padding(16.dp),
-                                contentAlignment = Alignment.Center
-                            ) {
-                                CircularProgressIndicator(modifier = Modifier.size(20.dp), strokeWidth = 2.dp)
-                            }
                         }
                     }
                 }
@@ -247,20 +208,19 @@ fun ConversationScreen(
 }
 
 @Composable
-fun MessageBubble(msg: MessageDto) {
-    val color = if (msg.isMine) MaterialTheme.colorScheme.primary else MaterialTheme.colorScheme.surfaceVariant
-    val textColor = if (msg.isMine) MaterialTheme.colorScheme.onPrimary else MaterialTheme.colorScheme.onSurface
+fun MessageBubble(msg: MessageDto, isMine: Boolean = msg.isMine) {
+    val color = if (isMine) MaterialTheme.colorScheme.primary else MaterialTheme.colorScheme.surfaceVariant
+    val textColor = if (isMine) MaterialTheme.colorScheme.onPrimary else MaterialTheme.colorScheme.onSurface
 
     Column(
         modifier = Modifier.fillMaxWidth(),
-        horizontalAlignment = if (msg.isMine) Alignment.End else Alignment.Start
+        horizontalAlignment = if (isMine) Alignment.End else Alignment.Start
     ) {
         Surface(
             shape = RoundedCornerShape(
-                topStart = 16.dp,
-                topEnd = 16.dp,
-                bottomStart = if (msg.isMine) 16.dp else 4.dp,
-                bottomEnd = if (msg.isMine) 4.dp else 16.dp
+                topStart = 16.dp, topEnd = 16.dp,
+                bottomStart = if (isMine) 16.dp else 4.dp,
+                bottomEnd = if (isMine) 4.dp else 16.dp
             ),
             color = color
         ) {
@@ -269,6 +229,43 @@ fun MessageBubble(msg: MessageDto) {
                 color = textColor,
                 modifier = Modifier.padding(horizontal = 14.dp, vertical = 8.dp),
                 style = MaterialTheme.typography.bodyMedium
+            )
+        }
+    }
+}
+
+@Composable
+fun MarkdownBubble(markwon: Markwon, text: String, isMine: Boolean) {
+    val color = if (isMine) MaterialTheme.colorScheme.primary else MaterialTheme.colorScheme.surfaceVariant
+    val textColor = if (isMine) MaterialTheme.colorScheme.onPrimary else MaterialTheme.colorScheme.onSurface
+
+    Column(
+        modifier = Modifier.fillMaxWidth(),
+        horizontalAlignment = if (isMine) Alignment.End else Alignment.Start
+    ) {
+        Surface(
+            shape = RoundedCornerShape(
+                topStart = 16.dp, topEnd = 16.dp,
+                bottomStart = if (isMine) 16.dp else 4.dp,
+                bottomEnd = if (isMine) 4.dp else 16.dp
+            ),
+            color = color
+        ) {
+            AndroidView(
+                factory = { ctx ->
+                    val density = ctx.resources.displayMetrics.density
+                    TextView(ctx).apply {
+                        setTextColor(textColor.toArgb())
+                        val hp = (14 * density).toInt()
+                        val vp = (8 * density).toInt()
+                        setPadding(hp, vp, hp, vp)
+                        textSize = 14f
+                    }
+                },
+                update = { tv ->
+                    markwon.setMarkdown(tv, text)
+                },
+                modifier = Modifier.widthIn(max = 320.dp)
             )
         }
     }
