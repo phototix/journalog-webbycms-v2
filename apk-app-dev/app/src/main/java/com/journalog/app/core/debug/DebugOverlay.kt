@@ -78,10 +78,13 @@ fun DebugOverlay(isAdmin: Boolean) {
                         )
                         Row(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
                             IconButton(onClick = {
-                                val text = DebugLogStore.copyAll()
-                                val clipboard = context.getSystemService(Context.CLIPBOARD_SERVICE) as ClipboardManager
-                                clipboard.setPrimaryClip(ClipData.newPlainText("Debug Log", text))
-                                Toast.makeText(context, "Copied ${text.length} chars", Toast.LENGTH_SHORT).show()
+                                try {
+                                    val appContext = context.applicationContext
+                                    val text = DebugLogStore.copyAll()
+                                    val clipboard = appContext.getSystemService(Context.CLIPBOARD_SERVICE) as ClipboardManager
+                                    clipboard.setPrimaryClip(ClipData.newPlainText("Debug Log", text))
+                                    Toast.makeText(appContext, "Copied ${text.length} chars", Toast.LENGTH_SHORT).show()
+                                } catch (_: Exception) {}
                             }) {
                                 Icon(Icons.Outlined.ContentCopy, "Copy", tint = Color.White)
                             }
@@ -216,14 +219,17 @@ private fun LogEntryCard(entry: LogEntry, context: Context) {
                 Spacer(modifier = Modifier.height(4.dp))
                 TextButton(
                     onClick = {
-                        val text = "[${entry.timestamp}] ${entry.method} ${entry.url}\n" +
-                            "Status: ${entry.responseCode}\n" +
-                            "Req: ${entry.requestBody}\n" +
-                            "Res: ${entry.responseBody}\n" +
-                            "Err: ${entry.error}"
-                        val clipboard = context.getSystemService(Context.CLIPBOARD_SERVICE) as ClipboardManager
-                        clipboard.setPrimaryClip(ClipData.newPlainText("Log Entry", text))
-                        Toast.makeText(context, "Copied entry", Toast.LENGTH_SHORT).show()
+                        try {
+                            val appContext = context.applicationContext
+                            val text = "[${entry.timestamp}] ${entry.method} ${entry.url}\n" +
+                                "Status: ${entry.responseCode}\n" +
+                                "Req: ${entry.requestBody}\n" +
+                                "Res: ${entry.responseBody}\n" +
+                                "Err: ${entry.error}"
+                            val clipboard = appContext.getSystemService(Context.CLIPBOARD_SERVICE) as ClipboardManager
+                            clipboard.setPrimaryClip(ClipData.newPlainText("Log Entry", text))
+                            Toast.makeText(appContext, "Copied entry", Toast.LENGTH_SHORT).show()
+                        } catch (_: Exception) {}
                     },
                     contentPadding = PaddingValues(0.dp)
                 ) {
