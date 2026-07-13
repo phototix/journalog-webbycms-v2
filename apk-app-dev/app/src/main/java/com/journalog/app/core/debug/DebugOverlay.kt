@@ -46,8 +46,8 @@ fun DebugOverlay(isAdmin: Boolean) {
         Box(
             modifier = Modifier
                 .offset { IntOffset(offsetX.toInt(), offsetY.toInt()) }
-                .align(Alignment.BottomEnd)
-                .offset(x = (-16).dp, y = (-16).dp)
+                .align(Alignment.TopEnd)
+                .offset(x = (-16).dp, y = 16.dp)
                 .size(40.dp)
                 .pointerInput(Unit) {
                     detectDragGestures { change, dragAmount ->
