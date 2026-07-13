@@ -26,7 +26,7 @@ import kotlinx.coroutines.launch
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun MessengerScreen(
-    onConversationClick: (Int, String, String) -> Unit
+    onConversationClick: (Int, String) -> Unit
 ) {
     val api = remember { ApiClient.create(ApiService::class.java) }
     var conversations by remember { mutableStateOf<List<ConversationDto>>(emptyList()) }
@@ -38,7 +38,7 @@ fun MessengerScreen(
             val response = api.getConversations()
             if (response.isSuccessful) {
                 conversations = (response.body()?.data?.get("conversations") ?: emptyList())
-                    .sortedByDescending { it.contactId == 42 }
+                    .sortedByDescending { it.contactId == 42 || it.name.contains("Bot", ignoreCase = true) }
             }
         } catch (_: Exception) {}
         isLoading = false
@@ -96,7 +96,7 @@ fun MessengerScreen(
                 Row(
                     modifier = Modifier
                         .fillMaxWidth()
-                        .clickable { onConversationClick(conv.contactId, conv.name, conv.avatar) }
+                        .clickable { onConversationClick(conv.contactId, conv.name) }
                         .padding(horizontal = 16.dp, vertical = 8.dp),
                     verticalAlignment = Alignment.CenterVertically
                 ) {
@@ -114,7 +114,7 @@ fun MessengerScreen(
                             Text(conv.name, style = MaterialTheme.typography.labelLarge, fontWeight = FontWeight.SemiBold)
                             Spacer(modifier = Modifier.weight(1f))
                     Text(
-                        DateFormatter.formatRelativeTimeMySql(conv.lastMessageDate),
+                        try { DateFormatter.formatRelativeTimeMySql(conv.lastMessageDate) } catch (_: Exception) { "" },
                         style = MaterialTheme.typography.labelSmall,
                         color = MaterialTheme.colorScheme.onSurfaceVariant
                     )

@@ -248,6 +248,11 @@ data class ExploreUsersData(
     @SerializedName("next_page") val nextPage: Int?
 )
 
+data class MessagesResponse(
+    val messages: PaginatedMessages,
+    @SerializedName("has_more") val hasMore: Boolean
+)
+
 data class PaginatedMessages(
     val data: List<MessageDto>
 )

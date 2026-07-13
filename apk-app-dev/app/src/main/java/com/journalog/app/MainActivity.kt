@@ -182,8 +182,8 @@ fun MainContent(tokenManager: TokenManager, launchToken: String? = null) {
 
             composable(NavRoutes.Messenger.route) {
                 MessengerScreen(
-                    onConversationClick = { userId, userName, avatar ->
-                        navController.navigate(NavRoutes.Conversation.createRoute(userId, userName, avatar))
+                    onConversationClick = { userId, userName ->
+                        navController.navigate(NavRoutes.Conversation.createRoute(userId, userName))
                     }
                 )
             }
@@ -246,17 +246,14 @@ fun MainContent(tokenManager: TokenManager, launchToken: String? = null) {
                 NavRoutes.Conversation.route,
                 arguments = listOf(
                     navArgument("userId") { type = NavType.IntType },
-                    navArgument("userName") { type = NavType.StringType },
-                    navArgument("avatar") { type = NavType.StringType; defaultValue = "" }
+                    navArgument("userName") { type = NavType.StringType }
                 )
             ) { backStackEntry ->
                 val userId = backStackEntry.arguments?.getInt("userId") ?: 0
                 val userName = backStackEntry.arguments?.getString("userName") ?: ""
-                val avatar = backStackEntry.arguments?.getString("avatar") ?: ""
                 ConversationScreen(
                     userId = userId,
                     userName = userName,
-                    avatar = avatar,
                     onBack = { navController.popBackStack() }
                 )
             }

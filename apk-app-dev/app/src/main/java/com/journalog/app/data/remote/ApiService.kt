@@ -79,7 +79,7 @@ interface ApiService {
         @Path("userId") userId: Int,
         @Query("page") page: Int = 1,
         @Query("per_page") perPage: Int = 10
-    ): Response<ApiResponse<Map<String, PaginatedMessages>>>
+    ): Response<ApiResponse<MessagesResponse>>
 
     @POST("messages")
     suspend fun sendMessage(@Body body: Map<String, Any>): Response<ApiResponse<Map<String, MessageDto>>>

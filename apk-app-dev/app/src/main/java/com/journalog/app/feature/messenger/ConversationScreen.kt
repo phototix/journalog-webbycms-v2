@@ -20,6 +20,7 @@ import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.unit.dp
 import coil.compose.AsyncImage
+import android.util.Log
 import com.journalog.app.core.common.DateFormatter
 import com.journalog.app.core.network.ApiClient
 import com.journalog.app.data.remote.ApiService
@@ -50,13 +51,15 @@ fun ConversationScreen(
         scope.launch {
             if (page == 1) isLoading = true else isLoadingMore = true
             try {
+                android.util.Log.d("Journalog-Feed", "loadMessages page=$page append=$append")
                 val resp = api.getMessages(userId, page, 10)
+                android.util.Log.d("Journalog-Feed", "getMessages ok=${resp.isSuccessful} code=${resp.code()}")
                 if (resp.isSuccessful) {
-                    val paginated = resp.body()?.data?.get("messages")
-                    val newMsgs = paginated?.data?.reversed() ?: emptyList()
+                    val data = resp.body()?.data
+                    val newMsgs = data?.messages?.data?.reversed() ?: emptyList()
+                    android.util.Log.d("Journalog-Feed", "newMsgs count=${newMsgs.size}")
                     messages = if (append) newMsgs + messages else newMsgs
-                    val hasMoreData = resp.body()?.data?.get("has_more") as? Boolean
-                    hasMore = hasMoreData ?: false
+                    hasMore = data?.hasMore ?: false
                     currentPage = page
                     if (page == 1) {
                         scope.launch {
@@ -68,13 +71,18 @@ fun ConversationScreen(
                         }
                     }
                 }
-            } catch (_: Exception) {}
+            } catch (e: Exception) {
+                android.util.Log.e("Journalog-Feed", "loadMessages failed", e)
+            }
             isLoading = false
             isLoadingMore = false
         }
     }
 
-    LaunchedEffect(Unit) { loadMessages() }
+    LaunchedEffect(Unit) {
+        android.util.Log.d("Journalog-Feed", "ConversationScreen started userId=$userId")
+        loadMessages()
+    }
 
     // Scroll-to-top pagination
     val shouldLoadPrev = remember {
@@ -97,7 +105,7 @@ fun ConversationScreen(
                 val resp = api.getMessages(userId, 1, 10)
                 if (resp.isSuccessful) {
                     pollFailCount = 0
-                    val fresh = resp.body()?.data?.get("messages")?.data?.reversed() ?: emptyList()
+                    val fresh = resp.body()?.data?.messages?.data?.reversed() ?: emptyList()
                     val currentIds = messages.map { it.id }.toSet()
                     val newOnes = fresh.filter { it.id !in currentIds }
                     if (newOnes.isNotEmpty()) {
