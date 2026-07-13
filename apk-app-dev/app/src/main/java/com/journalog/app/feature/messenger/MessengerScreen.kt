@@ -26,7 +26,7 @@ import kotlinx.coroutines.launch
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun MessengerScreen(
-    onConversationClick: (Int, String) -> Unit
+    onConversationClick: (Int, String, String) -> Unit
 ) {
     val api = remember { ApiClient.create(ApiService::class.java) }
     var conversations by remember { mutableStateOf<List<ConversationDto>>(emptyList()) }
@@ -96,7 +96,7 @@ fun MessengerScreen(
                 Row(
                     modifier = Modifier
                         .fillMaxWidth()
-                        .clickable { onConversationClick(conv.contactId, conv.name) }
+                        .clickable { onConversationClick(conv.contactId, conv.name, conv.avatar) }
                         .padding(horizontal = 16.dp, vertical = 8.dp),
                     verticalAlignment = Alignment.CenterVertically
                 ) {

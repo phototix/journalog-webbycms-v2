@@ -75,7 +75,11 @@ interface ApiService {
     suspend fun getConversations(): Response<ApiResponse<Map<String, List<ConversationDto>>>>
 
     @GET("conversations/{userId}/messages")
-    suspend fun getMessages(@Path("userId") userId: Int): Response<ApiResponse<Map<String, PaginatedMessages>>>
+    suspend fun getMessages(
+        @Path("userId") userId: Int,
+        @Query("page") page: Int = 1,
+        @Query("per_page") perPage: Int = 10
+    ): Response<ApiResponse<Map<String, PaginatedMessages>>>
 
     @POST("messages")
     suspend fun sendMessage(@Body body: Map<String, Any>): Response<ApiResponse<Map<String, MessageDto>>>

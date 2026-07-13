@@ -15,8 +15,8 @@ sealed class NavRoutes(val route: String) {
     data object PostDetail : NavRoutes("post/{postId}") {
         fun createRoute(postId: Int) = "post/$postId"
     }
-    data object Conversation : NavRoutes("conversation/{userId}/{userName}") {
-        fun createRoute(userId: Int, userName: String) = "conversation/$userId/$userName"
+    data object Conversation : NavRoutes("conversation/{userId}/{userName}/{avatar}") {
+        fun createRoute(userId: Int, userName: String, avatar: String = "") = "conversation/$userId/$userName/$avatar"
     }
     data object StoryViewer : NavRoutes("story/{userId}") {
         fun createRoute(userId: Int) = "story/$userId"

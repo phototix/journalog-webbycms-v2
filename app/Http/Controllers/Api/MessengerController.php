@@ -87,7 +87,7 @@ class MessengerController extends ApiController
             $q->where('sender_id', $userID)->where('receiver_id', $userId);
         })->orWhere(function ($q) use ($userID, $userId) {
             $q->where('sender_id', $userId)->where('receiver_id', $userID);
-        })->orderBy('created_at', 'desc')->paginate(50);
+        })->orderBy('created_at', 'desc')->paginate((int) $request->get('per_page', 10));
 
         UserMessage::where('sender_id', $userId)
             ->where('receiver_id', $userID)
