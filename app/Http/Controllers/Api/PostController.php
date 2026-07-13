@@ -113,7 +113,7 @@ class PostController extends ApiController
             'comments' => $comments->through(function ($comment) {
                 return [
                     'id' => $comment->id,
-                    'text' => $comment->text,
+                    'text' => $comment->message,
                     'created_at' => $comment->created_at,
                     'user' => [
                         'id' => $comment->user->id,
@@ -137,7 +137,7 @@ class PostController extends ApiController
         $comment = PostComment::create([
             'user_id' => $request->user()->id,
             'post_id' => $post->id,
-            'text' => $validated['text'],
+            'message' => $validated['text'],
         ]);
 
         $comment->load('user');
@@ -145,7 +145,7 @@ class PostController extends ApiController
         return $this->success([
             'comment' => [
                 'id' => $comment->id,
-                'text' => $comment->text,
+                'text' => $comment->message,
                 'created_at' => $comment->created_at,
                 'user' => [
                     'id' => $comment->user->id,
