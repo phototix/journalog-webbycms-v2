@@ -1,5 +1,6 @@
 package com.journalog.app.feature.gifts
 
+import org.json.JSONObject
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
@@ -155,7 +156,12 @@ fun GiftModal(
                                         onGiftSent(resp.body()!!.data?.balance ?: 0.0)
                                         onDismiss()
                                     } else {
-                                        error = resp.body()?.message ?: "Failed to send gift"
+                                        val errBody = resp.errorBody()?.string()
+                                        error = try {
+                                            JSONObject(errBody ?: "").optString("message", "Failed to send gift")
+                                        } catch (_: Exception) {
+                                            resp.body()?.message ?: "Failed to send gift"
+                                        }
                                     }
                                 } catch (e: Exception) {
                                     error = e.message
