@@ -44,7 +44,6 @@ fun StoryViewerScreen(
     var isPaused by remember { mutableStateOf(false) }
     var currentProgress by remember { mutableStateOf(0f) }
     var dragOffset by remember { mutableStateOf(0f) }
-    var videoFinished by remember { mutableStateOf(false) }
 
     LaunchedEffect(userId) {
         try {
@@ -67,12 +66,10 @@ fun StoryViewerScreen(
     val advanceStory: () -> Unit = {
         if (currentItemIndex + 1 < (currentGroup?.stories?.size ?: 0)) {
             currentItemIndex++
-            videoFinished = false
             currentProgress = 0f
         } else if (currentGroupIndex + 1 < groups.size) {
             currentGroupIndex++
             currentItemIndex = 0
-            videoFinished = false
             currentProgress = 0f
         } else {
             onBack()
@@ -114,7 +111,7 @@ fun StoryViewerScreen(
             VideoPlayer(
                 url = currentItem.url,
                 isPaused = isPaused,
-                onFinished = { videoFinished = true },
+                onFinished = { advanceStory() },
                 modifier = Modifier.fillMaxSize()
             )
         } else {
@@ -243,7 +240,7 @@ fun StoryViewerScreen(
     }
 
     // Auto-advance timer
-    LaunchedEffect(currentGroupIndex, currentItemIndex, isPaused, videoFinished) {
+    LaunchedEffect(currentGroupIndex, currentItemIndex, isPaused) {
         if (isPaused) return@LaunchedEffect
         val duration = (currentItem.length ?: 5) * 1000L
 
@@ -255,11 +252,8 @@ fun StoryViewerScreen(
             currentProgress = i.toFloat() / steps
         }
 
-        if (isVideo) {
-            if (videoFinished) {
-                advanceStory()
-            }
-        } else {
+        // Images advance when timer completes; videos advance via onFinished callback
+        if (!isVideo) {
             advanceStory()
         }
     }
