@@ -277,7 +277,7 @@ private fun VideoPlayer(
     val exoPlayer = remember {
         ExoPlayer.Builder(context).build().apply {
             setMediaItem(MediaItem.fromUri(url))
-            repeatMode = ExoPlayer.REPEAT_MODE_ONE
+            repeatMode = ExoPlayer.REPEAT_MODE_OFF
             playWhenReady = !isPaused
             prepare()
         }
