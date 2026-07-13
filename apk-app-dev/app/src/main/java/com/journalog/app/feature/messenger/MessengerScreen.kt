@@ -37,7 +37,8 @@ fun MessengerScreen(
         try {
             val response = api.getConversations()
             if (response.isSuccessful) {
-                conversations = response.body()?.data?.get("conversations") ?: emptyList()
+                conversations = (response.body()?.data?.get("conversations") ?: emptyList())
+                    .sortedByDescending { it.contactId == 42 }
             }
         } catch (_: Exception) {}
         isLoading = false
