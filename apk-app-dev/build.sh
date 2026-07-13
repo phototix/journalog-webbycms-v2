@@ -161,6 +161,7 @@ fi
 
 echo "  Pulling latest code on server..."
 sshpass -p "$SSH_PASS" ssh -o StrictHostKeyChecking=no "$SSH_USER@$SSH_HOST" "
+  git config --global --add safe.directory $REMOTE_DIR 2>/dev/null || true
   cd $REMOTE_DIR
   git pull origin main 2>&1
   echo '$SSH_PASS' | sudo -S chmod 755 $REMOTE_DIR/public/apk 2>/dev/null || true
