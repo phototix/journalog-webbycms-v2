@@ -201,7 +201,9 @@ step6_deploy() {
     echo "  Copying version metadata to server..."
     sshpass -p "$SSH_PASS" ssh -o StrictHostKeyChecking=no "$SSH_USER@$SSH_HOST" "
       echo '$SSH_PASS' | sudo -S mkdir -p $REMOTE_DIR/storage/app
-      echo '$SSH_PASS' | sudo -S chmod 777 $REMOTE_DIR/storage/app
+      echo '$SSH_PASS' | sudo -S rm -f $REMOTE_DIR/storage/app/apk-version.json
+      echo '$SSH_PASS' | sudo -S touch $REMOTE_DIR/storage/app/apk-version.json
+      echo '$SSH_PASS' | sudo -S chmod 666 $REMOTE_DIR/storage/app/apk-version.json
     " 2>&1 | grep -v "^\[sudo\]" || true
     sshpass -p "$SSH_PASS" scp -o StrictHostKeyChecking=no \
       "$VERSION_FILE" \
