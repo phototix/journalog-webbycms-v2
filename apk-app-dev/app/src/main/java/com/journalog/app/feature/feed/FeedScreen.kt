@@ -225,10 +225,14 @@ fun StoriesRow(
             }
         }
 
-        items(stories, key = { it.user.id }) { group ->
+        stories.forEach { group ->
+            item(key = group.user.id) {
             Column(
                 horizontalAlignment = Alignment.CenterHorizontally,
-                modifier = Modifier.clickable { onStoryClick(group.user.id) }
+                modifier = Modifier.clickable {
+                    Log.d("Journalog-Feed", "story click: user=${group.user.id} name=${group.user.name}")
+                    onStoryClick(group.user.id)
+                }
             ) {
                 val ringBrush: Brush = if (group.hasUnseen) StoryGradient
                     else Brush.linearGradient(listOf(MaterialTheme.colorScheme.outline, MaterialTheme.colorScheme.outline))
@@ -261,6 +265,7 @@ fun StoriesRow(
                     maxLines = 1,
                     overflow = TextOverflow.Ellipsis
                 )
+            }
             }
         }
     }

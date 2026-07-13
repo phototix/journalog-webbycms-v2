@@ -58,6 +58,7 @@ fun MainContent(tokenManager: TokenManager, launchToken: String? = null) {
 
     var currentUsername by remember { mutableStateOf("") }
     var isAdmin by remember { mutableStateOf(false) }
+    var storyViewerUserId by remember { mutableStateOf<Int?>(null) }
 
     LaunchedEffect(Unit) {
         tokenManager.usernameFlow.collect { username ->
@@ -145,7 +146,7 @@ fun MainContent(tokenManager: TokenManager, launchToken: String? = null) {
                         navController.navigate(NavRoutes.Profile.createRoute(username))
                     },
                     onStoryClick = { userId ->
-                        navController.navigate(NavRoutes.StoryViewer.createRoute(userId))
+                        storyViewerUserId = userId
                     },
                     onCreateStory = {
                         navController.navigate(NavRoutes.Create.route)
@@ -246,6 +247,7 @@ fun MainContent(tokenManager: TokenManager, launchToken: String? = null) {
                 )
             ) { backStackEntry ->
                 val userId = backStackEntry.arguments?.getInt("userId") ?: 0
+                android.util.Log.d("Journalog-Feed", "StoryViewer composable rendered userId=$userId")
                 StoryViewerScreen(
                     userId = userId,
                     onBack = { navController.popBackStack() }
@@ -253,6 +255,13 @@ fun MainContent(tokenManager: TokenManager, launchToken: String? = null) {
             }
         }
     }
+
+        storyViewerUserId?.let { userId ->
+            StoryViewerScreen(
+                userId = userId,
+                onBack = { storyViewerUserId = null }
+            )
+        }
 
         DebugOverlay(isAdmin = isAdmin)
     }

@@ -1,5 +1,7 @@
 package com.journalog.app.feature.story
 
+import android.net.Uri
+import android.widget.VideoView
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.gestures.detectVerticalDragGestures
@@ -19,11 +21,6 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.compose.ui.viewinterop.AndroidView
-import androidx.media3.common.MediaItem
-import androidx.media3.common.util.UnstableApi
-import androidx.media3.exoplayer.ExoPlayer
-import androidx.media3.ui.AspectRatioFrameLayout
-import androidx.media3.ui.PlayerView
 import coil.compose.AsyncImage
 import coil.request.ImageRequest
 import com.journalog.app.core.network.ApiClient
@@ -32,7 +29,6 @@ import com.journalog.app.data.remote.dto.StoryGroupDto
 import com.journalog.app.feature.feed.parseStories
 import kotlinx.coroutines.delay
 
-@androidx.annotation.OptIn(UnstableApi::class)
 @Composable
 fun StoryViewerScreen(
     userId: Int,
@@ -45,6 +41,7 @@ fun StoryViewerScreen(
     var isPaused by remember { mutableStateOf(false) }
     var currentProgress by remember { mutableStateOf(0f) }
     var dragOffset by remember { mutableStateOf(0f) }
+    var videoFinished by remember { mutableStateOf(false) }
 
     LaunchedEffect(userId) {
         try {
@@ -53,6 +50,9 @@ fun StoryViewerScreen(
                 val list = resp.body()?.data?.get("stories")
                 if (list is List<*>) {
                     groups = parseStories(list)
+                    // Find the group matching userId
+                    val idx = groups.indexOfFirst { it.user.id == userId }
+                    if (idx >= 0) currentGroupIndex = idx
                 }
             }
         } catch (_: Exception) {}
@@ -60,6 +60,21 @@ fun StoryViewerScreen(
 
     val currentGroup = groups.getOrNull(currentGroupIndex)
     val currentItem = currentGroup?.stories?.getOrNull(currentItemIndex)
+
+    val advanceStory: () -> Unit = {
+        if (currentItemIndex + 1 < (currentGroup?.stories?.size ?: 0)) {
+            currentItemIndex++
+            videoFinished = false
+            currentProgress = 0f
+        } else if (currentGroupIndex + 1 < groups.size) {
+            currentGroupIndex++
+            currentItemIndex = 0
+            videoFinished = false
+            currentProgress = 0f
+        } else {
+            onBack()
+        }
+    }
 
     if (currentGroup == null || currentItem == null) {
         Box(
@@ -96,6 +111,7 @@ fun StoryViewerScreen(
             VideoPlayer(
                 url = currentItem.url,
                 isPaused = isPaused,
+                onFinished = { videoFinished = true },
                 modifier = Modifier.fillMaxSize()
             )
         } else {
@@ -114,7 +130,6 @@ fun StoryViewerScreen(
         Column(modifier = Modifier.fillMaxSize()) {
             Spacer(modifier = Modifier.windowInsetsTopHeight(WindowInsets.statusBars))
 
-            // Progress bars
             Row(
                 modifier = Modifier
                     .fillMaxWidth()
@@ -136,7 +151,6 @@ fun StoryViewerScreen(
                 }
             }
 
-            // Top bar with user info
             Row(
                 modifier = Modifier
                     .fillMaxWidth()
@@ -174,7 +188,6 @@ fun StoryViewerScreen(
                 }
             }
 
-            // Centered text overlay
             currentItem.text?.let { text ->
                 if (text.isNotBlank()) {
                     Box(
@@ -198,7 +211,7 @@ fun StoryViewerScreen(
             } ?: Spacer(modifier = Modifier.weight(1f))
         }
 
-        // Tap zones for navigation
+        // Tap zones
         Row(modifier = Modifier.fillMaxSize()) {
             Box(
                 modifier = Modifier
@@ -221,29 +234,22 @@ fun StoryViewerScreen(
                 modifier = Modifier
                     .weight(1f)
                     .fillMaxHeight()
-                    .clickable {
-                        if (currentItemIndex + 1 < currentGroup.stories.size) {
-                            currentItemIndex++
-                            currentProgress = 0f
-                        } else if (currentGroupIndex + 1 < groups.size) {
-                            currentGroupIndex++
-                            currentItemIndex = 0
-                            currentProgress = 0f
-                        } else {
-                            onBack()
-                        }
-                    }
+                    .clickable { advanceStory() }
             )
         }
     }
 
     // Auto-advance timer
-    LaunchedEffect(currentGroupIndex, currentItemIndex, isPaused) {
+    LaunchedEffect(currentGroupIndex, currentItemIndex, isPaused, videoFinished) {
         if (isPaused) return@LaunchedEffect
         val duration = (currentItem.length ?: 5) * 1000L
         if (isVideo) {
-            // For video, let the video play; advance when it ends
-            // Simple fallback: use the duration as timeout
+            if (videoFinished) {
+                advanceStory()
+                return@LaunchedEffect
+            }
+            // For video, wait for onFinished callback
+            return@LaunchedEffect
         }
         val steps = 50
         val stepMs = duration / steps
@@ -252,50 +258,39 @@ fun StoryViewerScreen(
             delay(stepMs)
             currentProgress = i.toFloat() / steps
         }
-        if (currentItemIndex + 1 < currentGroup.stories.size) {
-            currentItemIndex++
-        } else if (currentGroupIndex + 1 < groups.size) {
-            currentGroupIndex++
-            currentItemIndex = 0
-        } else {
-            onBack()
-        }
+        advanceStory()
     }
 }
 
-@androidx.annotation.OptIn(UnstableApi::class)
 @Composable
 private fun VideoPlayer(
     url: String,
     isPaused: Boolean,
+    onFinished: () -> Unit,
     modifier: Modifier = Modifier
 ) {
     val context = LocalContext.current
-    val exoPlayer = remember {
-        ExoPlayer.Builder(context).build().apply {
-            setMediaItem(MediaItem.fromUri(url))
-            repeatMode = ExoPlayer.REPEAT_MODE_ONE
-            prepare()
-            playWhenReady = true
-        }
-    }
 
     LaunchedEffect(isPaused) {
-        if (isPaused) exoPlayer.pause() else exoPlayer.play()
-    }
-
-    DisposableEffect(Unit) {
-        onDispose { exoPlayer.release() }
+        // Pause/resume handled via the VideoView methods
     }
 
     AndroidView(
         modifier = modifier,
         factory = { ctx ->
-            PlayerView(ctx).apply {
-                player = exoPlayer
-                useController = false
-                resizeMode = AspectRatioFrameLayout.RESIZE_MODE_FIT
+            VideoView(ctx).apply {
+                setVideoURI(Uri.parse(url))
+                setOnCompletionListener { onFinished() }
+                setOnPreparedListener { mp ->
+                    mp.isLooping = false
+                    start()
+                }
+                setOnErrorListener { _, _, _ -> true }
             }
+        },
+        update = { vv ->
+            if (isPaused && vv.isPlaying) vv.pause()
+            else if (!isPaused && !vv.isPlaying) vv.start()
         }
     )
 }
