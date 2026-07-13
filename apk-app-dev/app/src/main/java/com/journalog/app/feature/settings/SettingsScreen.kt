@@ -53,14 +53,18 @@ fun SettingsScreen(
     // Register download completion receiver
     var receiver by remember { mutableStateOf<android.content.BroadcastReceiver?>(null) }
     DisposableEffect(updateChecker) {
-        val r = updateChecker.registerDownloadReceiver { id ->
-            isDownloading = false
-            downloadId = id
-            updateChecker.installApk(id)
-        }
-        receiver = r
-        onDispose {
-            try { context.unregisterReceiver(r) } catch (_: Exception) {}
+        try {
+            val r = updateChecker.registerDownloadReceiver { id ->
+                isDownloading = false
+                downloadId = id
+                try { updateChecker.installApk(id) } catch (_: Exception) {}
+            }
+            receiver = r
+            onDispose {
+                try { context.unregisterReceiver(r) } catch (_: Exception) {}
+            }
+        } catch (_: Exception) {
+            onDispose {}
         }
     }
 
