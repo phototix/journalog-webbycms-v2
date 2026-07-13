@@ -1,7 +1,5 @@
 package com.journalog.app.feature.story
 
-import android.net.Uri
-import android.widget.VideoView
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.gestures.detectVerticalDragGestures
@@ -23,6 +21,11 @@ import androidx.compose.ui.unit.sp
 import androidx.compose.ui.viewinterop.AndroidView
 import coil.compose.AsyncImage
 import coil.request.ImageRequest
+import androidx.media3.common.MediaItem
+import androidx.media3.common.util.UnstableApi
+import androidx.media3.exoplayer.ExoPlayer
+import androidx.media3.ui.AspectRatioFrameLayout
+import androidx.media3.ui.PlayerView
 import com.journalog.app.core.network.ApiClient
 import com.journalog.app.data.remote.ApiService
 import com.journalog.app.data.remote.dto.StoryGroupDto
@@ -262,6 +265,7 @@ fun StoryViewerScreen(
     }
 }
 
+@androidx.annotation.OptIn(UnstableApi::class)
 @Composable
 private fun VideoPlayer(
     url: String,
@@ -270,27 +274,41 @@ private fun VideoPlayer(
     modifier: Modifier = Modifier
 ) {
     val context = LocalContext.current
+    val exoPlayer = remember {
+        ExoPlayer.Builder(context).build().apply {
+            setMediaItem(MediaItem.fromUri(url))
+            repeatMode = ExoPlayer.REPEAT_MODE_ONE
+            playWhenReady = !isPaused
+            prepare()
+        }
+    }
+
+    LaunchedEffect(Unit) {
+        exoPlayer.addListener(object : androidx.media3.common.Player.Listener {
+            override fun onPlaybackStateChanged(playbackState: Int) {
+                if (playbackState == ExoPlayer.STATE_ENDED) {
+                    onFinished()
+                }
+            }
+        })
+    }
 
     LaunchedEffect(isPaused) {
-        // Pause/resume handled via the VideoView methods
+        if (isPaused) exoPlayer.pause() else exoPlayer.play()
+    }
+
+    DisposableEffect(Unit) {
+        onDispose { exoPlayer.release() }
     }
 
     AndroidView(
         modifier = modifier,
         factory = { ctx ->
-            VideoView(ctx).apply {
-                setVideoURI(Uri.parse(url))
-                setOnCompletionListener { onFinished() }
-                setOnPreparedListener { mp ->
-                    mp.isLooping = false
-                    start()
-                }
-                setOnErrorListener { _, _, _ -> true }
+            PlayerView(ctx).apply {
+                player = exoPlayer
+                useController = false
+                resizeMode = AspectRatioFrameLayout.RESIZE_MODE_ZOOM
             }
-        },
-        update = { vv ->
-            if (isPaused && vv.isPlaying) vv.pause()
-            else if (!isPaused && !vv.isPlaying) vv.start()
         }
     )
 }
