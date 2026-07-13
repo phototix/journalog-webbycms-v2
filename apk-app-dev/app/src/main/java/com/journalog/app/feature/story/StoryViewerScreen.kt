@@ -26,6 +26,7 @@ import androidx.media3.common.util.UnstableApi
 import androidx.media3.exoplayer.ExoPlayer
 import androidx.media3.ui.AspectRatioFrameLayout
 import androidx.media3.ui.PlayerView
+import com.journalog.app.core.common.DateFormatter
 import com.journalog.app.core.network.ApiClient
 import com.journalog.app.data.remote.ApiService
 import com.journalog.app.data.remote.dto.StoryGroupDto
@@ -174,13 +175,11 @@ fun StoryViewerScreen(
                         maxLines = 1,
                         overflow = TextOverflow.Ellipsis
                     )
-                    currentItem.createdAt?.let {
-                        Text(
-                            it,
-                            color = Color.White.copy(alpha = 0.7f),
-                            fontSize = 10.sp
-                        )
-                    }
+                    Text(
+                        DateFormatter.formatRelativeTime(currentItem.rawTime ?: 0L),
+                        color = Color.White.copy(alpha = 0.7f),
+                        fontSize = 10.sp
+                    )
                 }
                 Spacer(modifier = Modifier.weight(1f))
                 TextButton(onClick = onBack) {

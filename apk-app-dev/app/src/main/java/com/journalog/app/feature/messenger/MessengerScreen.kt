@@ -17,6 +17,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import coil.compose.AsyncImage
+import com.journalog.app.core.common.DateFormatter
 import com.journalog.app.core.network.ApiClient
 import com.journalog.app.data.remote.ApiService
 import com.journalog.app.data.remote.dto.ConversationDto
@@ -111,9 +112,11 @@ fun MessengerScreen(
                         Row(verticalAlignment = Alignment.CenterVertically) {
                             Text(conv.name, style = MaterialTheme.typography.labelLarge, fontWeight = FontWeight.SemiBold)
                             Spacer(modifier = Modifier.weight(1f))
-                            conv.lastMessageDate?.let {
-                                Text(it, style = MaterialTheme.typography.labelSmall, color = MaterialTheme.colorScheme.onSurfaceVariant)
-                            }
+                    Text(
+                        DateFormatter.formatRelativeTimeMySql(conv.lastMessageDate),
+                        style = MaterialTheme.typography.labelSmall,
+                        color = MaterialTheme.colorScheme.onSurfaceVariant
+                    )
                         }
                         Spacer(modifier = Modifier.height(2.dp))
                         Row {

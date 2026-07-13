@@ -23,6 +23,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import coil.compose.AsyncImage
+import com.journalog.app.core.common.DateFormatter
 import com.journalog.app.core.common.FeedCache
 import com.journalog.app.core.designsystem.StoryGradient
 import com.journalog.app.core.network.ApiClient
@@ -219,12 +220,7 @@ fun parseStories(list: List<*>): List<StoryGroupDto> {
                 if (s !is Map<*, *>) return@mapNotNull null
                 @Suppress("UNCHECKED_CAST")
                 val sm = s as Map<String, Any?>
-                val timeSecs = sm["time"] as? Number
-                val timeStr = if (timeSecs != null) {
-                    val sdf = java.text.SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss", java.util.Locale.US)
-                    sdf.timeZone = java.util.TimeZone.getTimeZone("UTC")
-                    sdf.format(java.util.Date(timeSecs.toLong() * 1000))
-                } else null
+                val timeSecs = (sm["time"] as? Number)?.toLong()
                 com.journalog.app.data.remote.dto.StoryItemDto(
                     id = sm["id"]?.toString() ?: "",
                     type = sm["type"] as? String ?: "image",
@@ -234,7 +230,12 @@ fun parseStories(list: List<*>): List<StoryGroupDto> {
                     length = sm["length"] as? Int,
                     overlay = sm["overlay"] as? Map<String, Double>,
                     bgPreset = sm["bg_preset"] as? String,
-                    createdAt = timeStr
+                    rawTime = timeSecs,
+                    createdAt = timeSecs?.let {
+                        java.text.SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss", java.util.Locale.US).apply {
+                            timeZone = java.util.TimeZone.getTimeZone("UTC")
+                        }.format(java.util.Date(it * 1000))
+                    }
                 )
             }
 
@@ -436,7 +437,7 @@ fun PostCard(
                         color = MaterialTheme.colorScheme.onSurfaceVariant)
                 }
             }
-            Text(post.createdAt ?: "", style = MaterialTheme.typography.labelSmall,
+            Text(DateFormatter.formatRelativeTime(post.createdAt), style = MaterialTheme.typography.labelSmall,
                 color = MaterialTheme.colorScheme.onSurfaceVariant,
                 modifier = Modifier.padding(horizontal = 12.dp, vertical = 4.dp))
         }

@@ -16,6 +16,7 @@ import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import coil.compose.AsyncImage
+import com.journalog.app.core.common.DateFormatter
 import com.journalog.app.core.network.ApiClient
 import com.journalog.app.data.remote.ApiService
 import com.journalog.app.data.remote.dto.NotificationDto
@@ -82,11 +83,11 @@ fun NotificationItem(notification: NotificationDto) {
         Spacer(modifier = Modifier.width(12.dp))
         Column(modifier = Modifier.weight(1f)) {
             Text(notification.message ?: "", style = MaterialTheme.typography.bodyMedium)
-            Text(
-                notification.createdAt ?: "",
-                style = MaterialTheme.typography.labelSmall,
-                color = MaterialTheme.colorScheme.onSurfaceVariant
-            )
+                Text(
+                    DateFormatter.formatRelativeTime(notification.createdAt),
+                    style = MaterialTheme.typography.labelSmall,
+                    color = MaterialTheme.colorScheme.onSurfaceVariant
+                )
         }
         if (!notification.read) {
             Box(
