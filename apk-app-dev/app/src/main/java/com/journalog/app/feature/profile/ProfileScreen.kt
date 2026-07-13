@@ -221,8 +221,12 @@ fun ProfileScreen(
 
                 Spacer(modifier = Modifier.height(8.dp))
                 TabRow(selectedTabIndex = selectedTab) {
-                    Tab(selected = selectedTab == 0, onClick = { selectedTab = 0 }) { Text("Posts") }
-                    Tab(selected = selectedTab == 1, onClick = { selectedTab = 1 }) { Text("Media") }
+                    Tab(selected = selectedTab == 0, onClick = { selectedTab = 0 }) {
+                        Text("Posts", modifier = Modifier.padding(vertical = 8.dp))
+                    }
+                    Tab(selected = selectedTab == 1, onClick = { selectedTab = 1 }) {
+                        Text("Media", modifier = Modifier.padding(vertical = 8.dp))
+                    }
                 }
                 Spacer(modifier = Modifier.height(4.dp))
             }
