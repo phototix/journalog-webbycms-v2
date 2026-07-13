@@ -11,10 +11,13 @@ import androidx.compose.foundation.lazy.grid.items
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.*
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
@@ -62,7 +65,7 @@ fun GiftModal(
 
             giftData?.let { data ->
                 Text(
-                    "Balance: ${data.balance} credits",
+                    "Balance: ${data.balance.toInt()} credits",
                     style = MaterialTheme.typography.bodyMedium,
                     color = MaterialTheme.colorScheme.primary,
                     modifier = Modifier.padding(bottom = 12.dp)
@@ -109,7 +112,12 @@ fun GiftModal(
                                     MaterialTheme.colorScheme.surfaceVariant
                             ) {
                                 Box(contentAlignment = Alignment.Center) {
-                                    Text(gift.icon, style = MaterialTheme.typography.titleLarge)
+                                    Icon(
+                                        imageVector = giftIcon(gift.icon),
+                                        contentDescription = gift.name,
+                                        modifier = Modifier.size(24.dp),
+                                        tint = MaterialTheme.colorScheme.onSurfaceVariant
+                                    )
                                 }
                             }
                             Spacer(modifier = Modifier.height(2.dp))
@@ -159,4 +167,19 @@ fun GiftModal(
             }
         }
     }
+}
+
+private fun giftIcon(iconName: String): ImageVector = when (iconName) {
+    "diamond-outline" -> Icons.Filled.Diamond
+    "heart" -> Icons.Filled.Favorite
+    "rose-outline" -> Icons.Filled.LocalFlorist
+    "star" -> Icons.Filled.Star
+    "happy-outline" -> Icons.Filled.Face
+    "cash-outline" -> Icons.Filled.AttachMoney
+    "gift-outline" -> Icons.Filled.CardGiftcard
+    "flame-outline" -> Icons.Filled.Whatshot
+    "beer-outline" -> Icons.Filled.SportsBar
+    "party-outline" -> Icons.Filled.Celebration
+    "rocket-outline" -> Icons.Filled.RocketLaunch
+    else -> Icons.Filled.CardGiftcard
 }
