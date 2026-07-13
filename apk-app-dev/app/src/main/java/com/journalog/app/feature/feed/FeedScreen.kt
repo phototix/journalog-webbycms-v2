@@ -6,6 +6,7 @@ import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.*
@@ -22,6 +23,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import coil.compose.AsyncImage
+import com.journalog.app.core.common.FeedCache
 import com.journalog.app.core.designsystem.StoryGradient
 import com.journalog.app.core.network.ApiClient
 import com.journalog.app.data.remote.ApiService
@@ -36,65 +38,122 @@ fun FeedScreen(
     onPostClick: (Int) -> Unit,
     onProfileClick: (String) -> Unit,
     onStoryClick: (Int) -> Unit,
-    onCreateStory: () -> Unit = {}
+    onCreateStory: () -> Unit = {},
+    refreshTrigger: Int = 0
 ) {
     val api = remember { ApiClient.create(ApiService::class.java) }
-    var posts by remember { mutableStateOf<List<PostDto>>(emptyList()) }
+    var allPosts by remember { mutableStateOf<List<PostDto>>(emptyList()) }
     var stories by remember { mutableStateOf<List<StoryGroupDto>>(emptyList()) }
     var isLoading by remember { mutableStateOf(true) }
+    var isLoadingMore by remember { mutableStateOf(false) }
+    var currentPage by remember { mutableIntStateOf(1) }
+    var hasMore by remember { mutableStateOf(true) }
     val likedPosts = remember { mutableStateMapOf<Int, Boolean>() }
     val scope = rememberCoroutineScope()
+    val listState = rememberLazyListState()
 
-    fun loadFeed() {
+    fun loadFeed(page: Int = 1) {
         scope.launch {
-            isLoading = true
+            if (page == 1) isLoading = true else isLoadingMore = true
             try {
-                val resp = api.getFeed()
+                val resp = api.getFeed(page)
                 if (resp.isSuccessful) {
                     resp.body()?.data?.let { feedData ->
-                        posts = feedData.posts ?: emptyList()
-                        feedData.posts?.forEach { likedPosts[it.id] = it.hasLiked }
+                        val newPosts = feedData.posts ?: emptyList()
+                        if (page == 1) {
+                            allPosts = newPosts
+                            likedPosts.clear()
+                            FeedCache.posts = newPosts
+                            FeedCache.likedPosts = likedPosts.toMap()
+                            FeedCache.stories = stories
+                            FeedCache.lastRefreshed = System.currentTimeMillis()
+                        } else {
+                            allPosts = allPosts + newPosts
+                        }
+                        newPosts.forEach { likedPosts[it.id] = it.hasLiked }
+                        hasMore = feedData.hasMore
+                        currentPage = feedData.nextPage ?: (page + 1)
                     }
                 }
             } catch (e: Throwable) {
                 Log.e("Journalog-Feed", "loadFeed failed", e)
             }
             isLoading = false
+            isLoadingMore = false
         }
     }
 
-    LaunchedEffect(Unit) { loadFeed() }
-
+    // Initial load — cache then fetch
     LaunchedEffect(Unit) {
-        try {
-            val resp = api.getStoriesFeed()
-            if (resp.isSuccessful) {
-                resp.body()?.let { body ->
-                    if (body.ok && body.data != null) {
-                        val list = body.data["stories"]
-                        if (list is List<*>) {
-                            val parsed = parseStories(list)
-                            if (parsed.isNotEmpty()) stories = parsed
+        if (FeedCache.posts.isNotEmpty() && !FeedCache.isStale) {
+            allPosts = FeedCache.posts
+            FeedCache.likedPosts.forEach { (k, v) -> likedPosts[k] = v }
+            stories = FeedCache.stories
+            isLoading = false
+        }
+        loadFeed()
+    }
+
+    // Stories load
+    LaunchedEffect(Unit) {
+        if (FeedCache.stories.isNotEmpty() && !FeedCache.isStale) {
+            stories = FeedCache.stories
+        } else {
+            try {
+                val resp = api.getStoriesFeed()
+                if (resp.isSuccessful) {
+                    resp.body()?.let { body ->
+                        if (body.ok && body.data != null) {
+                            val list = body.data["stories"]
+                            if (list is List<*>) {
+                                val parsed = parseStories(list)
+                                if (parsed.isNotEmpty()) {
+                                    stories = parsed
+                                    FeedCache.stories = parsed
+                                }
+                            }
                         }
                     }
                 }
+            } catch (e: Throwable) {
+                Log.e("Journalog-Feed", "stories feed failed", e)
             }
-        } catch (e: Throwable) {
-            Log.e("Journalog-Feed", "stories feed failed", e)
+        }
+    }
+
+    // Refresh trigger — re-fetch when signaled
+    LaunchedEffect(refreshTrigger) {
+        if (refreshTrigger > 0) {
+            loadFeed()
+        }
+    }
+
+    // Scroll-to-bottom pagination
+    val shouldLoadMore = remember {
+        derivedStateOf {
+            val lastVisible = listState.layoutInfo.visibleItemsInfo.lastOrNull()
+            lastVisible != null && lastVisible.index >= listState.layoutInfo.totalItemsCount - 3
+        }
+    }
+
+    LaunchedEffect(shouldLoadMore.value) {
+        if (shouldLoadMore.value && hasMore && !isLoadingMore && !isLoading && allPosts.isNotEmpty()) {
+            loadFeed(currentPage)
         }
     }
 
     LazyColumn(
         modifier = Modifier.fillMaxSize(),
-        contentPadding = PaddingValues(bottom = 8.dp)
+        contentPadding = PaddingValues(bottom = 8.dp),
+        state = listState
     ) {
         item {
             StoriesRow(stories = stories, onCreateStory = onCreateStory, onStoryClick = onStoryClick)
         }
 
-        if (isLoading && posts.isEmpty()) {
+        if (isLoading && allPosts.isEmpty()) {
             items(5) { PostShimmer() }
-        } else if (posts.isEmpty()) {
+        } else if (allPosts.isEmpty()) {
             item {
                 Box(
                     modifier = Modifier.fillMaxWidth().padding(32.dp),
@@ -108,7 +167,7 @@ fun FeedScreen(
                 }
             }
         } else {
-            items(posts, key = { it.id }) { post ->
+            items(allPosts, key = { it.id }) { post ->
                 PostCard(
                     post = post,
                     hasLiked = likedPosts[post.id] ?: post.hasLiked,
@@ -124,8 +183,21 @@ fun FeedScreen(
                         }
                     },
                     onComment = { onPostClick(post.id) },
-                    onProfileClick = { post.user?.let { onProfileClick(it.username) } }
+                    onProfileClick = { post.user?.let { onProfileClick(it.username) } },
+                    onPostClick = { onPostClick(post.id) }
                 )
+            }
+        }
+
+        // Loading more indicator
+        if (isLoadingMore) {
+            item {
+                Box(
+                    modifier = Modifier.fillMaxWidth().padding(16.dp),
+                    contentAlignment = Alignment.Center
+                ) {
+                    CircularProgressIndicator(modifier = Modifier.size(24.dp), strokeWidth = 2.dp)
+                }
             }
         }
     }
@@ -192,7 +264,6 @@ fun StoriesRow(
         contentPadding = PaddingValues(horizontal = 12.dp),
         horizontalArrangement = Arrangement.spacedBy(12.dp)
     ) {
-        // Create Story button — always first
         item {
             Column(
                 horizontalAlignment = Alignment.CenterHorizontally,
@@ -277,7 +348,8 @@ fun PostCard(
     hasLiked: Boolean = post.hasLiked,
     onLike: () -> Unit,
     onComment: () -> Unit,
-    onProfileClick: () -> Unit
+    onProfileClick: () -> Unit,
+    onPostClick: () -> Unit = {}
 ) {
     Card(
         modifier = Modifier.fillMaxWidth().padding(horizontal = 0.dp, vertical = 4.dp),
@@ -308,20 +380,27 @@ fun PostCard(
             if (post.media.isNullOrEmpty()) {
                 Box(
                     modifier = Modifier.fillMaxWidth().height(200.dp)
-                        .background(MaterialTheme.colorScheme.surfaceVariant),
+                        .background(MaterialTheme.colorScheme.surfaceVariant)
+                        .clickable { onPostClick() },
                     contentAlignment = Alignment.Center
                 ) {
                     Text(post.text ?: "", maxLines = 3, overflow = TextOverflow.Ellipsis)
                 }
             } else {
-                val mediaUrl = post.media.firstOrNull()?.url
-                if (!mediaUrl.isNullOrBlank()) {
-                    AsyncImage(
-                        model = mediaUrl,
-                        contentDescription = null,
-                        modifier = Modifier.fillMaxWidth().aspectRatio(1f),
-                        contentScale = ContentScale.Crop
-                    )
+                Box(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .clickable { onPostClick() }
+                ) {
+                    val mediaUrl = post.media.firstOrNull()?.url
+                    if (!mediaUrl.isNullOrBlank()) {
+                        AsyncImage(
+                            model = mediaUrl,
+                            contentDescription = null,
+                            modifier = Modifier.fillMaxWidth().aspectRatio(1f),
+                            contentScale = ContentScale.Crop
+                        )
+                    }
                 }
             }
 

@@ -16,6 +16,7 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navArgument
+import com.journalog.app.core.common.FeedCache
 import com.journalog.app.core.common.TokenManager
 import com.journalog.app.core.debug.DebugOverlay
 import com.journalog.app.core.designsystem.JournalogTheme
@@ -62,6 +63,7 @@ fun MainContent(tokenManager: TokenManager, launchToken: String? = null) {
     var isAdmin by remember { mutableStateOf(false) }
     var storyViewerUserId by remember { mutableStateOf<Int?>(null) }
     var subscribeToUser by remember { mutableStateOf<com.journalog.app.data.remote.dto.UserDto?>(null) }
+    var feedRefreshTrigger by remember { mutableIntStateOf(0) }
 
     LaunchedEffect(Unit) {
         tokenManager.usernameFlow.collect { username ->
@@ -153,7 +155,8 @@ fun MainContent(tokenManager: TokenManager, launchToken: String? = null) {
                     },
                     onCreateStory = {
                         navController.navigate(NavRoutes.StoryCreate.route)
-                    }
+                    },
+                    refreshTrigger = feedRefreshTrigger
                 )
             }
 
@@ -170,6 +173,8 @@ fun MainContent(tokenManager: TokenManager, launchToken: String? = null) {
 
             composable(NavRoutes.Create.route) {
                 CreateScreen(onPostCreated = {
+                    FeedCache.refreshTrigger++
+                    feedRefreshTrigger = FeedCache.refreshTrigger
                     navController.popBackStack()
                 })
             }
