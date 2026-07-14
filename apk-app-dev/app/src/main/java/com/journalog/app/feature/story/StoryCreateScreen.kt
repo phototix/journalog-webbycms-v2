@@ -151,13 +151,33 @@ fun StoryCreateScreen(
                             val bytes = inputStream?.readBytes() ?: throw Exception("Could not read file")
                             inputStream?.close()
 
-                            val requestBody = bytes.toRequestBody(mimeType.toMediaTypeOrNull())
-                            val part = MultipartBody.Part.createFormData("file", fileName, requestBody)
-                            val type = if (mimeType.startsWith("video")) "story" else "story"
+                            if (bytes.size > 20 * 1024 * 1024) {
+                                error = "File too large (max 20MB)"
+                                isUploading = false
+                                return@launch
+                            }
 
-                            val uploadResp = api.uploadAttachment(type, part)
+                            val requestBody = bytes.toRequestBody(mimeType.toMediaTypeOrNull())
+                            val fileExt = fileName.substringAfterLast('.', "").ifBlank {
+                                when {
+                                    mimeType.startsWith("image/jpeg") -> "jpg"
+                                    mimeType.startsWith("image/png") -> "png"
+                                    mimeType.startsWith("image/gif") -> "gif"
+                                    mimeType.startsWith("video/mp4") -> "mp4"
+                                    mimeType.startsWith("video/quicktime") -> "mov"
+                                    else -> "jpg"
+                                }
+                            }
+                            val safeFileName = if (fileName.contains('.')) fileName else "upload.$fileExt"
+                            val part = MultipartBody.Part.createFormData("file", safeFileName, requestBody)
+
+                            val uploadResp = api.uploadAttachment("story", part)
                             if (!uploadResp.isSuccessful) {
-                                error = "Upload failed"
+                                val errBody = uploadResp.errorBody()?.string()
+                                val parsed = try {
+                                    org.json.JSONObject(errBody).optString("message", "Upload failed")
+                                } catch (_: Exception) { errBody ?: "Upload failed" }
+                                error = parsed
                                 isUploading = false
                                 return@launch
                             }
