@@ -6,9 +6,9 @@ import androidx.compose.foundation.horizontalScroll
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
-import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.CircleShape
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material.icons.filled.*
@@ -54,7 +54,6 @@ fun ProfileScreen(
     var hasMore by remember { mutableStateOf(true) }
     var isLoadingMore by remember { mutableStateOf(false) }
     var loadAttempt by remember { mutableIntStateOf(0) }
-    val listState = rememberLazyListState()
 
     fun loadPosts(page: Int = 1) {
         scope.launch {
@@ -95,17 +94,6 @@ fun ProfileScreen(
     LaunchedEffect(username) {
         loadProfile()
         loadPosts()
-    }
-
-    fun checkLoadMore() {
-        val lastVisible = listState.layoutInfo.visibleItemsInfo.lastOrNull()
-        val isNearBottom = lastVisible != null && lastVisible.index >= listState.layoutInfo.totalItemsCount - 3
-        if (isNearBottom && hasMore && !isLoadingMore && !isLoading && posts.isNotEmpty()) {
-            loadPosts(currentPage + 1)
-        }
-    }
-    LaunchedEffect(listState.firstVisibleItemIndex, listState.layoutInfo.totalItemsCount, loadAttempt) {
-        checkLoadMore()
     }
 
     LazyColumn(modifier = Modifier.fillMaxSize()) {
@@ -360,6 +348,18 @@ fun ProfileScreen(
             item {
                 Box(modifier = Modifier.fillMaxWidth().padding(16.dp), contentAlignment = Alignment.Center) {
                     CircularProgressIndicator(modifier = Modifier.size(24.dp), strokeWidth = 2.dp)
+                }
+            }
+        } else if (hasMore && !isLoading && posts.isNotEmpty()) {
+            item {
+                Button(
+                    onClick = { loadPosts(currentPage + 1) },
+                    modifier = Modifier.fillMaxWidth().padding(horizontal = 16.dp, vertical = 8.dp),
+                    shape = RoundedCornerShape(12.dp)
+                ) {
+                    Icon(Icons.Filled.ExpandMore, contentDescription = null)
+                    Spacer(modifier = Modifier.width(8.dp))
+                    Text("Load More")
                 }
             }
         }
