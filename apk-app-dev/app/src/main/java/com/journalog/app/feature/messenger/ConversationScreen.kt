@@ -253,7 +253,7 @@ fun ConversationScreen(
         CannedMessagesRow { text ->
             inputText = text
         }
-        Spacer(Modifier.imePadding())
+        Spacer(Modifier.height(4.dp))
     }
 }
 }

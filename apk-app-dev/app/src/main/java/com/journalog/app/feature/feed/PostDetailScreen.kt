@@ -184,7 +184,7 @@ fun PostDetailScreen(
         CannedMessagesRow { text ->
             commentText = text
         }
-        Spacer(Modifier.imePadding())
+        Spacer(Modifier.height(4.dp))
     }
 
     // Gift Modal
