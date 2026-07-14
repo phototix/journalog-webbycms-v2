@@ -228,7 +228,7 @@ fun ProfileScreen(
                         Text("Media", modifier = Modifier.padding(vertical = 8.dp))
                     }
                 }
-                Spacer(modifier = Modifier.height(4.dp))
+                Spacer(modifier = Modifier.height(8.dp))
             }
         }
 

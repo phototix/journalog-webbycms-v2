@@ -108,8 +108,8 @@ fun WalletScreen(onBack: () -> Unit) {
 
             // Tabs
             TabRow(selectedTabIndex = selectedTab) {
-                Tab(selected = selectedTab == 0, onClick = { selectedTab = 0 }) { Text("Deposit") }
-                Tab(selected = selectedTab == 1, onClick = { selectedTab = 1 }) { Text("Withdraw") }
+                Tab(selected = selectedTab == 0, onClick = { selectedTab = 0 }) { Text("Deposit", modifier = Modifier.padding(vertical = 8.dp)) }
+                Tab(selected = selectedTab == 1, onClick = { selectedTab = 1 }) { Text("Withdraw", modifier = Modifier.padding(vertical = 8.dp)) }
             }
 
             Spacer(Modifier.height(16.dp))
