@@ -101,7 +101,7 @@ fun ProfileScreen(
             lastVisible != null && lastVisible.index >= listState.layoutInfo.totalItemsCount - 3
         }
     }
-    LaunchedEffect(shouldLoadMore.value) {
+    LaunchedEffect(shouldLoadMore.value, posts.size) {
         if (shouldLoadMore.value && hasMore && !isLoadingMore && !isLoading && posts.isNotEmpty()) {
             loadPosts(currentPage + 1)
         }
