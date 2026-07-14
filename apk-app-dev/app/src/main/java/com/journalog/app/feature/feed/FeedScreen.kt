@@ -442,8 +442,16 @@ fun PostCard(
                         tint = if (hasLiked) MaterialTheme.colorScheme.primary else MaterialTheme.colorScheme.onSurface
                     )
                 }
-                IconButton(onClick = onComment) {
-                    Icon(Icons.Outlined.ChatBubbleOutline, contentDescription = "Comment")
+                if (!hideCommentButton) {
+                    IconButton(onClick = onComment) {
+                        Icon(Icons.Outlined.ChatBubbleOutline, contentDescription = "Comment")
+                    }
+                    if (post.commentsCount > 0) {
+                        Text("${post.commentsCount}",
+                            style = MaterialTheme.typography.bodyMedium,
+                            color = MaterialTheme.colorScheme.onSurfaceVariant,
+                            modifier = Modifier.padding(start = 2.dp))
+                    }
                 }
                 Spacer(modifier = Modifier.weight(1f))
             }
@@ -453,16 +461,10 @@ fun PostCard(
                     style = MaterialTheme.typography.bodyMedium,
                     fontWeight = FontWeight.SemiBold, modifier = Modifier.padding(horizontal = 12.dp, vertical = 2.dp))
             }
-            if (!post.text.isNullOrBlank()) {
+            if (!post.text.isNullOrBlank() && !post.media.isNullOrEmpty()) {
                 val displayText = post.text?.replace("<br>", "\n")?.replace("<br />", "\n")?.replace("<br/>", "\n")
                 Text("${post.user?.name ?: ""} $displayText", style = MaterialTheme.typography.bodyMedium,
                     maxLines = 2, overflow = TextOverflow.Ellipsis, modifier = Modifier.padding(horizontal = 12.dp, vertical = 2.dp))
-            }
-            if (!hideCommentButton && post.commentsCount > 0) {
-                TextButton(onClick = onComment, modifier = Modifier.padding(horizontal = 4.dp, vertical = 0.dp)) {
-                    Text("View all ${post.commentsCount} comments", style = MaterialTheme.typography.bodyMedium,
-                        color = MaterialTheme.colorScheme.onSurfaceVariant)
-                }
             }
             Text(DateFormatter.formatRelativeTime(post.createdAt), style = MaterialTheme.typography.labelSmall,
                 color = MaterialTheme.colorScheme.onSurfaceVariant,
