@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Api;
 
 use App\Model\Transaction;
 use App\Model\Withdrawal;
+use App\Helpers\PaymentHelper;
 use App\Providers\PaymentsServiceProvider;
 use App\Providers\SettingsServiceProvider;
 use App\Providers\WithdrawalsServiceProvider;
@@ -26,7 +27,7 @@ class WalletController extends ApiController
     {
         $validated = $request->validate([
             'amount' => 'required|numeric|min:0.01',
-            'provider' => 'required|string|in:paypal,stripe,coinbase,credit',
+            'provider' => 'required|string|in:stripe,offline',
         ]);
 
         $user = $request->user();
@@ -51,12 +52,20 @@ class WalletController extends ApiController
             'currency' => config('app.site.currency_code'),
         ]);
 
-        return $this->success([
+        $data = [
             'transaction_id' => $transaction->id,
             'amount' => $amount,
             'provider' => $validated['provider'],
             'status' => $transaction->status,
-        ], 'Deposit initiated');
+        ];
+
+        if ($validated['provider'] === 'stripe') {
+            $paymentHelper = app(PaymentHelper::class);
+            $checkoutUrl = $paymentHelper->generateStripeSessionByTransaction($transaction);
+            $data['checkout_url'] = $checkoutUrl;
+        }
+
+        return $this->success($data, 'Deposit initiated');
     }
 
     public function withdrawal(Request $request)

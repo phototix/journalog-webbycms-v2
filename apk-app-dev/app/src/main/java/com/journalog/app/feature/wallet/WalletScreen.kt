@@ -1,5 +1,8 @@
 package com.journalog.app.feature.wallet
 
+import android.annotation.SuppressLint
+import android.webkit.WebView
+import android.webkit.WebViewClient
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -14,10 +17,12 @@ import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.viewinterop.AndroidView
 import com.journalog.app.core.network.ApiClient
 import com.journalog.app.data.remote.ApiService
 import com.journalog.app.data.remote.dto.DepositRequest
@@ -35,6 +40,20 @@ fun WalletScreen(onBack: () -> Unit) {
     var selectedTab by remember { mutableIntStateOf(0) }
     var error by remember { mutableStateOf<String?>(null) }
     var successMsg by remember { mutableStateOf<String?>(null) }
+    val context = LocalContext.current
+    var stripeCheckoutUrl by remember { mutableStateOf<String?>(null) }
+
+    fun refreshBalance() {
+        scope.launch {
+            try {
+                val resp = api.getWalletBalance()
+                if (resp.isSuccessful) {
+                    balance = resp.body()?.data?.total ?: 0.0
+                    pendingBalance = resp.body()?.data?.pendingBalance ?: 0.0
+                }
+            } catch (_: Exception) {}
+        }
+    }
 
     // Deposit state
     var depositAmount by remember { mutableStateOf("") }
@@ -144,7 +163,7 @@ fun WalletScreen(onBack: () -> Unit) {
                 Text("Payment Method", style = MaterialTheme.typography.titleSmall, fontWeight = FontWeight.SemiBold)
                 Spacer(Modifier.height(8.dp))
 
-                listOf("stripe" to "Stripe", "paypal" to "PayPal", "coinbase" to "Coinbase", "credit" to "Wallet Credit").forEach { (value, label) ->
+                listOf("stripe" to "Stripe (Card)", "offline" to "Manual / Bank Transfer").forEach { (value, label) ->
                     Row(
                         modifier = Modifier.fillMaxWidth().padding(vertical = 4.dp),
                         verticalAlignment = Alignment.CenterVertically
@@ -171,7 +190,12 @@ fun WalletScreen(onBack: () -> Unit) {
                             try {
                                 val resp = api.initiateDeposit(DepositRequest(amount = amount, provider = depositProvider))
                                 if (resp.isSuccessful && resp.body()?.ok == true) {
-                                    successMsg = "Deposit initiated! Transaction ID: ${resp.body()?.data?.transactionId}"
+                                    val data = resp.body()?.data
+                                    if (data?.checkoutUrl != null) {
+                                        stripeCheckoutUrl = data.checkoutUrl
+                                    } else {
+                                        successMsg = "Deposit initiated! Transaction ID: ${data?.transactionId ?: ""}"
+                                    }
                                     depositAmount = ""
                                 } else {
                                     error = resp.body()?.message ?: "Deposit failed"
@@ -297,6 +321,41 @@ fun WalletScreen(onBack: () -> Unit) {
             }
 
             Spacer(Modifier.height(32.dp))
+        }
+
+        stripeCheckoutUrl?.let { url ->
+            AlertDialog(
+                onDismissRequest = {
+                    stripeCheckoutUrl = null
+                    refreshBalance()
+                },
+                confirmButton = {},
+                title = { Text("Stripe Checkout") },
+                text = {
+                    Box(Modifier.height(480.dp)) {
+                        AndroidView(
+                            factory = { ctx ->
+                                @SuppressLint("SetJavaScriptEnabled")
+                                WebView(ctx).apply {
+                                    settings.javaScriptEnabled = true
+                                    webViewClient = object : WebViewClient() {
+                                        override fun shouldOverrideUrlLoading(view: WebView, url: String): Boolean {
+                                            if (url.contains("checkStripePaymentStatus")) {
+                                                stripeCheckoutUrl = null
+                                                refreshBalance()
+                                                return true
+                                            }
+                                            return false
+                                        }
+                                    }
+                                    loadUrl(url)
+                                }
+                            },
+                            modifier = Modifier.fillMaxSize()
+                        )
+                    }
+                }
+            )
         }
     }
 }

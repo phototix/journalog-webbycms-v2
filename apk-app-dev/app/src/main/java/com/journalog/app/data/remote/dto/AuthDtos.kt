@@ -319,7 +319,8 @@ data class DepositResponse(
     @SerializedName("transaction_id") val transactionId: Int?,
     val amount: Double?,
     val provider: String?,
-    val status: String?
+    val status: String?,
+    @SerializedName("checkout_url") val checkoutUrl: String?
 )
 
 data class WithdrawalRequest(
