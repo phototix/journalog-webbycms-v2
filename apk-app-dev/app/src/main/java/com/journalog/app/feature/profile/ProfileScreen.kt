@@ -53,6 +53,7 @@ fun ProfileScreen(
     var currentPage by remember { mutableIntStateOf(1) }
     var hasMore by remember { mutableStateOf(true) }
     var isLoadingMore by remember { mutableStateOf(false) }
+    var loadAttempt by remember { mutableIntStateOf(0) }
     val listState = rememberLazyListState()
 
     fun loadPosts(page: Int = 1) {
@@ -68,10 +69,11 @@ fun ProfileScreen(
                     currentPage = page
                 }
             } catch (e: Exception) {
-                error = e.message ?: "Failed to load profile"
+                error = e.message ?: "Failed to load posts"
             }
             isLoading = false
             isLoadingMore = false
+            loadAttempt++
         }
     }
 
@@ -101,7 +103,7 @@ fun ProfileScreen(
             lastVisible != null && lastVisible.index >= listState.layoutInfo.totalItemsCount - 3
         }
     }
-    LaunchedEffect(shouldLoadMore.value, posts.size) {
+    LaunchedEffect(shouldLoadMore.value, loadAttempt) {
         if (shouldLoadMore.value && hasMore && !isLoadingMore && !isLoading && posts.isNotEmpty()) {
             loadPosts(currentPage + 1)
         }
