@@ -36,7 +36,8 @@ fun SettingsScreen(
     tokenManager: TokenManager,
     onBack: () -> Unit,
     onLogout: () -> Unit,
-    onEditProfile: () -> Unit = {}
+    onEditProfile: () -> Unit = {},
+    onWallet: () -> Unit = {}
 ) {
     val scope = rememberCoroutineScope()
     val context = LocalContext.current
@@ -103,8 +104,8 @@ fun SettingsScreen(
             )
             SettingsItem(
                 icon = Icons.Outlined.Payments,
-                title = "Payments",
-                onClick = { }
+                title = "Wallet",
+                onClick = onWallet
             )
 
             HorizontalDivider(modifier = Modifier.padding(vertical = 8.dp))

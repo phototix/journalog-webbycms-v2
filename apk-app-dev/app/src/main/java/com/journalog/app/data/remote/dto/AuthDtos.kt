@@ -310,6 +310,51 @@ data class WalletBalance(
     @SerializedName("pendingBalance") val pendingBalance: Double?
 )
 
+data class DepositRequest(
+    val amount: Double,
+    val provider: String
+)
+
+data class DepositResponse(
+    @SerializedName("transaction_id") val transactionId: Int?,
+    val amount: Double?,
+    val provider: String?,
+    val status: String?
+)
+
+data class WithdrawalRequest(
+    val amount: Double,
+    @SerializedName("payment_method") val paymentMethod: String,
+    @SerializedName("payment_identifier") val paymentIdentifier: String,
+    val message: String? = null
+)
+
+data class WithdrawalResponse(
+    @SerializedName("withdrawal_id") val withdrawalId: Int?,
+    val amount: Double?,
+    val fee: Double?,
+    @SerializedName("net_amount") val netAmount: Double?,
+    @SerializedName("new_balance") val newBalance: Double?,
+    @SerializedName("pending_balance") val pendingBalance: Double?
+)
+
+data class TransactionItem(
+    val id: Int,
+    val type: String,
+    val status: String,
+    val amount: Double,
+    val currency: String?,
+    @SerializedName("payment_provider") val paymentProvider: String?,
+    @SerializedName("is_incoming") val isIncoming: Boolean,
+    @SerializedName("created_at") val createdAt: String?
+)
+
+data class TransactionsData(
+    val transactions: List<TransactionItem>,
+    @SerializedName("has_more") val hasMore: Boolean,
+    @SerializedName("current_page") val currentPage: Int
+)
+
 data class ChatMessageData(
     val id: Int,
     val text: String?,

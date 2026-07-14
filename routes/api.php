@@ -99,6 +99,9 @@ Route::prefix('v1')->group(function () {
 
         // Wallet
         Route::get('/wallet/balance', [\App\Http\Controllers\Api\WalletController::class, 'balance']);
+        Route::post('/wallet/deposit', [\App\Http\Controllers\Api\WalletController::class, 'deposit']);
+        Route::post('/wallet/withdrawal', [\App\Http\Controllers\Api\WalletController::class, 'withdrawal']);
+        Route::get('/wallet/transactions', [\App\Http\Controllers\Api\WalletController::class, 'transactions']);
 
         // Chatbot
         Route::post('/chatbot/send', [\App\Http\Controllers\Api\ChatbotController::class, 'send']);

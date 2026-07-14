@@ -142,6 +142,15 @@ interface ApiService {
     @GET("wallet/balance")
     suspend fun getWalletBalance(): Response<ApiResponse<WalletBalance>>
 
+    @POST("wallet/deposit")
+    suspend fun initiateDeposit(@Body body: DepositRequest): Response<ApiResponse<DepositResponse>>
+
+    @POST("wallet/withdrawal")
+    suspend fun requestWithdrawal(@Body body: WithdrawalRequest): Response<ApiResponse<WithdrawalResponse>>
+
+    @GET("wallet/transactions")
+    suspend fun getWalletTransactions(@Query("page") page: Int = 1): Response<ApiResponse<TransactionsData>>
+
     // Chatbot
     @POST("chatbot/send")
     suspend fun sendChatbotMessage(@Body body: Map<String, String>): Response<ApiResponse<ChatbotResponse>>
