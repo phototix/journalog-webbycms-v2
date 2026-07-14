@@ -145,7 +145,7 @@ class UserController extends ApiController
         $paginated = $user->posts()
             ->with(['user', 'attachments', 'reactions', 'comments'])
             ->orderBy('created_at', 'desc')
-            ->paginate(12);
+            ->paginate((int) $request->get('per_page', 21));
 
         return $this->success([
             'posts' => array_map(function ($post) {
