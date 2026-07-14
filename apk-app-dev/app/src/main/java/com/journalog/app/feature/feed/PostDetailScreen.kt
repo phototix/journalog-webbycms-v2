@@ -158,6 +158,10 @@ fun PostDetailScreen(
                 }
             }
         }
+    }
+        CannedMessagesRow { text ->
+            commentText = text
+        }
         Surface(tonalElevation = 2.dp) {
             Row(
                 modifier = Modifier.fillMaxWidth().padding(8.dp),
@@ -181,10 +185,8 @@ fun PostDetailScreen(
                 }
             }
         }
-        CannedMessagesRow { text ->
-            commentText = text
-        }
         Spacer(Modifier.height(4.dp))
+        Spacer(Modifier.imePadding())
     }
 
     // Gift Modal
@@ -195,8 +197,7 @@ fun PostDetailScreen(
             onGiftSent = { }
         )
     }
-}
-}
+    }
 }
 
 @Composable

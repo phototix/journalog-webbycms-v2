@@ -229,6 +229,9 @@ fun ConversationScreen(
                 }
             }
         }
+        CannedMessagesRow { text ->
+            inputText = text
+        }
         Surface(tonalElevation = 2.dp) {
             Row(
                 modifier = Modifier.fillMaxWidth().padding(8.dp),
@@ -250,10 +253,8 @@ fun ConversationScreen(
                 }
             }
         }
-        CannedMessagesRow { text ->
-            inputText = text
-        }
         Spacer(Modifier.height(4.dp))
+        Spacer(Modifier.imePadding())
     }
 }
 }
