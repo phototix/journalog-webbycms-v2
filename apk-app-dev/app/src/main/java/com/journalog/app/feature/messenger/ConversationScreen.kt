@@ -135,7 +135,6 @@ fun ConversationScreen(
     }
 
     Scaffold(
-        contentWindowInsets = WindowInsets.systemBars.add(WindowInsets.ime),
         topBar = {
             TopAppBar(
                 title = { Text(userName) },
@@ -145,32 +144,10 @@ fun ConversationScreen(
                     }
                 }
             )
-        },
-        bottomBar = {
-            Surface(tonalElevation = 2.dp) {
-                Row(
-                    modifier = Modifier.fillMaxWidth().padding(8.dp),
-                    verticalAlignment = Alignment.CenterVertically
-                ) {
-                    OutlinedTextField(
-                        value = inputText,
-                        onValueChange = { inputText = it },
-                        placeholder = { Text("Message...") },
-                        modifier = Modifier.weight(1f),
-                        shape = RoundedCornerShape(24.dp),
-                        singleLine = true,
-                        keyboardOptions = KeyboardOptions(imeAction = ImeAction.Send),
-                        keyboardActions = KeyboardActions(onSend = { sendMessage() })
-                    )
-                    Spacer(modifier = Modifier.width(8.dp))
-                    IconButton(onClick = { sendMessage() }) {
-                        Icon(Icons.Filled.Send, contentDescription = "Send", tint = MaterialTheme.colorScheme.primary)
-                    }
-                }
-            }
         }
     ) { padding ->
-        Box(modifier = Modifier.fillMaxSize().padding(padding)) {
+        Column(modifier = Modifier.fillMaxSize().padding(padding).imePadding()) {
+            Box(modifier = Modifier.weight(1f)) {
             if (messages.isEmpty() && !isLoading) {
                 Box(Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
                     Text("No messages yet. Send a message to start!",
@@ -205,7 +182,29 @@ fun ConversationScreen(
                 }
             }
         }
+        Surface(tonalElevation = 2.dp) {
+            Row(
+                modifier = Modifier.fillMaxWidth().padding(8.dp),
+                verticalAlignment = Alignment.CenterVertically
+            ) {
+                OutlinedTextField(
+                    value = inputText,
+                    onValueChange = { inputText = it },
+                    placeholder = { Text("Message...") },
+                    modifier = Modifier.weight(1f),
+                    shape = RoundedCornerShape(24.dp),
+                    singleLine = true,
+                    keyboardOptions = KeyboardOptions(imeAction = ImeAction.Send),
+                    keyboardActions = KeyboardActions(onSend = { sendMessage() })
+                )
+                Spacer(modifier = Modifier.width(8.dp))
+                IconButton(onClick = { sendMessage() }) {
+                    Icon(Icons.Filled.Send, contentDescription = "Send", tint = MaterialTheme.colorScheme.primary)
+                }
+            }
+        }
     }
+}
 }
 
 @Composable

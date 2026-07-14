@@ -93,7 +93,6 @@ fun PostDetailScreen(
     }
 
     Scaffold(
-        contentWindowInsets = WindowInsets.systemBars.add(WindowInsets.ime),
         topBar = {
             TopAppBar(
                 title = { Text("Post") },
@@ -103,53 +102,28 @@ fun PostDetailScreen(
                     }
                 }
             )
-        },
-        bottomBar = {
-            Surface(tonalElevation = 2.dp) {
-                Row(
-                    modifier = Modifier.fillMaxWidth().padding(8.dp),
-                    verticalAlignment = Alignment.CenterVertically
-                ) {
-                    OutlinedTextField(
-                        value = commentText,
-                        onValueChange = { commentText = it },
-                        placeholder = { Text("Write a comment...") },
-                        modifier = Modifier.weight(1f),
-                        shape = RoundedCornerShape(24.dp),
-                        singleLine = true,
-                        keyboardOptions = KeyboardOptions(imeAction = ImeAction.Send),
-                        keyboardActions = KeyboardActions(
-                            onSend = { submitComment() }
-                        )
-                    )
-                    Spacer(modifier = Modifier.width(8.dp))
-                    IconButton(onClick = { submitComment() }) {
-                        Icon(Icons.Filled.Send, contentDescription = "Send", tint = MaterialTheme.colorScheme.primary)
-                    }
-                }
-            }
         }
     ) { padding ->
-        if (isLoading && post == null) {
-            Box(
-                modifier = Modifier.fillMaxSize().padding(padding),
-                contentAlignment = Alignment.Center
-            ) {
-                CircularProgressIndicator()
-            }
-        } else if (post == null) {
-            Box(
-                modifier = Modifier.fillMaxSize().padding(padding),
-                contentAlignment = Alignment.Center
-            ) {
-                Text("Post not found", style = MaterialTheme.typography.bodyLarge)
-            }
-        } else {
-            LazyColumn(
-                modifier = Modifier
-                    .fillMaxSize()
-                    .padding(padding)
-            ) {
+        Column(modifier = Modifier.fillMaxSize().padding(padding).imePadding()) {
+            Box(modifier = Modifier.weight(1f)) {
+                if (isLoading && post == null) {
+                    Box(
+                        modifier = Modifier.fillMaxSize(),
+                        contentAlignment = Alignment.Center
+                    ) {
+                        CircularProgressIndicator()
+                    }
+                } else if (post == null) {
+                    Box(
+                        modifier = Modifier.fillMaxSize(),
+                        contentAlignment = Alignment.Center
+                    ) {
+                        Text("Post not found", style = MaterialTheme.typography.bodyLarge)
+                    }
+                } else {
+                    LazyColumn(
+                        modifier = Modifier.fillMaxSize()
+                    ) {
                 post?.let { p ->
                     item {
                         PostCard(
@@ -181,6 +155,29 @@ fun PostDetailScreen(
                 }
             }
         }
+        Surface(tonalElevation = 2.dp) {
+            Row(
+                modifier = Modifier.fillMaxWidth().padding(8.dp),
+                verticalAlignment = Alignment.CenterVertically
+            ) {
+                OutlinedTextField(
+                    value = commentText,
+                    onValueChange = { commentText = it },
+                    placeholder = { Text("Write a comment...") },
+                    modifier = Modifier.weight(1f),
+                    shape = RoundedCornerShape(24.dp),
+                    singleLine = true,
+                    keyboardOptions = KeyboardOptions(imeAction = ImeAction.Send),
+                    keyboardActions = KeyboardActions(
+                        onSend = { submitComment() }
+                    )
+                )
+                Spacer(modifier = Modifier.width(8.dp))
+                IconButton(onClick = { submitComment() }) {
+                    Icon(Icons.Filled.Send, contentDescription = "Send", tint = MaterialTheme.colorScheme.primary)
+                }
+            }
+        }
     }
 
     // Gift Modal
@@ -191,6 +188,8 @@ fun PostDetailScreen(
             onGiftSent = { }
         )
     }
+}
+}
 }
 
 @Composable
