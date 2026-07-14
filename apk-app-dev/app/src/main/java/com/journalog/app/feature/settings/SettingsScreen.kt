@@ -99,16 +99,6 @@ fun SettingsScreen(
                 onClick = onEditProfile
             )
             SettingsItem(
-                icon = Icons.Outlined.Notifications,
-                title = "Notifications",
-                onClick = { }
-            )
-            SettingsItem(
-                icon = Icons.Outlined.Lock,
-                title = "Privacy & Security",
-                onClick = { }
-            )
-            SettingsItem(
                 icon = Icons.Outlined.Payments,
                 title = "Wallet",
                 onClick = onWallet
