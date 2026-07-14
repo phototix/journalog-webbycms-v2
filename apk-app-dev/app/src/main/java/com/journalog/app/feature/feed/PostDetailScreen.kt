@@ -98,7 +98,25 @@ fun PostDetailScreen(
     Scaffold(
         topBar = {
             TopAppBar(
-                title = { Text("Post") },
+                title = {
+                    post?.let { p ->
+                        Row(verticalAlignment = Alignment.CenterVertically) {
+                            val avatar = p.user?.avatar ?: ""
+                            if (avatar.isNotBlank()) {
+                                coil.compose.AsyncImage(
+                                    model = avatar,
+                                    contentDescription = null,
+                                    modifier = Modifier
+                                        .size(32.dp)
+                                        .padding(end = 8.dp)
+                                        .clip(androidx.compose.foundation.shape.CircleShape),
+                                    contentScale = androidx.compose.ui.layout.ContentScale.Crop
+                                )
+                            }
+                            Text(p.user?.name ?: "")
+                        }
+                    } ?: Text("Post")
+                },
                 navigationIcon = {
                     IconButton(onClick = onBack) {
                         Icon(Icons.AutoMirrored.Filled.ArrowBack, contentDescription = "Back")
@@ -137,6 +155,7 @@ fun PostDetailScreen(
                             onComment = { },
                             onProfileClick = { },
                             hideCommentButton = true,
+                            hideUserRow = true,
                             onGiftClick = { showGiftModal = true }
                         )
                     }
@@ -155,6 +174,9 @@ fun PostDetailScreen(
 
                 items(comments) { comment ->
                     CommentItem(comment)
+                }
+                item {
+                    Spacer(modifier = Modifier.height(60.dp))
                 }
             }
         }

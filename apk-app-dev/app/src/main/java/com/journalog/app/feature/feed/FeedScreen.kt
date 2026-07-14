@@ -352,6 +352,7 @@ fun PostCard(
     onProfileClick: () -> Unit,
     onPostClick: () -> Unit = {},
     hideCommentButton: Boolean = false,
+    hideUserRow: Boolean = false,
     onGiftClick: (() -> Unit)? = null
 ) {
     Card(
@@ -360,12 +361,13 @@ fun PostCard(
         elevation = CardDefaults.cardElevation(defaultElevation = 0.dp)
     ) {
         Column {
-            Row(
-                modifier = Modifier.fillMaxWidth()
-                    .clickable { onProfileClick() }
-                    .padding(horizontal = 12.dp, vertical = 8.dp),
-                verticalAlignment = Alignment.CenterVertically
-            ) {
+            if (!hideUserRow) {
+                Row(
+                    modifier = Modifier.fillMaxWidth()
+                        .clickable { onProfileClick() }
+                        .padding(horizontal = 12.dp, vertical = 8.dp),
+                    verticalAlignment = Alignment.CenterVertically
+                ) {
                 val avatar = post.user?.avatar ?: ""
                 if (avatar.isNotBlank()) {
                     AsyncImage(
@@ -378,6 +380,7 @@ fun PostCard(
                 Spacer(modifier = Modifier.width(8.dp))
                 Text(post.user?.name ?: "", style = MaterialTheme.typography.labelLarge, fontWeight = FontWeight.SemiBold)
                 Spacer(modifier = Modifier.weight(1f))
+                }
             }
 
             if (post.media.isNullOrEmpty()) {
