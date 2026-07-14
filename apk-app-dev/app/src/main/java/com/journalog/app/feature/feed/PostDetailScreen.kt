@@ -93,6 +93,7 @@ fun PostDetailScreen(
     }
 
     Scaffold(
+        contentWindowInsets = WindowInsets.systemBars.add(WindowInsets.ime),
         topBar = {
             TopAppBar(
                 title = { Text("Post") },
@@ -131,14 +132,14 @@ fun PostDetailScreen(
     ) { padding ->
         if (isLoading && post == null) {
             Box(
-                modifier = Modifier.fillMaxSize().padding(padding).imePadding(),
+                modifier = Modifier.fillMaxSize().padding(padding),
                 contentAlignment = Alignment.Center
             ) {
                 CircularProgressIndicator()
             }
         } else if (post == null) {
             Box(
-                modifier = Modifier.fillMaxSize().padding(padding).imePadding(),
+                modifier = Modifier.fillMaxSize().padding(padding),
                 contentAlignment = Alignment.Center
             ) {
                 Text("Post not found", style = MaterialTheme.typography.bodyLarge)
@@ -147,7 +148,7 @@ fun PostDetailScreen(
             LazyColumn(
                 modifier = Modifier
                     .fillMaxSize()
-                    .padding(padding).imePadding()
+                    .padding(padding)
             ) {
                 post?.let { p ->
                     item {

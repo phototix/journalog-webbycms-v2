@@ -135,6 +135,7 @@ fun ConversationScreen(
     }
 
     Scaffold(
+        contentWindowInsets = WindowInsets.systemBars.add(WindowInsets.ime),
         topBar = {
             TopAppBar(
                 title = { Text(userName) },
@@ -169,7 +170,7 @@ fun ConversationScreen(
             }
         }
     ) { padding ->
-        Box(modifier = Modifier.fillMaxSize().padding(padding).imePadding()) {
+        Box(modifier = Modifier.fillMaxSize().padding(padding)) {
             if (messages.isEmpty() && !isLoading) {
                 Box(Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
                     Text("No messages yet. Send a message to start!",
