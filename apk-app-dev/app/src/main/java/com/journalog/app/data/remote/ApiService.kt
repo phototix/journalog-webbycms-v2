@@ -55,7 +55,7 @@ interface ApiService {
     suspend fun getProfile(@Path("username") username: String): Response<ApiResponse<Map<String, UserDto>>>
 
     @GET("users/{username}/posts")
-    suspend fun getUserPosts(@Path("username") username: String): Response<ApiResponse<FeedData>>
+    suspend fun getUserPosts(@Path("username") username: String, @Query("page") page: Int = 1): Response<ApiResponse<FeedData>>
 
     @POST("users/{username}/follow")
     suspend fun toggleFollow(@Path("username") username: String): Response<ApiResponse<Map<String, Boolean>>>

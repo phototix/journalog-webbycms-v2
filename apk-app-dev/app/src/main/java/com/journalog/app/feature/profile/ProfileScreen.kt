@@ -2,9 +2,12 @@ package com.journalog.app.feature.profile
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.horizontalScroll
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.lazy.rememberLazyListState
+import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
@@ -45,27 +48,63 @@ fun ProfileScreen(
     var posts by remember { mutableStateOf<List<PostDto>>(emptyList()) }
     var isLoading by remember { mutableStateOf(true) }
     var error by remember { mutableStateOf<String?>(null) }
-    var selectedTab by remember { mutableIntStateOf(0) }
+    var selectedFilter by remember { mutableIntStateOf(0) }
     val scope = rememberCoroutineScope()
+    var currentPage by remember { mutableIntStateOf(1) }
+    var hasMore by remember { mutableStateOf(true) }
+    var isLoadingMore by remember { mutableStateOf(false) }
+    val listState = rememberLazyListState()
+
+    fun loadPosts(page: Int = 1) {
+        scope.launch {
+            if (page == 1) isLoading = true else isLoadingMore = true
+            try {
+                val resp = api.getUserPosts(username, page)
+                if (resp.isSuccessful) {
+                    val data = resp.body()?.data
+                    val newPosts = data?.posts ?: emptyList()
+                    posts = if (page == 1) newPosts else posts + newPosts
+                    hasMore = data?.hasMore ?: false
+                    currentPage = page
+                }
+            } catch (e: Exception) {
+                error = e.message ?: "Failed to load profile"
+            }
+            isLoading = false
+            isLoadingMore = false
+        }
+    }
+
+    fun loadProfile() {
+        scope.launch {
+            try {
+                val userResp = api.getProfile(username)
+                if (userResp.isSuccessful) {
+                    user = userResp.body()?.data?.get("user")
+                } else {
+                    error = "User not found"
+                }
+            } catch (e: Exception) {
+                error = e.message ?: "Failed to load profile"
+            }
+        }
+    }
 
     LaunchedEffect(username) {
-        isLoading = true
-        error = null
-        try {
-            val userResp = api.getProfile(username)
-            if (userResp.isSuccessful) {
-                user = userResp.body()?.data?.get("user")
-            } else {
-                error = "User not found"
-            }
-            val postsResp = api.getUserPosts(username)
-            if (postsResp.isSuccessful) {
-                posts = postsResp.body()?.data?.posts ?: emptyList()
-            }
-        } catch (e: Exception) {
-            error = e.message ?: "Failed to load profile"
+        loadProfile()
+        loadPosts()
+    }
+
+    val shouldLoadMore = remember {
+        derivedStateOf {
+            val lastVisible = listState.layoutInfo.visibleItemsInfo.lastOrNull()
+            lastVisible != null && lastVisible.index >= listState.layoutInfo.totalItemsCount - 3
         }
-        isLoading = false
+    }
+    LaunchedEffect(shouldLoadMore.value) {
+        if (shouldLoadMore.value && hasMore && !isLoadingMore && !isLoading && posts.isNotEmpty()) {
+            loadPosts(currentPage + 1)
+        }
     }
 
     LazyColumn(modifier = Modifier.fillMaxSize()) {
@@ -220,12 +259,20 @@ fun ProfileScreen(
                 }
 
                 Spacer(modifier = Modifier.height(8.dp))
-                TabRow(selectedTabIndex = selectedTab) {
-                    Tab(selected = selectedTab == 0, onClick = { selectedTab = 0 }) {
-                        Text("Posts", modifier = Modifier.padding(vertical = 8.dp))
-                    }
-                    Tab(selected = selectedTab == 1, onClick = { selectedTab = 1 }) {
-                        Text("Media", modifier = Modifier.padding(vertical = 8.dp))
+                Row(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .horizontalScroll(rememberScrollState())
+                        .padding(horizontal = 12.dp),
+                    horizontalArrangement = Arrangement.spacedBy(8.dp)
+                ) {
+                    val filters = listOf("All", "Public", "Subscribers", "Paid", "Media")
+                    filters.forEachIndexed { i, label ->
+                        FilterChip(
+                            selected = selectedFilter == i,
+                            onClick = { selectedFilter = i },
+                            label = { Text(label) }
+                        )
                     }
                 }
                 Spacer(modifier = Modifier.height(8.dp))
@@ -244,10 +291,13 @@ fun ProfileScreen(
         }
 
         if (!isLoading && user != null && posts.isNotEmpty()) {
-            val filteredPosts = if (selectedTab == 1) {
-                posts.filter { !it.media.isNullOrEmpty() }
-            } else {
-                posts
+            val filteredPosts = when (selectedFilter) {
+                0 -> posts
+                1 -> posts.filter { it.price == 0.0 }
+                2 -> posts.filter { it.price == 0.0 && user?.paidProfile == true }
+                3 -> posts.filter { it.price > 0 }
+                4 -> posts.filter { !it.media.isNullOrEmpty() }
+                else -> posts
             }
 
             if (filteredPosts.isEmpty()) {
@@ -256,11 +306,12 @@ fun ProfileScreen(
                         modifier = Modifier.fillMaxWidth().padding(32.dp),
                         contentAlignment = Alignment.Center
                     ) {
-                        Text("No media posts", color = MaterialTheme.colorScheme.onSurfaceVariant)
+                        Text("No posts match this filter",
+                            color = MaterialTheme.colorScheme.onSurfaceVariant)
                     }
                 }
             } else {
-                val chunked = filteredPosts.take(12).chunked(3)
+                val chunked = filteredPosts.chunked(3)
                 items(chunked) { rowItems ->
                     Row(
                         modifier = Modifier.fillMaxWidth().padding(horizontal = 1.dp),
@@ -300,6 +351,14 @@ fun ProfileScreen(
                         }
                     }
                     Spacer(modifier = Modifier.height(2.dp))
+                }
+            }
+        }
+
+        if (isLoadingMore) {
+            item {
+                Box(modifier = Modifier.fillMaxWidth().padding(16.dp), contentAlignment = Alignment.Center) {
+                    CircularProgressIndicator(modifier = Modifier.size(24.dp), strokeWidth = 2.dp)
                 }
             }
         }
