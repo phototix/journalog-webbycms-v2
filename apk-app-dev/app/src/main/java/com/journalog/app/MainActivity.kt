@@ -5,7 +5,9 @@ import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
 import androidx.compose.foundation.layout.*
-import androidx.compose.material3.Scaffold
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Add
+import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
 import androidx.navigation.NavDestination.Companion.hierarchy
@@ -66,6 +68,7 @@ fun MainContent(tokenManager: TokenManager, launchToken: String? = null) {
     var storyViewerUserId by remember { mutableStateOf<Int?>(null) }
     var subscribeToUser by remember { mutableStateOf<com.journalog.app.data.remote.dto.UserDto?>(null) }
     var feedRefreshTrigger by remember { mutableIntStateOf(0) }
+    var showCreateFabMenu by remember { mutableStateOf(false) }
 
     LaunchedEffect(Unit) {
         tokenManager.usernameFlow.collect { username ->
@@ -102,6 +105,37 @@ fun MainContent(tokenManager: TokenManager, launchToken: String? = null) {
                             }
                         }
                     )
+                }
+            },
+            floatingActionButton = {
+                if (showBottomBar) {
+                    Box {
+                        FloatingActionButton(
+                            onClick = { showCreateFabMenu = true },
+                            containerColor = MaterialTheme.colorScheme.primary
+                        ) {
+                            Icon(Icons.Filled.Add, contentDescription = "Create")
+                        }
+                        DropdownMenu(
+                            expanded = showCreateFabMenu,
+                            onDismissRequest = { showCreateFabMenu = false }
+                        ) {
+                            DropdownMenuItem(
+                                text = { Text("Create Post") },
+                                onClick = {
+                                    showCreateFabMenu = false
+                                    navController.navigate(NavRoutes.Create.route)
+                                }
+                            )
+                            DropdownMenuItem(
+                                text = { Text("Create Story") },
+                                onClick = {
+                                    showCreateFabMenu = false
+                                    navController.navigate(NavRoutes.StoryCreate.route)
+                                }
+                            )
+                        }
+                    }
                 }
             }
         ) { innerPadding ->

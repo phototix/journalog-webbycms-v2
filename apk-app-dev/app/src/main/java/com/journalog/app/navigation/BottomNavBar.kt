@@ -1,11 +1,9 @@
 package com.journalog.app.navigation
 
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.AddCircle
 import androidx.compose.material.icons.filled.Home
 import androidx.compose.material.icons.filled.Person
 import androidx.compose.material.icons.filled.Explore
-import androidx.compose.material.icons.outlined.AddCircle
 import androidx.compose.material.icons.outlined.Explore
 import androidx.compose.material.icons.outlined.Home
 import androidx.compose.material.icons.outlined.Person
@@ -31,7 +29,6 @@ data class BottomNavItem(
 val bottomNavItems = listOf(
     BottomNavItem("Feed", NavRoutes.Feed.route, Icons.Filled.Home, Icons.Outlined.Home),
     BottomNavItem("Explore", NavRoutes.Explore.route, Icons.Filled.Explore, Icons.Outlined.Explore),
-    BottomNavItem("Create", NavRoutes.Create.route, Icons.Filled.AddCircle, Icons.Outlined.AddCircle),
     BottomNavItem("Messages", NavRoutes.Messenger.route, Icons.Filled.Chat, Icons.Outlined.Chat),
     BottomNavItem("Profile", NavRoutes.Profile.route, Icons.Filled.Person, Icons.Outlined.Person),
 )
