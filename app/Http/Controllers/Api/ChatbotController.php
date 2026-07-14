@@ -23,30 +23,13 @@ class ChatbotController extends ApiController
         // Save user message
         $userMsg = $service->saveMessage($user->id, $botUser->id, $userMessage);
 
-        // Get full bot response
-        $fullResponse = '';
-        $error = null;
-        try {
-            foreach ($service->streamCompletion($userMessage) as $chunk) {
-                if (isset($chunk['error'])) {
-                    $error = $chunk['error'];
-                    break;
-                }
-                if (isset($chunk['token'])) {
-                    $fullResponse .= $chunk['token'];
-                }
-                if (isset($chunk['done']) && $chunk['done'] === true) {
-                    break;
-                }
-            }
-        } catch (\Exception $e) {
-            $error = $e->getMessage();
-        }
+        // Save placeholder bot message
+        $botMsg = $service->saveMessage($botUser->id, $user->id, '...');
 
-        // Save bot response
-        if ($fullResponse && !$error) {
-            $botMsg = $service->saveMessage($botUser->id, $user->id, $fullResponse);
-        }
+        // Dispatch background command to generate AI response
+        $artisan = base_path('artisan');
+        $logFile = storage_path('logs/chatbot-' . $botMsg->id . '.log');
+        exec("php {$artisan} chatbot:generate {$user->id} {$userMsg->id} {$botMsg->id} > {$logFile} 2>&1 &");
 
         return $this->success([
             'user_message' => [
@@ -57,16 +40,14 @@ class ChatbotController extends ApiController
                 'is_mine' => true,
                 'created_at' => $userMsg->created_at,
             ],
-            'bot_message' => isset($botMsg) ? [
+            'bot_message' => [
                 'id' => $botMsg->id,
                 'text' => $botMsg->message,
                 'sender_id' => $botUser->id,
                 'receiver_id' => $user->id,
                 'is_mine' => false,
                 'created_at' => $botMsg->created_at,
-            ] : null,
-            'response' => $fullResponse,
-            'error' => $error,
-        ], $error ? 'Error generating response' : 'OK');
+            ],
+        ]);
     }
 }

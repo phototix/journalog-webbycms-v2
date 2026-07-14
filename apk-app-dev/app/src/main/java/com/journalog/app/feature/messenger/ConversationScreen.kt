@@ -26,6 +26,7 @@ import androidx.compose.ui.viewinterop.AndroidView
 import com.journalog.app.core.common.DateFormatter
 import com.journalog.app.core.network.ApiClient
 import com.journalog.app.data.remote.ApiService
+import com.journalog.app.data.remote.dto.ChatbotResponse
 import com.journalog.app.data.remote.dto.MessageDto
 import io.noties.markwon.Markwon
 import kotlinx.coroutines.delay
@@ -49,6 +50,7 @@ fun ConversationScreen(
     var isLoadingMore by remember { mutableStateOf(false) }
     var isLoading by remember { mutableStateOf(true) }
     var isSending by remember { mutableStateOf(false) }
+    var isWaitingForBot by remember { mutableStateOf(false) }
     val scope = rememberCoroutineScope()
     val listState = rememberLazyListState()
     val isBot = remember { userName.contains("Bot", ignoreCase = true) }
@@ -110,6 +112,14 @@ fun ConversationScreen(
                             scope.launch { listState.scrollToItem(messages.size - 1) }
                         }
                     }
+                    val currentMap = messages.associateBy { it.id }
+                    val updated = fresh.filter { it.id in currentIds && it.text != currentMap[it.id]?.text }
+                    if (updated.isNotEmpty()) {
+                        messages = messages.map { existing ->
+                            updated.find { it.id == existing.id } ?: existing
+                        }
+                    }
+                    if (messages.none { it.text == "..." }) isWaitingForBot = false
                 } else { pollFailCount++ }
             } catch (_: Exception) { pollFailCount++ }
         }
@@ -121,11 +131,28 @@ fun ConversationScreen(
         scope.launch {
             try {
                 if (isBot) {
-                    // Use chatbot API for bot conversations
                     val resp = api.sendChatbotMessage(mapOf("message" to inputText))
-                    if (resp.isSuccessful) {
+                    if (resp.isSuccessful && resp.body()?.ok == true) {
+                        val data = resp.body()?.data
                         inputText = ""
-                        loadMessages(page = 1, append = false)
+                        data?.userMessage?.let { um ->
+                            messages = messages + MessageDto(
+                                id = um.id, text = um.text, senderId = um.senderId,
+                                receiverId = um.receiverId, isMine = true, createdAt = um.createdAt,
+                                isSeen = null, price = null, attachments = null
+                            )
+                        }
+                        data?.botMessage?.let { bm ->
+                            messages = messages + MessageDto(
+                                id = bm.id, text = bm.text, senderId = bm.senderId,
+                                receiverId = bm.receiverId, isMine = false, createdAt = bm.createdAt,
+                                isSeen = null, price = null, attachments = null
+                            )
+                            if (bm.text == "...") isWaitingForBot = true
+                        }
+                        scope.launch {
+                            try { listState.scrollToItem(messages.size - 1) } catch (_: Exception) {}
+                        }
                     }
                 } else {
                     api.sendMessage(mapOf("receiver_id" to userId, "message" to inputText))
@@ -180,6 +207,21 @@ fun ConversationScreen(
                                 color = MaterialTheme.colorScheme.onSurfaceVariant,
                                 modifier = Modifier.padding(horizontal = 14.dp, vertical = 2.dp)
                             )
+                        }
+                    }
+                    if (isWaitingForBot) {
+                        item {
+                            Surface(
+                                modifier = Modifier.fillMaxWidth(),
+                                shape = RoundedCornerShape(topStart = 16.dp, topEnd = 16.dp, bottomStart = 16.dp, bottomEnd = 4.dp),
+                                color = MaterialTheme.colorScheme.surfaceVariant
+                            ) {
+                                Text(
+                                    "Bot is thinking...",
+                                    modifier = Modifier.padding(horizontal = 14.dp, vertical = 8.dp),
+                                    style = MaterialTheme.typography.bodyMedium
+                                )
+                            }
                         }
                     }
                 }

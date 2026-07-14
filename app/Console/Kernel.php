@@ -22,6 +22,7 @@ class Kernel extends ConsoleKernel
         'App\Console\Commands\CronProcessEndingStreams',
         'App\Console\Commands\CronProcessExpiringStreams',
         'App\Console\Commands\MigrateOldJournal',
+        'App\Console\Commands\GenerateChatbotResponse',
     ];
 
     /**
