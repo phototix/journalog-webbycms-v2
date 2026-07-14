@@ -155,9 +155,11 @@ fun ConversationScreen(
                         }
                     }
                 } else {
-                    api.sendMessage(mapOf("receiver_id" to userId, "message" to inputText))
-                    inputText = ""
-                    loadMessages(page = 1, append = false)
+                    val resp = api.sendMessage(mapOf("receiver_id" to userId, "message" to inputText))
+                    if (resp.isSuccessful) {
+                        inputText = ""
+                        loadMessages(page = 1, append = false)
+                    }
                 }
             } catch (_: Exception) {}
             isSending = false

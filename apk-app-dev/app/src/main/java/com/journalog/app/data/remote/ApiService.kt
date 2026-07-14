@@ -82,7 +82,7 @@ interface ApiService {
     ): Response<ApiResponse<MessagesResponse>>
 
     @POST("messages")
-    suspend fun sendMessage(@Body body: Map<String, Any>): Response<ApiResponse<Map<String, MessageDto>>>
+    suspend fun sendMessage(@Body body: Map<String, @JvmSuppressWildcards Any>): Response<ApiResponse<Map<String, MessageDto>>>
 
     // Notifications
     @GET("notifications")
