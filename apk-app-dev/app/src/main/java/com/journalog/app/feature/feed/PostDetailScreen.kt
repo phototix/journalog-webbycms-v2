@@ -2,7 +2,9 @@ package com.journalog.app.feature.feed
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.horizontalScroll
 import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.CircleShape
@@ -18,6 +20,7 @@ import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.ImeAction
@@ -104,7 +107,7 @@ fun PostDetailScreen(
             )
         }
     ) { padding ->
-        Column(modifier = Modifier.fillMaxSize().padding(padding).imePadding()) {
+        Column(modifier = Modifier.fillMaxSize().padding(padding)) {
             Box(modifier = Modifier.weight(1f)) {
                 if (isLoading && post == null) {
                     Box(
@@ -178,6 +181,10 @@ fun PostDetailScreen(
                 }
             }
         }
+        CannedMessagesRow { text ->
+            commentText = text
+        }
+        Spacer(Modifier.imePadding())
     }
 
     // Gift Modal
@@ -190,6 +197,29 @@ fun PostDetailScreen(
     }
 }
 }
+}
+
+@Composable
+private fun CannedMessagesRow(onSelect: (String) -> Unit) {
+    val density = LocalDensity.current
+    val imeBottom = WindowInsets.ime.getBottom(density)
+    if (imeBottom > 0) {
+        Row(
+            modifier = Modifier
+                .fillMaxWidth()
+                .horizontalScroll(rememberScrollState())
+                .padding(horizontal = 12.dp, vertical = 6.dp),
+            horizontalArrangement = Arrangement.spacedBy(8.dp)
+        ) {
+            val messages = listOf("Hello!", "How are you?", "Sounds good", "Thanks!", "\uD83D\uDC4D")
+            messages.forEach { msg ->
+                SuggestionChip(
+                    onClick = { onSelect(msg) },
+                    label = { Text(msg) }
+                )
+            }
+        }
+    }
 }
 
 @Composable
