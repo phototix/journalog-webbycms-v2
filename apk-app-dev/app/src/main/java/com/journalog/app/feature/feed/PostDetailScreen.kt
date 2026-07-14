@@ -131,14 +131,14 @@ fun PostDetailScreen(
     ) { padding ->
         if (isLoading && post == null) {
             Box(
-                modifier = Modifier.fillMaxSize().padding(padding),
+                modifier = Modifier.fillMaxSize().padding(padding).imePadding(),
                 contentAlignment = Alignment.Center
             ) {
                 CircularProgressIndicator()
             }
         } else if (post == null) {
             Box(
-                modifier = Modifier.fillMaxSize().padding(padding),
+                modifier = Modifier.fillMaxSize().padding(padding).imePadding(),
                 contentAlignment = Alignment.Center
             ) {
                 Text("Post not found", style = MaterialTheme.typography.bodyLarge)
@@ -147,7 +147,7 @@ fun PostDetailScreen(
             LazyColumn(
                 modifier = Modifier
                     .fillMaxSize()
-                    .padding(padding)
+                    .padding(padding).imePadding()
             ) {
                 post?.let { p ->
                     item {
