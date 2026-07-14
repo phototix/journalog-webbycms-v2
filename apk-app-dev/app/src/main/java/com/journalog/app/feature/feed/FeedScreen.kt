@@ -387,7 +387,8 @@ fun PostCard(
                         .clickable { onPostClick() },
                     contentAlignment = Alignment.Center
                 ) {
-                    Text(post.text?.replace("<br>", "\n")?.replace("<br />", "\n")?.replace("<br/>", "\n") ?: "", maxLines = 3, overflow = TextOverflow.Ellipsis)
+                    Text(post.text?.replace("<br>", "\n")?.replace("<br />", "\n")?.replace("<br/>", "\n") ?: "", maxLines = 3, overflow = TextOverflow.Ellipsis,
+                        modifier = Modifier.padding(horizontal = 12.dp))
                     if (onGiftClick != null) {
                         FloatingActionButton(
                             onClick = onGiftClick,
