@@ -47,6 +47,12 @@ fun SettingsScreen(
     var isChecking by remember { mutableStateOf(false) }
     var isDownloading by remember { mutableStateOf(false) }
     var downloadId by remember { mutableStateOf(-1L) }
+    val isAdmin by tokenManager.isAdminFlow.collectAsState(initial = false)
+    var showDebug by remember { mutableStateOf(false) }
+
+    LaunchedEffect(Unit) {
+        tokenManager.showDebugFlow.collect { showDebug = it }
+    }
 
     val installPermLauncher = rememberLauncherForActivityResult(
         ActivityResultContracts.StartActivityForResult()
@@ -223,6 +229,30 @@ fun SettingsScreen(
             }
 
             HorizontalDivider(modifier = Modifier.padding(vertical = 8.dp))
+
+            if (isAdmin) {
+                Row(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .clickable { scope.launch { tokenManager.setShowDebug(!showDebug) } }
+                        .padding(horizontal = 16.dp, vertical = 14.dp),
+                    verticalAlignment = Alignment.CenterVertically
+                ) {
+                    Icon(Icons.Outlined.BugReport, contentDescription = null, tint = MaterialTheme.colorScheme.onSurfaceVariant)
+                    Spacer(modifier = Modifier.width(16.dp))
+                    Text(
+                        "Debug Overlay",
+                        style = MaterialTheme.typography.bodyLarge,
+                        fontWeight = FontWeight.Medium,
+                        modifier = Modifier.weight(1f)
+                    )
+                    Switch(
+                        checked = showDebug,
+                        onCheckedChange = { scope.launch { tokenManager.setShowDebug(it) } }
+                    )
+                }
+                HorizontalDivider(modifier = Modifier.padding(vertical = 8.dp))
+            }
 
             SettingsItem(
                 icon = Icons.Outlined.Logout,

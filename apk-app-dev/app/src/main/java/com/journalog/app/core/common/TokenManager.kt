@@ -4,6 +4,7 @@ import android.content.Context
 import androidx.datastore.core.DataStore
 import androidx.datastore.preferences.core.Preferences
 import androidx.datastore.preferences.core.edit
+import androidx.datastore.preferences.core.booleanPreferencesKey
 import androidx.datastore.preferences.core.intPreferencesKey
 import androidx.datastore.preferences.core.stringPreferencesKey
 import androidx.datastore.preferences.preferencesDataStore
@@ -22,6 +23,13 @@ class TokenManager(private val context: Context) {
         private val NAME_KEY = stringPreferencesKey("name")
         private val AVATAR_KEY = stringPreferencesKey("avatar")
         private val ROLE_ID_KEY = intPreferencesKey("role_id")
+        private val SHOW_DEBUG_KEY = booleanPreferencesKey("show_debug")
+    }
+
+    val showDebugFlow: Flow<Boolean> = context.dataStore.data.map { prefs -> prefs[SHOW_DEBUG_KEY] ?: false }
+
+    suspend fun setShowDebug(show: Boolean) {
+        context.dataStore.edit { prefs -> prefs[SHOW_DEBUG_KEY] = show }
     }
 
     val tokenFlow: Flow<String?> = context.dataStore.data.map { prefs -> prefs[TOKEN_KEY] }

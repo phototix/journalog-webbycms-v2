@@ -65,6 +65,7 @@ fun MainContent(tokenManager: TokenManager, launchToken: String? = null) {
 
     var currentUsername by remember { mutableStateOf("") }
     var isAdmin by remember { mutableStateOf(false) }
+    var showDebugOverlay by remember { mutableStateOf(false) }
     var storyViewerUserId by remember { mutableStateOf<Int?>(null) }
     var subscribeToUser by remember { mutableStateOf<com.journalog.app.data.remote.dto.UserDto?>(null) }
     var feedRefreshTrigger by remember { mutableIntStateOf(0) }
@@ -73,6 +74,12 @@ fun MainContent(tokenManager: TokenManager, launchToken: String? = null) {
     LaunchedEffect(Unit) {
         tokenManager.usernameFlow.collect { username ->
             if (username != null) currentUsername = username
+        }
+    }
+
+    LaunchedEffect(Unit) {
+        tokenManager.showDebugFlow.collect { show ->
+            showDebugOverlay = show
         }
     }
 
@@ -333,7 +340,9 @@ fun MainContent(tokenManager: TokenManager, launchToken: String? = null) {
             )
         }
 
-        DebugOverlay(isAdmin = isAdmin)
+        if (showDebugOverlay) {
+            DebugOverlay(isAdmin = isAdmin)
+        }
     }
 }
 
