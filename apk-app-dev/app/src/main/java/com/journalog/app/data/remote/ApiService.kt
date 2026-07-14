@@ -128,7 +128,7 @@ interface ApiService {
     suspend fun getProfileSettings(): Response<ApiResponse<Map<String, UserDto>>>
 
     @PUT("settings/profile")
-    suspend fun updateProfile(@Body body: Map<String, Any>): Response<ApiResponse<Unit>>
+    suspend fun updateProfile(@Body body: Map<String, @JvmSuppressWildcards Any>): Response<ApiResponse<Unit>>
 
     // Attachment upload
     @Multipart
