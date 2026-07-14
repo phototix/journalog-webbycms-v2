@@ -169,7 +169,7 @@ fun ConversationScreen(
             }
         }
     ) { padding ->
-        Box(modifier = Modifier.fillMaxSize().padding(padding)) {
+        Box(modifier = Modifier.fillMaxSize().padding(padding).imePadding()) {
             if (messages.isEmpty() && !isLoading) {
                 Box(Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
                     Text("No messages yet. Send a message to start!",
