@@ -97,16 +97,15 @@ fun ProfileScreen(
         loadPosts()
     }
 
-    val shouldLoadMore = remember {
-        derivedStateOf {
-            val lastVisible = listState.layoutInfo.visibleItemsInfo.lastOrNull()
-            lastVisible != null && lastVisible.index >= listState.layoutInfo.totalItemsCount - 3
-        }
-    }
-    LaunchedEffect(shouldLoadMore.value, loadAttempt) {
-        if (shouldLoadMore.value && hasMore && !isLoadingMore && !isLoading && posts.isNotEmpty()) {
+    fun checkLoadMore() {
+        val lastVisible = listState.layoutInfo.visibleItemsInfo.lastOrNull()
+        val isNearBottom = lastVisible != null && lastVisible.index >= listState.layoutInfo.totalItemsCount - 3
+        if (isNearBottom && hasMore && !isLoadingMore && !isLoading && posts.isNotEmpty()) {
             loadPosts(currentPage + 1)
         }
+    }
+    LaunchedEffect(listState.firstVisibleItemIndex, listState.layoutInfo.totalItemsCount, loadAttempt) {
+        checkLoadMore()
     }
 
     LazyColumn(modifier = Modifier.fillMaxSize()) {
