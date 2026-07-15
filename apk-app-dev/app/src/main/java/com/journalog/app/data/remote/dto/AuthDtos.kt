@@ -371,3 +371,27 @@ data class ChatbotResponse(
     val response: String?,
     val error: String?
 )
+
+data class SubscriptionsListResponse(
+    val subscriptions: List<SubscriptionItemDto>?,
+    @SerializedName("has_more") val hasMore: Boolean?
+)
+
+data class SubscriptionItemDto(
+    val id: Int,
+    val sender: SubscriptionUserBrief?,
+    val recipient: SubscriptionUserBrief?,
+    val status: String?,
+    val amount: Double?,
+    val provider: String?,
+    val type: String?,
+    @SerializedName("expires_at") val expiresAt: String?,
+    @SerializedName("created_at") val createdAt: String?
+)
+
+data class SubscriptionUserBrief(
+    val id: Int,
+    val name: String?,
+    val username: String?,
+    val avatar: String?
+)

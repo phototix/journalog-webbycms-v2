@@ -37,7 +37,9 @@ fun SettingsScreen(
     onBack: () -> Unit,
     onLogout: () -> Unit,
     onEditProfile: () -> Unit = {},
-    onWallet: () -> Unit = {}
+    onWallet: () -> Unit = {},
+    onRates: () -> Unit = {},
+    onSubscriptions: () -> Unit = {}
 ) {
     val scope = rememberCoroutineScope()
     val context = LocalContext.current
@@ -102,6 +104,16 @@ fun SettingsScreen(
                 icon = Icons.Outlined.Payments,
                 title = "Wallet",
                 onClick = onWallet
+            )
+            SettingsItem(
+                icon = Icons.Outlined.AttachMoney,
+                title = "Rates",
+                onClick = onRates
+            )
+            SettingsItem(
+                icon = Icons.Outlined.Subscriptions,
+                title = "Subscriptions",
+                onClick = onSubscriptions
             )
 
             HorizontalDivider(modifier = Modifier.padding(vertical = 8.dp))

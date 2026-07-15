@@ -10,6 +10,42 @@ use Illuminate\Http\Request;
 
 class SubscriptionController extends ApiController
 {
+    public function index(Request $request)
+    {
+        $user = $request->user();
+        $page = (int) $request->get('page', 1);
+        $perPage = (int) $request->get('per_page', 20);
+
+        $subscriptions = Subscription::where(function ($q) use ($user) {
+            $q->where('sender_user_id', $user->id)
+              ->orWhere('recipient_user_id', $user->id);
+        })->with(['creator', 'subscriber'])->orderBy('created_at', 'desc')
+            ->paginate($perPage, ['*'], 'page', $page);
+
+        return $this->success([
+            'subscriptions' => collect($subscriptions->items())->map(function ($s) {
+                return [
+                    'id' => $s->id,
+                    'sender' => $s->subscriber ? [
+                        'id' => $s->subscriber->id, 'name' => $s->subscriber->name,
+                        'username' => $s->subscriber->username, 'avatar' => $s->subscriber->avatar,
+                    ] : null,
+                    'recipient' => $s->creator ? [
+                        'id' => $s->creator->id, 'name' => $s->creator->name,
+                        'username' => $s->creator->username, 'avatar' => $s->creator->avatar,
+                    ] : null,
+                    'status' => $s->status,
+                    'amount' => (float) $s->amount,
+                    'provider' => $s->provider,
+                    'type' => $s->type,
+                    'expires_at' => $s->expires_at,
+                    'created_at' => $s->created_at,
+                ];
+            }),
+            'has_more' => $subscriptions->hasMorePages(),
+        ]);
+    }
+
     public function plans($username)
     {
         $user = User::where('username', $username)->firstOrFail();

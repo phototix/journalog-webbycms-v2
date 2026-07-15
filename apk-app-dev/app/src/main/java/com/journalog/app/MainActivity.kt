@@ -276,6 +276,12 @@ fun MainContent(tokenManager: TokenManager, launchToken: String? = null) {
                     onWallet = {
                         navController.navigate(NavRoutes.Wallet.route)
                     },
+                    onRates = {
+                        navController.navigate(NavRoutes.Rates.route)
+                    },
+                    onSubscriptions = {
+                        navController.navigate(NavRoutes.Subscriptions.route)
+                    },
                     onLogout = {
                         scope.launch {
                             tokenManager.clearSession()
@@ -333,6 +339,18 @@ fun MainContent(tokenManager: TokenManager, launchToken: String? = null) {
 
             composable(NavRoutes.Wallet.route) {
                 WalletScreen(
+                    onBack = { navController.popBackStack() }
+                )
+            }
+
+            composable(NavRoutes.Rates.route) {
+                com.journalog.app.feature.settings.RatesScreen(
+                    onBack = { navController.popBackStack() }
+                )
+            }
+
+            composable(NavRoutes.Subscriptions.route) {
+                com.journalog.app.feature.settings.MySubscriptionsScreen(
                     onBack = { navController.popBackStack() }
                 )
             }

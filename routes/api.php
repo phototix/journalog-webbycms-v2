@@ -108,6 +108,7 @@ Route::prefix('v1')->group(function () {
 
         // Subscriptions
         Route::get('/subscriptions/plans/{username}', [\App\Http\Controllers\Api\SubscriptionController::class, 'plans']);
+        Route::get('/subscriptions', [\App\Http\Controllers\Api\SubscriptionController::class, 'index']);
         Route::post('/subscriptions/subscribe', [\App\Http\Controllers\Api\SubscriptionController::class, 'subscribe']);
         Route::post('/subscriptions/cancel', [\App\Http\Controllers\Api\SubscriptionController::class, 'cancel']);
 

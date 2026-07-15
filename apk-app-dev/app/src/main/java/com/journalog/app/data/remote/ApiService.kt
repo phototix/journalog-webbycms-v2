@@ -162,6 +162,9 @@ interface ApiService {
     @GET("subscriptions/plans/{username}")
     suspend fun getSubscriptionPlans(@Path("username") username: String): Response<ApiResponse<SubscriptionPlan>>
 
+    @GET("subscriptions")
+    suspend fun getMySubscriptions(@Query("page") page: Int = 1): Response<ApiResponse<SubscriptionsListResponse>>
+
     @POST("subscriptions/subscribe")
     suspend fun subscribe(@Body body: SubscribeRequest): Response<ApiResponse<SubscriptionData>>
 
