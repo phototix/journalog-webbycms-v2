@@ -10,6 +10,7 @@ use App\Model\PostComment;
 use App\Model\PostGift;
 use App\Model\Reaction;
 use App\Model\UserBookmark;
+use App\Model\UserReport;
 use Illuminate\Http\Request;
 
 class PostController extends ApiController
@@ -307,5 +308,25 @@ class PostController extends ApiController
             'has_liked' => $post->reactions->contains('user_id', auth()->id()),
             'has_bookmarked' => $post->bookmarks->contains('user_id', auth()->id()),
         ];
+    }
+
+    public function reportPost(Request $request)
+    {
+        $validated = $request->validate([
+            'post_id' => 'required|exists:posts,id',
+            'type' => 'required|string|in:' . implode(',', UserReport::$typesMap),
+        ]);
+
+        $post = Post::findOrFail($validated['post_id']);
+
+        UserReport::create([
+            'from_user_id' => $request->user()->id,
+            'user_id' => $post->user_id,
+            'post_id' => $post->id,
+            'type' => $validated['type'],
+            'status' => UserReport::RECEIVED_STATUS,
+        ]);
+
+        return $this->success([], 'Report submitted');
     }
 }

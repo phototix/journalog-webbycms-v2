@@ -283,6 +283,7 @@ fun MainContent(tokenManager: TokenManager, launchToken: String? = null) {
                 val postId = backStackEntry.arguments?.getInt("postId") ?: 0
                 PostDetailScreen(
                     postId = postId,
+                    currentUsername = currentUsername,
                     onBack = { navController.popBackStack() }
                 )
             }
@@ -347,6 +348,6 @@ fun MainContent(tokenManager: TokenManager, launchToken: String? = null) {
 }
 
 @Composable
-private fun PostDetailScreen(postId: Int, onBack: () -> Unit) {
-    com.journalog.app.feature.feed.PostDetailScreen(postId = postId, onBack = onBack)
+private fun PostDetailScreen(postId: Int, currentUsername: String, onBack: () -> Unit) {
+    com.journalog.app.feature.feed.PostDetailScreen(postId = postId, currentUsername = currentUsername, onBack = onBack)
 }

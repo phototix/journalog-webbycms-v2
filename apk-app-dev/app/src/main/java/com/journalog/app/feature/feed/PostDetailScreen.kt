@@ -1,5 +1,6 @@
 package com.journalog.app.feature.feed
 
+import android.widget.Toast
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.horizontalScroll
@@ -14,12 +15,17 @@ import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material.icons.filled.CardGiftcard
+import androidx.compose.material.icons.filled.MoreVert
 import androidx.compose.material.icons.filled.Send
+import androidx.compose.material.icons.outlined.Delete
+import androidx.compose.material.icons.outlined.Edit
+import androidx.compose.material.icons.outlined.Report
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.text.font.FontWeight
@@ -38,6 +44,7 @@ import kotlinx.coroutines.launch
 @Composable
 fun PostDetailScreen(
     postId: Int,
+    currentUsername: String = "",
     onBack: () -> Unit
 ) {
     val api = remember { ApiClient.create(ApiService::class.java) }
@@ -46,6 +53,11 @@ fun PostDetailScreen(
     var isLoading by remember { mutableStateOf(true) }
     var showGiftModal by remember { mutableStateOf(false) }
     var commentText by remember { mutableStateOf("") }
+    var showMenu by remember { mutableStateOf(false) }
+    var showDeleteConfirm by remember { mutableStateOf(false) }
+    var showReportDialog by remember { mutableStateOf(false) }
+    var menuError by remember { mutableStateOf<String?>(null) }
+    val context = LocalContext.current
     val scope = rememberCoroutineScope()
 
     fun submitComment() {
@@ -120,6 +132,40 @@ fun PostDetailScreen(
                 navigationIcon = {
                     IconButton(onClick = onBack) {
                         Icon(Icons.AutoMirrored.Filled.ArrowBack, contentDescription = "Back")
+                    }
+                },
+                actions = {
+                    if (post != null) {
+                        Box {
+                            IconButton(onClick = { showMenu = true }) {
+                                Icon(Icons.Filled.MoreVert, contentDescription = "More")
+                            }
+                            DropdownMenu(
+                                expanded = showMenu,
+                                onDismissRequest = { showMenu = false }
+                            ) {
+                                val isOwner = post?.user?.username == currentUsername
+                                if (isOwner) {
+                                    DropdownMenuItem(
+                                        text = { Text("Edit") },
+                                        onClick = { showMenu = false
+                                            Toast.makeText(context, "Edit coming soon", Toast.LENGTH_SHORT).show() },
+                                        leadingIcon = { Icon(Icons.Outlined.Edit, null) }
+                                    )
+                                    DropdownMenuItem(
+                                        text = { Text("Delete", color = MaterialTheme.colorScheme.error) },
+                                        onClick = { showMenu = false; showDeleteConfirm = true },
+                                        leadingIcon = { Icon(Icons.Outlined.Delete, null, tint = MaterialTheme.colorScheme.error) }
+                                    )
+                                } else {
+                                    DropdownMenuItem(
+                                        text = { Text("Report this post") },
+                                        onClick = { showMenu = false; showReportDialog = true },
+                                        leadingIcon = { Icon(Icons.Outlined.Report, null) }
+                                    )
+                                }
+                            }
+                        }
                     }
                 }
             )
@@ -218,6 +264,92 @@ fun PostDetailScreen(
             onDismiss = { showGiftModal = false },
             onGiftSent = { }
         )
+    }
+
+    // Delete confirmation dialog
+    if (showDeleteConfirm) {
+        AlertDialog(
+            onDismissRequest = { showDeleteConfirm = false },
+            title = { Text("Delete post?") },
+            text = { Text("This action cannot be undone.") },
+            confirmButton = {
+                TextButton(onClick = {
+                    showDeleteConfirm = false
+                    scope.launch {
+                        try {
+                            api.deletePost(postId)
+                            onBack()
+                        } catch (e: Exception) {
+                            menuError = e.message
+                        }
+                    }
+                }) {
+                    Text("Delete", color = MaterialTheme.colorScheme.error)
+                }
+            },
+            dismissButton = {
+                TextButton(onClick = { showDeleteConfirm = false }) {
+                    Text("Cancel")
+                }
+            }
+        )
+    }
+
+    // Report dialog
+    if (showReportDialog) {
+        var reportType by remember { mutableStateOf("I don't like this content") }
+        AlertDialog(
+            onDismissRequest = { showReportDialog = false },
+            title = { Text("Report this post") },
+            text = {
+                Column {
+                    listOf(
+                        "I don't like this content",
+                        "Content is offensive or violates Terms of Service.",
+                        "Content contains stolen material (DMCA)",
+                        "Content is spam"
+                    ).forEach { type ->
+                        Row(
+                            modifier = Modifier.fillMaxWidth().clickable { reportType = type }.padding(vertical = 4.dp),
+                            verticalAlignment = Alignment.CenterVertically
+                        ) {
+                            RadioButton(selected = reportType == type, onClick = { reportType = type })
+                            Spacer(Modifier.width(8.dp))
+                            Text(type, style = MaterialTheme.typography.bodyMedium)
+                        }
+                    }
+                }
+            },
+            confirmButton = {
+                TextButton(onClick = {
+                    showReportDialog = false
+                    scope.launch {
+                        try {
+                            val resp = api.reportPost(mapOf("post_id" to postId, "type" to reportType))
+                            if (resp.isSuccessful) {
+                                Toast.makeText(context, "Report submitted", Toast.LENGTH_SHORT).show()
+                            } else {
+                                Toast.makeText(context, "Report failed", Toast.LENGTH_SHORT).show()
+                            }
+                        } catch (e: Exception) {
+                            Toast.makeText(context, e.message ?: "Error", Toast.LENGTH_SHORT).show()
+                        }
+                    }
+                }) {
+                    Text("Submit")
+                }
+            },
+            dismissButton = {
+                TextButton(onClick = { showReportDialog = false }) {
+                    Text("Cancel")
+                }
+            }
+        )
+    }
+
+    menuError?.let {
+        Toast.makeText(context, it, Toast.LENGTH_SHORT).show()
+        menuError = null
     }
     }
 }

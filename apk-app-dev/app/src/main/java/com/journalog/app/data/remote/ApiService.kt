@@ -179,4 +179,8 @@ interface ApiService {
 
     @GET("countries")
     suspend fun getCountries(): Response<ApiResponse<List<CountryOption>>>
+
+    // Reports
+    @POST("reports/post")
+    suspend fun reportPost(@Body body: Map<String, Any>): Response<ApiResponse<Unit>>
 }

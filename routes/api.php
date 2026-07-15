@@ -111,5 +111,8 @@ Route::prefix('v1')->group(function () {
         Route::post('/subscriptions/subscribe', [\App\Http\Controllers\Api\SubscriptionController::class, 'subscribe']);
         Route::post('/subscriptions/cancel', [\App\Http\Controllers\Api\SubscriptionController::class, 'cancel']);
 
+        // Reports
+        Route::post('/reports/post', [\App\Http\Controllers\Api\PostController::class, 'reportPost']);
+
     });
 });
