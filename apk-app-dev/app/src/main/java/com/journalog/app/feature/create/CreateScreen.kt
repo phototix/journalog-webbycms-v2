@@ -103,12 +103,18 @@ fun CreateScreen(onPostCreated: () -> Unit = {}) {
 
         OutlinedTextField(
             value = caption,
-            onValueChange = { caption = it },
+            onValueChange = { if (it.length <= 2000) caption = it },
             label = { Text("Write a caption...") },
             modifier = Modifier
                 .fillMaxWidth()
                 .height(120.dp),
             shape = RoundedCornerShape(12.dp)
+        )
+        Text(
+            "${caption.length}/2000  ${if (caption.length < 10) "min 10 characters" else ""}",
+            style = MaterialTheme.typography.labelSmall,
+            color = if (caption.length < 10) MaterialTheme.colorScheme.error else MaterialTheme.colorScheme.onSurfaceVariant,
+            modifier = Modifier.fillMaxWidth().padding(start = 4.dp, top = 2.dp)
         )
 
         Spacer(modifier = Modifier.height(16.dp))
@@ -133,6 +139,10 @@ fun CreateScreen(onPostCreated: () -> Unit = {}) {
             onClick = {
                 if (caption.isBlank() && selectedUri == null) {
                     error = "Add a caption or select media"
+                    return@Button
+                }
+                if (caption.length < 10) {
+                    error = "Caption must be at least 10 characters"
                     return@Button
                 }
                 scope.launch {
@@ -179,7 +189,11 @@ fun CreateScreen(onPostCreated: () -> Unit = {}) {
                         if (createResp.isSuccessful) {
                             onPostCreated()
                         } else {
-                            error = "Failed to create post"
+                            val errBody = createResp.errorBody()?.string()
+                            val parsed = try {
+                                org.json.JSONObject(errBody).optString("message", "Failed to create post")
+                            } catch (_: Exception) { errBody ?: "Failed to create post" }
+                            error = parsed
                         }
                     } catch (e: Exception) {
                         error = e.message ?: "Failed to create post"
