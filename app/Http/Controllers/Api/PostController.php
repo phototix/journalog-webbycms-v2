@@ -258,6 +258,42 @@ class PostController extends ApiController
         ];
     }
 
+    public function update($id, Request $request)
+    {
+        $post = Post::where('user_id', $request->user()->id)->findOrFail($id);
+
+        $validated = $request->validate([
+            'text' => 'required|string|min:' . (int) getSetting('feed.min_post_description', 1),
+            'price' => 'nullable|numeric|min:0',
+            'attachment_ids' => 'nullable|array',
+            'attachment_ids.*' => 'exists:attachments,id',
+            'release_date' => 'nullable|date',
+            'expire_date' => 'nullable|date|after:release_date',
+        ]);
+
+        $post->update([
+            'text' => $validated['text'],
+            'price' => $validated['price'] ?? $post->price,
+            'release_date' => $validated['release_date'] ?? $post->release_date,
+            'expire_date' => $validated['expire_date'] ?? $post->expire_date,
+        ]);
+
+        if (isset($validated['attachment_ids'])) {
+            \App\Model\Attachment::where('post_id', $post->id)
+                ->whereNotIn('id', $validated['attachment_ids'])
+                ->update(['post_id' => null]);
+            \App\Model\Attachment::whereIn('id', $validated['attachment_ids'])
+                ->update(['post_id' => $post->id]);
+        }
+
+        return $this->success([
+            'post' => $this->formatPostDetail($post->fresh()->load([
+                'user', 'attachments', 'reactions', 'comments.user',
+                'poll.answers', 'gifts.gift',
+            ])),
+        ], 'Post updated');
+    }
+
     private function formatPostDetail($post): array
     {
         $attachments = $post->attachments ?? collect();

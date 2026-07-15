@@ -38,6 +38,9 @@ interface ApiService {
     @DELETE("posts/{id}")
     suspend fun deletePost(@Path("id") id: Int): Response<ApiResponse<Unit>>
 
+    @PUT("posts/{id}")
+    suspend fun updatePost(@Path("id") id: Int, @Body body: Map<String, @JvmSuppressWildcards Any>): Response<ApiResponse<Map<String, PostDto>>>
+
     @POST("posts/{id}/like")
     suspend fun toggleLike(@Path("id") id: Int): Response<ApiResponse<Map<String, Any>>>
 

@@ -114,5 +114,8 @@ Route::prefix('v1')->group(function () {
         // Reports
         Route::post('/reports/post', [\App\Http\Controllers\Api\PostController::class, 'reportPost']);
 
+        // Post update
+        Route::put('/posts/{id}', [\App\Http\Controllers\Api\PostController::class, 'update']);
+
     });
 });

@@ -31,15 +31,21 @@ import okhttp3.RequestBody.Companion.toRequestBody
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun CreateScreen(onPostCreated: () -> Unit = {}) {
-    var caption by remember { mutableStateOf("") }
-    var price by remember { mutableStateOf("") }
+fun CreateScreen(
+    editPostId: Int? = null,
+    initialText: String? = null,
+    initialPrice: String? = null,
+    onPostCreated: () -> Unit = {}
+) {
+    var caption by remember { mutableStateOf(initialText ?: "") }
+    var price by remember { mutableStateOf(initialPrice ?: "") }
     var selectedUri by remember { mutableStateOf<Uri?>(null) }
     var isUploading by remember { mutableStateOf(false) }
     var error by remember { mutableStateOf<String?>(null) }
     val scope = rememberCoroutineScope()
     val context = LocalContext.current
     val api = remember { ApiClient.create(ApiService::class.java) }
+    val isEdit = editPostId != null
 
     val pickMedia = rememberLauncherForActivityResult(
         contract = ActivityResultContracts.GetContent()
@@ -54,7 +60,7 @@ fun CreateScreen(onPostCreated: () -> Unit = {}) {
             .padding(16.dp)
     ) {
         Text(
-            "New Post",
+            if (isEdit) "Edit Post" else "New Post",
             style = MaterialTheme.typography.titleLarge,
             modifier = Modifier.padding(bottom = 16.dp)
         )
@@ -185,15 +191,28 @@ fun CreateScreen(onPostCreated: () -> Unit = {}) {
                             }
                         }
 
-                        val createResp = api.createPost(body)
-                        if (createResp.isSuccessful) {
-                            onPostCreated()
+                        if (isEdit) {
+                            val updateResp = api.updatePost(editPostId, body)
+                            if (updateResp.isSuccessful) {
+                                onPostCreated()
+                            } else {
+                                val errBody = updateResp.errorBody()?.string()
+                                val parsed = try {
+                                    org.json.JSONObject(errBody).optString("message", "Failed to update post")
+                                } catch (_: Exception) { errBody ?: "Failed to update post" }
+                                error = parsed
+                            }
                         } else {
-                            val errBody = createResp.errorBody()?.string()
-                            val parsed = try {
-                                org.json.JSONObject(errBody).optString("message", "Failed to create post")
-                            } catch (_: Exception) { errBody ?: "Failed to create post" }
-                            error = parsed
+                            val createResp = api.createPost(body)
+                            if (createResp.isSuccessful) {
+                                onPostCreated()
+                            } else {
+                                val errBody = createResp.errorBody()?.string()
+                                val parsed = try {
+                                    org.json.JSONObject(errBody).optString("message", "Failed to create post")
+                                } catch (_: Exception) { errBody ?: "Failed to create post" }
+                                error = parsed
+                            }
                         }
                     } catch (e: Exception) {
                         error = e.message ?: "Failed to create post"
@@ -215,7 +234,7 @@ fun CreateScreen(onPostCreated: () -> Unit = {}) {
                     color = MaterialTheme.colorScheme.onPrimary
                 )
             } else {
-                Text("Share")
+                Text(if (isEdit) "Update" else "Share")
             }
         }
     }

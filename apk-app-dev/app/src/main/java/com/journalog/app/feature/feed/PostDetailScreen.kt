@@ -45,7 +45,8 @@ import kotlinx.coroutines.launch
 fun PostDetailScreen(
     postId: Int,
     currentUsername: String = "",
-    onBack: () -> Unit
+    onBack: () -> Unit,
+    onEditClick: ((Int) -> Unit)? = null
 ) {
     val api = remember { ApiClient.create(ApiService::class.java) }
     var post by remember { mutableStateOf<PostDto?>(null) }
@@ -149,7 +150,7 @@ fun PostDetailScreen(
                                     DropdownMenuItem(
                                         text = { Text("Edit") },
                                         onClick = { showMenu = false
-                                            Toast.makeText(context, "Edit coming soon", Toast.LENGTH_SHORT).show() },
+                                            onEditClick?.invoke(postId) },
                                         leadingIcon = { Icon(Icons.Outlined.Edit, null) }
                                     )
                                     DropdownMenuItem(

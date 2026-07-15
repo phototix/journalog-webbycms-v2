@@ -24,4 +24,7 @@ sealed class NavRoutes(val route: String) {
     data object StoryCreate : NavRoutes("story/create")
     data object EditProfile : NavRoutes("settings/edit-profile")
     data object Wallet : NavRoutes("settings/wallet")
+    data object EditPost : NavRoutes("edit-post/{postId}") {
+        fun createRoute(postId: Int) = "edit-post/$postId"
+    }
 }

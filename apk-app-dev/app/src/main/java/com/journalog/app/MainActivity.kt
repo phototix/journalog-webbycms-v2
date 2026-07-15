@@ -222,6 +222,18 @@ fun MainContent(tokenManager: TokenManager, launchToken: String? = null) {
                 })
             }
 
+            composable(
+                NavRoutes.EditPost.route,
+                arguments = listOf(navArgument("postId") { type = NavType.IntType })
+            ) { backStackEntry ->
+                val postId = backStackEntry.arguments?.getInt("postId") ?: 0
+                EditPostScreen(postId = postId, onPostCreated = {
+                    FeedCache.refreshTrigger++
+                    feedRefreshTrigger = FeedCache.refreshTrigger
+                    navController.popBackStack()
+                })
+            }
+
             composable(NavRoutes.Messenger.route) {
                 MessengerScreen(
                     onConversationClick = { userId, userName ->
@@ -284,7 +296,8 @@ fun MainContent(tokenManager: TokenManager, launchToken: String? = null) {
                 PostDetailScreen(
                     postId = postId,
                     currentUsername = currentUsername,
-                    onBack = { navController.popBackStack() }
+                    onBack = { navController.popBackStack() },
+                    onEditClick = { id -> navController.navigate(NavRoutes.EditPost.createRoute(id)) }
                 )
             }
 
@@ -348,6 +361,35 @@ fun MainContent(tokenManager: TokenManager, launchToken: String? = null) {
 }
 
 @Composable
-private fun PostDetailScreen(postId: Int, currentUsername: String, onBack: () -> Unit) {
-    com.journalog.app.feature.feed.PostDetailScreen(postId = postId, currentUsername = currentUsername, onBack = onBack)
+private fun PostDetailScreen(postId: Int, currentUsername: String, onBack: () -> Unit, onEditClick: ((Int) -> Unit)?) {
+    com.journalog.app.feature.feed.PostDetailScreen(postId = postId, currentUsername = currentUsername, onBack = onBack, onEditClick = onEditClick)
+}
+
+@Composable
+private fun EditPostScreen(postId: Int, onPostCreated: () -> Unit) {
+    var editText by remember { mutableStateOf<String?>(null) }
+    var editPrice by remember { mutableStateOf<String?>(null) }
+    LaunchedEffect(postId) {
+        try {
+            val api = com.journalog.app.core.network.ApiClient.create(com.journalog.app.data.remote.ApiService::class.java)
+            val resp = api.getPost(postId)
+            if (resp.isSuccessful) {
+                val p = resp.body()?.data?.get("post") as? com.journalog.app.data.remote.dto.PostDto
+                editText = p?.text
+                editPrice = if ((p?.price ?: 0.0) > 0) p?.price?.toString() else ""
+            }
+        } catch (_: Exception) {}
+    }
+    if (editText != null) {
+        CreateScreen(
+            editPostId = postId,
+            initialText = editText,
+            initialPrice = editPrice,
+            onPostCreated = onPostCreated
+        )
+    } else {
+        Box(modifier = Modifier.fillMaxSize(), contentAlignment = androidx.compose.ui.Alignment.Center) {
+            CircularProgressIndicator()
+        }
+    }
 }
