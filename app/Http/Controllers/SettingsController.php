@@ -517,7 +517,9 @@ class SettingsController extends Controller
             $img->encode('jpg', 100);
             $encoded = (string) $img;
             Storage::disk('public')->put($filePath, $encoded);
-            Storage::disk(config('filesystems.defaultFilesystemDriver'))->put($filePath, $encoded, 'public');
+            $s3 = Storage::disk(config('filesystems.defaultFilesystemDriver'));
+            $s3->put($filePath, $encoded);
+            $s3->setVisibility($filePath, 'public');
             Storage::disk('public')->delete($filePath);
             // Saving to user db
             Auth()->user()->update($data);
