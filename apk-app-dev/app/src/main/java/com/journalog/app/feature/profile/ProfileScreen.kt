@@ -316,38 +316,31 @@ fun ProfileScreen(
                                     .background(MaterialTheme.colorScheme.surfaceVariant),
                                 contentAlignment = Alignment.Center
                             ) {
-                                val mediaUrl = post.media?.firstOrNull()?.let { it.thumbnail ?: it.url }
-                                if (mediaUrl != null) {
+                                if (post.price > 0) {
                                     AsyncImage(
-                                        model = mediaUrl,
-                                        contentDescription = null,
+                                        model = "https://journalog.webbypage.com/img/post-locked.svg",
+                                        contentDescription = "Locked",
                                         modifier = Modifier.fillMaxSize(),
-                                        contentScale = ContentScale.Crop
+                                        contentScale = ContentScale.Fit
                                     )
                                 } else {
-                                    val firstChar = post.text?.firstOrNull()?.uppercase() ?: "?"
-                                    Text(
-                                        firstChar,
-                                        fontSize = 24.sp,
-                                        fontWeight = FontWeight.Bold,
-                                        color = MaterialTheme.colorScheme.onSurfaceVariant,
-                                        textAlign = TextAlign.Center
-                                    )
-                                }
-                                if (post.price > 0) {
-                                    Box(
-                                        modifier = Modifier.fillMaxSize()
-                                            .background(Color.Black.copy(alpha = 0.4f)),
-                                        contentAlignment = Alignment.Center
-                                    ) {
-                                        Column(horizontalAlignment = Alignment.CenterHorizontally) {
-                                            Icon(Icons.Filled.Lock, contentDescription = "Locked",
-                                                tint = Color.White, modifier = Modifier.size(20.dp))
-                                            Text("\$${String.format("%.2f", post.price)}",
-                                                color = Color.White,
-                                                style = MaterialTheme.typography.labelSmall,
-                                                fontWeight = FontWeight.Bold)
-                                        }
+                                    val mediaUrl = post.media?.firstOrNull()?.let { it.thumbnail ?: it.url }
+                                    if (mediaUrl != null) {
+                                        AsyncImage(
+                                            model = mediaUrl,
+                                            contentDescription = null,
+                                            modifier = Modifier.fillMaxSize(),
+                                            contentScale = ContentScale.Crop
+                                        )
+                                    } else {
+                                        val firstChar = post.text?.firstOrNull()?.uppercase() ?: "?"
+                                        Text(
+                                            firstChar,
+                                            fontSize = 24.sp,
+                                            fontWeight = FontWeight.Bold,
+                                            color = MaterialTheme.colorScheme.onSurfaceVariant,
+                                            textAlign = TextAlign.Center
+                                        )
                                     }
                                 }
                             }

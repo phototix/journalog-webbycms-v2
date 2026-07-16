@@ -392,15 +392,12 @@ fun PostCard(
                     contentAlignment = Alignment.Center
                 ) {
                     if (isLocked) {
-                        Column(horizontalAlignment = Alignment.CenterHorizontally) {
-                            Icon(Icons.Filled.Lock, contentDescription = "Locked",
-                                tint = MaterialTheme.colorScheme.onSurfaceVariant, modifier = Modifier.size(32.dp))
-                            Spacer(Modifier.height(4.dp))
-                            Text("\$${String.format("%.2f", post.price)}",
-                                color = MaterialTheme.colorScheme.onSurfaceVariant,
-                                style = MaterialTheme.typography.titleMedium,
-                                fontWeight = FontWeight.Bold)
-                        }
+                        AsyncImage(
+                            model = "https://journalog.webbypage.com/img/post-locked.svg",
+                            contentDescription = "Locked",
+                            modifier = Modifier.fillMaxSize(),
+                            contentScale = ContentScale.Fit
+                        )
                     } else {
                         Text(post.text?.replace("<br>", "\n")?.replace("<br />", "\n")?.replace("<br/>", "\n") ?: "", maxLines = 3, overflow = TextOverflow.Ellipsis,
                             modifier = Modifier.padding(horizontal = 12.dp))
@@ -425,30 +422,22 @@ fun PostCard(
                         .fillMaxWidth()
                         .clickable { onPostClick() }
                 ) {
-                    val mediaUrl = post.media.firstOrNull()?.url
-                    if (!mediaUrl.isNullOrBlank()) {
-                        AsyncImage(
-                            model = mediaUrl,
-                            contentDescription = null,
-                            modifier = Modifier.fillMaxWidth().aspectRatio(1f),
-                            contentScale = ContentScale.Crop
-                        )
-                    }
                     if (isLocked) {
-                        Box(
-                            modifier = Modifier.fillMaxSize()
-                                .background(MaterialTheme.colorScheme.scrim.copy(alpha = 0.5f)),
-                            contentAlignment = Alignment.Center
-                        ) {
-                            Column(horizontalAlignment = Alignment.CenterHorizontally) {
-                                Icon(Icons.Filled.Lock, contentDescription = "Locked",
-                                    tint = Color.White, modifier = Modifier.size(32.dp))
-                                Spacer(Modifier.height(4.dp))
-                                Text("\$${String.format("%.2f", post.price)}",
-                                    color = Color.White,
-                                    style = MaterialTheme.typography.titleMedium,
-                                    fontWeight = FontWeight.Bold)
-                            }
+                        AsyncImage(
+                            model = "https://journalog.webbypage.com/img/post-locked.svg",
+                            contentDescription = "Locked",
+                            modifier = Modifier.fillMaxWidth().aspectRatio(1f),
+                            contentScale = ContentScale.Fit
+                        )
+                    } else {
+                        val mediaUrl = post.media.firstOrNull()?.url
+                        if (!mediaUrl.isNullOrBlank()) {
+                            AsyncImage(
+                                model = mediaUrl,
+                                contentDescription = null,
+                                modifier = Modifier.fillMaxWidth().aspectRatio(1f),
+                                contentScale = ContentScale.Crop
+                            )
                         }
                     }
                     if (onGiftClick != null) {
