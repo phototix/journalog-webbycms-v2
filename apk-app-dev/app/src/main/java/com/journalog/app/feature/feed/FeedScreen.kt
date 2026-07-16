@@ -384,14 +384,27 @@ fun PostCard(
             }
 
             if (post.media.isNullOrEmpty()) {
+                val isLocked = post.price > 0
                 Box(
                     modifier = Modifier.fillMaxWidth().height(200.dp)
                         .background(MaterialTheme.colorScheme.surfaceVariant)
                         .clickable { onPostClick() },
                     contentAlignment = Alignment.Center
                 ) {
-                    Text(post.text?.replace("<br>", "\n")?.replace("<br />", "\n")?.replace("<br/>", "\n") ?: "", maxLines = 3, overflow = TextOverflow.Ellipsis,
-                        modifier = Modifier.padding(horizontal = 12.dp))
+                    if (isLocked) {
+                        Column(horizontalAlignment = Alignment.CenterHorizontally) {
+                            Icon(Icons.Filled.Lock, contentDescription = "Locked",
+                                tint = MaterialTheme.colorScheme.onSurfaceVariant, modifier = Modifier.size(32.dp))
+                            Spacer(Modifier.height(4.dp))
+                            Text("\$${String.format("%.2f", post.price)}",
+                                color = MaterialTheme.colorScheme.onSurfaceVariant,
+                                style = MaterialTheme.typography.titleMedium,
+                                fontWeight = FontWeight.Bold)
+                        }
+                    } else {
+                        Text(post.text?.replace("<br>", "\n")?.replace("<br />", "\n")?.replace("<br/>", "\n") ?: "", maxLines = 3, overflow = TextOverflow.Ellipsis,
+                            modifier = Modifier.padding(horizontal = 12.dp))
+                    }
                     if (onGiftClick != null) {
                         FloatingActionButton(
                             onClick = onGiftClick,
@@ -406,6 +419,7 @@ fun PostCard(
                     }
                 }
             } else {
+                val isLocked = post.price > 0
                 Box(
                     modifier = Modifier
                         .fillMaxWidth()
@@ -419,6 +433,23 @@ fun PostCard(
                             modifier = Modifier.fillMaxWidth().aspectRatio(1f),
                             contentScale = ContentScale.Crop
                         )
+                    }
+                    if (isLocked) {
+                        Box(
+                            modifier = Modifier.fillMaxSize()
+                                .background(MaterialTheme.colorScheme.scrim.copy(alpha = 0.5f)),
+                            contentAlignment = Alignment.Center
+                        ) {
+                            Column(horizontalAlignment = Alignment.CenterHorizontally) {
+                                Icon(Icons.Filled.Lock, contentDescription = "Locked",
+                                    tint = Color.White, modifier = Modifier.size(32.dp))
+                                Spacer(Modifier.height(4.dp))
+                                Text("\$${String.format("%.2f", post.price)}",
+                                    color = Color.White,
+                                    style = MaterialTheme.typography.titleMedium,
+                                    fontWeight = FontWeight.Bold)
+                            }
+                        }
                     }
                     if (onGiftClick != null) {
                         FloatingActionButton(
@@ -465,7 +496,7 @@ fun PostCard(
                     style = MaterialTheme.typography.bodyMedium,
                     fontWeight = FontWeight.SemiBold, modifier = Modifier.padding(horizontal = 12.dp, vertical = 2.dp))
             }
-            if (!post.text.isNullOrBlank() && !post.media.isNullOrEmpty()) {
+            if (!post.text.isNullOrBlank() && !post.media.isNullOrEmpty() && post.price == 0.0) {
                 val displayText = post.text?.replace("<br>", "\n")?.replace("<br />", "\n")?.replace("<br/>", "\n")
                 Text("${post.user?.name ?: ""} $displayText", style = MaterialTheme.typography.bodyMedium,
                     maxLines = 2, overflow = TextOverflow.Ellipsis, modifier = Modifier.padding(horizontal = 12.dp, vertical = 2.dp))
