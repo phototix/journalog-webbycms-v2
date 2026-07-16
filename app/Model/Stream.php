@@ -2,9 +2,8 @@
 
 namespace App\Model;
 
-use App\Providers\AttachmentServiceProvider;
+use App\Providers\GenericHelperServiceProvider;
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Support\Facades\Storage;
 
 class Stream extends Model
 {
@@ -56,21 +55,7 @@ class Stream extends Model
     public function getPosterAttribute($value)
     {
         if($value){
-            if(getSetting('storage.driver') == 's3'){
-                return 'https://'.getSetting('storage.aws_bucket_name').'.s3.'.getSetting('storage.aws_region').'.amazonaws.com/'.$value;
-            }
-            elseif(getSetting('storage.driver') == 'wasabi' || getSetting('storage.driver') == 'do_spaces'){
-                return Storage::url($value);
-            }
-            elseif(getSetting('storage.driver') == 'minio'){
-                return rtrim(getSetting('storage.minio_endpoint'), '/').'/'.getSetting('storage.minio_bucket_name').'/'.$value;
-            }
-            elseif(getSetting('storage.driver') == 'pushr'){
-                return rtrim(getSetting('storage.pushr_cdn_hostname'), '/').'/'.$value;
-            }
-            else{
-                return Storage::disk('public')->url($value);
-            }
+            return GenericHelperServiceProvider::getFilePathByActiveStorageDriver($value);
         }else{
             return asset('/img/live-stream-cover.svg');
         }

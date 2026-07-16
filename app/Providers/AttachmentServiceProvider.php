@@ -6,6 +6,7 @@ use App\Model\Attachment;
 use Aws\CloudFront\CloudFrontClient;
 use Aws\Exception\AwsException;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\ServiceProvider;
 use Ramsey\Uuid\Uuid;
@@ -398,6 +399,10 @@ class AttachmentServiceProvider extends ServiceProvider
 
             return $result;
         } catch (AwsException $e) {
+            Log::error('CloudFront signed URL generation failed: ' . $e->getMessage(), [
+                'resourceKey' => $resourceKey,
+            ]);
+            return null;
         }
     }
 
@@ -427,9 +432,12 @@ POLICY;
         $keyPairId = getSetting('storage.aws_cdn_key_pair_id');
 
         $cloudFrontClient = new CloudFrontClient([
-            'profile' => 'default',
             'version' => '2014-11-06',
-            'region' => getSetting('storage.aws_region'),
+            'region' => 'us-east-1',
+            'credentials' => [
+                'key' => getSetting('storage.aws_access_key'),
+                'secret' => getSetting('storage.aws_secret_key'),
+            ],
         ]);
 
         return self::signPrivateDistributionPolicy(

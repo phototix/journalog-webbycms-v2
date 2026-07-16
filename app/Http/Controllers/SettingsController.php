@@ -519,7 +519,7 @@ class SettingsController extends Controller
             // Saving to user db
             Auth()->user()->update($data);
             // Saving to disk
-            $s3->put($filePath, $img, 'public');
+            $s3->put($filePath, $img, AttachmentServiceProvider::getAdminFileUploadVisibility());
         } catch (\Exception $exception) {
             return response()->json(['success' => false, 'errors' => ['file'=>$exception->getMessage()]]);
         }

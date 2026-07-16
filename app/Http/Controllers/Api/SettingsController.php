@@ -5,9 +5,13 @@ namespace App\Http\Controllers\Api;
 use App\Http\Controllers\SettingsController as WebSettingsController;
 use App\Model\Country;
 use App\Model\UserGender;
+use App\Providers\GenericHelperServiceProvider;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Storage;
 use Illuminate\Validation\Rule;
+use Intervention\Image\Facades\Image;
+use Ramsey\Uuid\Uuid;
 
 class SettingsController extends ApiController
 {
@@ -87,19 +91,43 @@ class SettingsController extends ApiController
 
     public function uploadProfileAsset(Request $request, $type)
     {
-        $request->route()->setParameter('uploadType', $type);
-        $controller = new WebSettingsController();
-        $result = $controller->uploadProfileAsset($request);
+        $request->validate([
+            'file' => 'required|file|mimes:jpg,jpeg,png,gif|max:' . (getSetting('media.max_avatar_cover_file_size') ? (int) getSetting('media.max_avatar_cover_file_size') * 1000 : 4000),
+        ]);
 
-        $decoded = json_decode($result->getContent(), true);
-
-        if (isset($decoded['success']) && $decoded['success']) {
-            return $this->success([
-                'assetSrc' => $decoded['assetSrc'],
-            ], 'Upload successful');
+        $file = $request->file('file');
+        if (!$file) {
+            return $this->error('No file uploaded', 400);
         }
 
-        return $this->error($decoded['message'] ?? 'Upload failed', 400);
+        try {
+            $directory = 'users/' . $type;
+            $fileId = Uuid::uuid4()->getHex();
+            $filePath = $directory . '/' . $fileId . '.jpg';
+
+            $img = Image::make($file);
+
+            if ($type == 'cover') {
+                $img->fit(599, 180)->orientate();
+                $data = ['cover' => $filePath];
+            } else {
+                $img->fit(96, 96)->orientate();
+                $data = ['avatar' => $filePath];
+            }
+
+            $img->encode('jpg', 100);
+            $request->user()->update($data);
+            Storage::disk(config('filesystems.defaultFilesystemDriver'))->put($filePath, $img, 'public');
+
+            $assetPath = GenericHelperServiceProvider::getStorageAvatarPath($filePath);
+            if ($type == 'cover') {
+                $assetPath = GenericHelperServiceProvider::getStorageCoverPath($filePath);
+            }
+
+            return $this->success(['assetSrc' => $assetPath], 'Upload successful');
+        } catch (\Exception $e) {
+            return $this->error($e->getMessage(), 500);
+        }
     }
 
     public function genders()

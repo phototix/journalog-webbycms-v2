@@ -106,6 +106,7 @@ class MediaEncoderServiceProvider extends ServiceProvider
     public static function encodeVideo($file, $directory, $fileId, $generateThumbnail, $generateBlurredShot, $applyWatermark) {
 
         $storage = Storage::disk(config('filesystems.defaultFilesystemDriver'));
+        $visibility = AttachmentServiceProvider::getAdminFileUploadVisibility();
         $fileExtension = $initialFileExtension = $file->guessExtension();
         $hasThumbnail = false;
         $hasBlurredPreview = false;
@@ -177,7 +178,7 @@ class MediaEncoderServiceProvider extends ServiceProvider
             // Re-converting mp4 only if enforced by the admin setting
             if($initialFileExtension == 'mp4' && !getSetting('media.enforce_mp4_conversion')){
                 $filePath = $directory.'/'.$fileId.'.'.$fileExtension;
-                $storage->put($filePath, $fileContent, 'public');
+                $storage->put($filePath, $fileContent, $visibility);
             }
             else{
                 // Overriding default ffmpeg lib temporary_files_root behaviour
@@ -237,7 +238,7 @@ class MediaEncoderServiceProvider extends ServiceProvider
                         $blurredThumbnailImage->encode('jpg', 80);
 
                         // Save the blurred thumbnail back to remote storage
-                        Storage::disk(config('filesystems.defaultFilesystemDriver'))->put($blurredThumbnailPath, (string) $blurredThumbnailImage, 'public');
+                        Storage::disk(config('filesystems.defaultFilesystemDriver'))->put($blurredThumbnailPath, (string) $blurredThumbnailImage, $visibility);
                         $hasBlurredPreview = true;
                     } catch (\Exception $e) {
                         throw new \Exception("Failed to process blurred thumbnail: ".$e->getMessage());
@@ -258,7 +259,7 @@ class MediaEncoderServiceProvider extends ServiceProvider
         elseif (getSetting('media.transcoding_driver') === 'coconut'){
             if($initialFileExtension == 'mp4' && !getSetting('media.coconut_enforce_mp4_conversion')){
                 $filePath = $directory.'/'.$fileId.'.'.$fileExtension;
-                $storage->put($filePath, $fileContent, 'public');
+                $storage->put($filePath, $fileContent, $visibility);
             }
             else{
                 $region = getSetting('media.coconut_video_region');
@@ -269,7 +270,7 @@ class MediaEncoderServiceProvider extends ServiceProvider
                 $coconut = new \Coconut\Client(getSetting('media.coconut_api_key'), $configData);
                 // Uploading the original video onto s3
                 $filePath = $directory.'/tmp/'.$fileId.'.'.$fileExtension;
-                $storage->put($filePath, $fileContent, 'public');
+                $storage->put($filePath, $fileContent, $visibility);
                 Storage::url($filePath);
 
                 // Setting up the coconut notification
@@ -352,7 +353,7 @@ class MediaEncoderServiceProvider extends ServiceProvider
         }
         else {
             $filePath = $directory.'/'.$fileId.'.'.$fileExtension;
-            $storage->put($filePath, $fileContent, 'public');
+            $storage->put($filePath, $fileContent, $visibility);
         }
 
         return [
@@ -368,6 +369,7 @@ class MediaEncoderServiceProvider extends ServiceProvider
     public static function encodeImage($file, $directory, $fileId, $generateThumbnail, $generateBlurredShot, $applyWatermark)
     {
         $storage = Storage::disk(config('filesystems.defaultFilesystemDriver'));
+        $visibility = AttachmentServiceProvider::getAdminFileUploadVisibility();
         $fileExtension = $file->guessExtension();
         $hasThumbnail = false;
         $hasBlurredPreview = false;
@@ -408,12 +410,12 @@ class MediaEncoderServiceProvider extends ServiceProvider
         // Handle GIFs without processing
         if ($fileExtension == 'gif') {
             $filePath = $directory.'/'.$fileId.'.'.$fileExtension;
-            $storage->put($filePath, file_get_contents($file->getRealPath()), 'public');
+            $storage->put($filePath, file_get_contents($file->getRealPath()), $visibility);
         } else {
             // Save the processed image
             $fileExtension = 'jpg';
             $filePath = $directory.'/'.$fileId.'.'.$fileExtension;
-            $storage->put($filePath, (string) $jpgImage->encode('jpg', 100), 'public');
+            $storage->put($filePath, (string) $jpgImage->encode('jpg', 100), $visibility);
         }
 
         // Generate thumbnail
@@ -428,7 +430,7 @@ class MediaEncoderServiceProvider extends ServiceProvider
             $thumbnailDir = $directory.'/'.$width.'X'.$height;
             $thumbnailfilePath = $thumbnailDir.'/'.$fileId.'.jpg';
             // Upload the thumbnail to storage
-            $storage->put($thumbnailfilePath, (string) $thumbnailImg, 'public');
+            $storage->put($thumbnailfilePath, (string) $thumbnailImg, $visibility);
             $hasThumbnail = true;
         }
 
@@ -451,7 +453,7 @@ class MediaEncoderServiceProvider extends ServiceProvider
             $blurredPreviewDir = $directory.'/blurred';
             $blurredPreviewPath = $blurredPreviewDir.'/'.$fileId.'.jpg';
             // Upload the blurred image to storage
-            $storage->put($blurredPreviewPath, (string) $blurredImg, 'public');
+            $storage->put($blurredPreviewPath, (string) $blurredImg, $visibility);
             $hasBlurredPreview = true;
         }
 
@@ -474,8 +476,9 @@ class MediaEncoderServiceProvider extends ServiceProvider
         $fileExtension = $file->guessExtension();
         $filePath = $directory.'/'.$fileId.'.'.$fileExtension;
         $storage = Storage::disk(config('filesystems.defaultFilesystemDriver'));
+        $visibility = AttachmentServiceProvider::getAdminFileUploadVisibility();
         $fileContent = file_get_contents($file);
-        $storage->put($filePath, $fileContent, 'public');
+        $storage->put($filePath, $fileContent, $visibility);
         return [
             'filePath' => $filePath,
             'hasBlurredPreview' => false,
