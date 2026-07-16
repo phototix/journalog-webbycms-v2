@@ -392,12 +392,15 @@ fun PostCard(
                     contentAlignment = Alignment.Center
                 ) {
                     if (isLocked) {
-                        AsyncImage(
-                            model = "https://journalog.webbypage.com/img/post-locked.svg",
-                            contentDescription = "Locked",
-                            modifier = Modifier.fillMaxSize(),
-                            contentScale = ContentScale.Fit
-                        )
+                        Column(horizontalAlignment = Alignment.CenterHorizontally) {
+                            Icon(Icons.Filled.Lock, contentDescription = "Locked",
+                                tint = MaterialTheme.colorScheme.onSurfaceVariant, modifier = Modifier.size(32.dp))
+                            Spacer(Modifier.height(4.dp))
+                            Text("\$${String.format("%.2f", post.price)}",
+                                color = MaterialTheme.colorScheme.onSurfaceVariant,
+                                style = MaterialTheme.typography.titleMedium,
+                                fontWeight = FontWeight.Bold)
+                        }
                     } else {
                         Text(post.text?.replace("<br>", "\n")?.replace("<br />", "\n")?.replace("<br/>", "\n") ?: "", maxLines = 3, overflow = TextOverflow.Ellipsis,
                             modifier = Modifier.padding(horizontal = 12.dp))
@@ -423,12 +426,21 @@ fun PostCard(
                         .clickable { onPostClick() }
                 ) {
                     if (isLocked) {
-                        AsyncImage(
-                            model = "https://journalog.webbypage.com/img/post-locked.svg",
-                            contentDescription = "Locked",
-                            modifier = Modifier.fillMaxWidth().aspectRatio(1f),
-                            contentScale = ContentScale.Fit
-                        )
+                        Box(
+                            modifier = Modifier.fillMaxWidth().aspectRatio(1f)
+                                .background(MaterialTheme.colorScheme.surfaceVariant),
+                            contentAlignment = Alignment.Center
+                        ) {
+                            Column(horizontalAlignment = Alignment.CenterHorizontally) {
+                                Icon(Icons.Filled.Lock, contentDescription = "Locked",
+                                    tint = MaterialTheme.colorScheme.onSurfaceVariant, modifier = Modifier.size(32.dp))
+                                Spacer(Modifier.height(4.dp))
+                                Text("\$${String.format("%.2f", post.price)}",
+                                    color = MaterialTheme.colorScheme.onSurfaceVariant,
+                                    style = MaterialTheme.typography.titleMedium,
+                                    fontWeight = FontWeight.Bold)
+                            }
+                        }
                     } else {
                         val mediaUrl = post.media.firstOrNull()?.url
                         if (!mediaUrl.isNullOrBlank()) {

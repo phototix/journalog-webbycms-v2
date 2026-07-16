@@ -317,12 +317,19 @@ fun ProfileScreen(
                                 contentAlignment = Alignment.Center
                             ) {
                                 if (post.price > 0) {
-                                    AsyncImage(
-                                        model = "https://journalog.webbypage.com/img/post-locked.svg",
-                                        contentDescription = "Locked",
+                                    Column(
                                         modifier = Modifier.fillMaxSize(),
-                                        contentScale = ContentScale.Fit
-                                    )
+                                        horizontalAlignment = Alignment.CenterHorizontally,
+                                        verticalArrangement = Arrangement.Center
+                                    ) {
+                                        Icon(Icons.Filled.Lock, contentDescription = "Locked",
+                                            tint = MaterialTheme.colorScheme.onSurfaceVariant, modifier = Modifier.size(24.dp))
+                                        Spacer(Modifier.height(2.dp))
+                                        Text("\$${String.format("%.2f", post.price)}",
+                                            color = MaterialTheme.colorScheme.onSurfaceVariant,
+                                            style = MaterialTheme.typography.labelSmall,
+                                            fontWeight = FontWeight.Bold)
+                                    }
                                 } else {
                                     val mediaUrl = post.media?.firstOrNull()?.let { it.thumbnail ?: it.url }
                                     if (mediaUrl != null) {
