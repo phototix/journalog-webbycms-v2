@@ -515,15 +515,20 @@ class SettingsController extends Controller
             }
             // Resizing the asset
             $img->encode('jpg', 100);
+            $encoded = (string) $img;
+            Storage::disk('public')->put($filePath, $encoded);
+            Storage::disk(config('filesystems.defaultFilesystemDriver'))->put($filePath, $encoded, 'public');
+            Storage::disk('public')->delete($filePath);
             // Saving to user db
             Auth()->user()->update($data);
-            // Saving to public disk
-            Storage::disk('public')->put($filePath, (string) $img);
         } catch (\Exception $exception) {
             return response()->json(['success' => false, 'errors' => ['file'=>$exception->getMessage()]]);
         }
 
-        $assetPath = Storage::disk('public')->url($filePath);
+        $assetPath = \App\Providers\GenericHelperServiceProvider::getStorageAvatarPath($filePath);
+        if($type == 'cover'){
+            $assetPath = \App\Providers\GenericHelperServiceProvider::getStorageCoverPath($filePath);
+        }
         return response()->json(['success' => true, 'assetSrc' => $assetPath]);
     }
 

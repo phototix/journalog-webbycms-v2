@@ -115,10 +115,15 @@ class SettingsController extends ApiController
             }
 
             $img->encode('jpg', 100);
+            $encoded = (string) $img;
+            Storage::disk('public')->put($filePath, $encoded);
+            Storage::disk(config('filesystems.defaultFilesystemDriver'))->put($filePath, $encoded, 'public');
+            Storage::disk('public')->delete($filePath);
             $request->user()->update($data);
-            Storage::disk('public')->put($filePath, (string) $img);
-
-            $assetPath = Storage::disk('public')->url($filePath);
+            $assetPath = \App\Providers\GenericHelperServiceProvider::getStorageAvatarPath($filePath);
+            if ($type == 'cover') {
+                $assetPath = \App\Providers\GenericHelperServiceProvider::getStorageCoverPath($filePath);
+            }
 
             return $this->success(['assetSrc' => $assetPath], 'Upload successful');
         } catch (\Exception $e) {
