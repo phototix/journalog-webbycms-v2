@@ -480,7 +480,6 @@ class SettingsController extends Controller
 
         try {
             $directory = 'users/'.$type;
-            $s3 = Storage::disk(config('filesystems.defaultFilesystemDriver'));
             $fileId = Uuid::uuid4()->getHex();
             $filePath = $directory.'/'.$fileId.'.jpg';
 
@@ -518,16 +517,13 @@ class SettingsController extends Controller
             $img->encode('jpg', 100);
             // Saving to user db
             Auth()->user()->update($data);
-            // Saving to disk
-            $s3->put($filePath, $img, AttachmentServiceProvider::getAdminFileUploadVisibility());
+            // Saving to public disk
+            Storage::disk('public')->put($filePath, (string) $img);
         } catch (\Exception $exception) {
             return response()->json(['success' => false, 'errors' => ['file'=>$exception->getMessage()]]);
         }
 
-        $assetPath = GenericHelperServiceProvider::getStorageAvatarPath($filePath);
-        if($type == 'cover'){
-            $assetPath = GenericHelperServiceProvider::getStorageCoverPath($filePath);
-        }
+        $assetPath = Storage::disk('public')->url($filePath);
         return response()->json(['success' => true, 'assetSrc' => $assetPath]);
     }
 
