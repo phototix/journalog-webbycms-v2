@@ -87,6 +87,7 @@ class SettingsController extends ApiController
 
     public function uploadProfileAsset(Request $request, $type)
     {
+        $request->route()->setParameter('uploadType', $type);
         $controller = new WebSettingsController();
         $result = $controller->uploadProfileAsset($request);
 

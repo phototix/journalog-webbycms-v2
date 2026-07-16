@@ -340,10 +340,18 @@ fun EditProfileScreen(
                                     val inputStream = context.contentResolver.openInputStream(uri)
                                     val bytes = inputStream?.readBytes() ?: throw Exception("Cannot read file")
                                     inputStream?.close()
+                                    if (bytes.size > 2 * 1024 * 1024) {
+                                        throw Exception("Avatar image must be under 2MB")
+                                    }
                                     val mimeType = context.contentResolver.getType(uri) ?: "image/jpeg"
                                     val requestBody = bytes.toRequestBody(mimeType.toMediaTypeOrNull())
                                     val part = MultipartBody.Part.createFormData("file", "avatar.jpg", requestBody)
-                                    api.uploadProfileAsset("avatar", part)
+                                    val uploadResp = api.uploadProfileAsset("avatar", part)
+                                    if (!uploadResp.isSuccessful) {
+                                        val errBody = uploadResp.errorBody()?.string()
+                                        val msg = try { org.json.JSONObject(errBody).optString("message", "Upload failed") } catch (_: Exception) { "Upload failed" }
+                                        throw Exception(msg)
+                                    }
                                 }
 
                                 // Upload cover if changed
@@ -352,10 +360,18 @@ fun EditProfileScreen(
                                     val inputStream = context.contentResolver.openInputStream(uri)
                                     val bytes = inputStream?.readBytes() ?: throw Exception("Cannot read file")
                                     inputStream?.close()
+                                    if (bytes.size > 2 * 1024 * 1024) {
+                                        throw Exception("Cover image must be under 2MB")
+                                    }
                                     val mimeType = context.contentResolver.getType(uri) ?: "image/jpeg"
                                     val requestBody = bytes.toRequestBody(mimeType.toMediaTypeOrNull())
                                     val part = MultipartBody.Part.createFormData("file", "cover.jpg", requestBody)
-                                    api.uploadProfileAsset("cover", part)
+                                    val uploadResp = api.uploadProfileAsset("cover", part)
+                                    if (!uploadResp.isSuccessful) {
+                                        val errBody = uploadResp.errorBody()?.string()
+                                        val msg = try { org.json.JSONObject(errBody).optString("message", "Upload failed") } catch (_: Exception) { "Upload failed" }
+                                        throw Exception(msg)
+                                    }
                                 }
 
                                 val resp = api.updateProfile(body)
