@@ -334,6 +334,22 @@ fun ProfileScreen(
                                         textAlign = TextAlign.Center
                                     )
                                 }
+                                if (post.price > 0) {
+                                    Box(
+                                        modifier = Modifier.fillMaxSize()
+                                            .background(Color.Black.copy(alpha = 0.4f)),
+                                        contentAlignment = Alignment.Center
+                                    ) {
+                                        Column(horizontalAlignment = Alignment.CenterHorizontally) {
+                                            Icon(Icons.Filled.Lock, contentDescription = "Locked",
+                                                tint = Color.White, modifier = Modifier.size(20.dp))
+                                            Text("\$${String.format("%.2f", post.price)}",
+                                                color = Color.White,
+                                                style = MaterialTheme.typography.labelSmall,
+                                                fontWeight = FontWeight.Bold)
+                                        }
+                                    }
+                                }
                             }
                         }
                         repeat(3 - rowItems.size) {
