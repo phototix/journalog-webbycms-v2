@@ -318,7 +318,7 @@ fun ProfileScreen(
                             ) {
                                 if (post.price > 0) {
                                     AsyncImage(
-                                        model = "https://journalog.webbypage.com/img/post-locked.svg",
+                                        model = "https://journalog-webbypage-singapore.s3.ap-southeast-1.amazonaws.com/locked-image.png",
                                         contentDescription = "Locked",
                                         modifier = Modifier.fillMaxSize(),
                                         contentScale = ContentScale.Fit
