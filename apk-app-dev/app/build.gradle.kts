@@ -93,6 +93,7 @@ dependencies {
 
     // Image loading
     implementation("io.coil-kt:coil-compose:2.7.0")
+    implementation("io.coil-kt:coil-svg:2.7.0")
 
     // Markdown rendering
     implementation("io.noties.markwon:core:4.6.2")
