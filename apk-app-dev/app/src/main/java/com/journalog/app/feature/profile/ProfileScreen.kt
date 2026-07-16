@@ -37,6 +37,7 @@ import kotlinx.coroutines.launch
 fun ProfileScreen(
     username: String,
     currentUsername: String? = null,
+    refreshTrigger: Int = 0,
     onBack: () -> Unit,
     onSettingsClick: () -> Unit,
     onNotificationsClick: () -> Unit,
@@ -91,7 +92,7 @@ fun ProfileScreen(
         }
     }
 
-    LaunchedEffect(username) {
+    LaunchedEffect(username, refreshTrigger) {
         loadProfile()
         loadPosts()
     }

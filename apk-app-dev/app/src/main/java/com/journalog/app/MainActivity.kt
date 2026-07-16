@@ -69,6 +69,7 @@ fun MainContent(tokenManager: TokenManager, launchToken: String? = null) {
     var storyViewerUserId by remember { mutableStateOf<Int?>(null) }
     var subscribeToUser by remember { mutableStateOf<com.journalog.app.data.remote.dto.UserDto?>(null) }
     var feedRefreshTrigger by remember { mutableIntStateOf(0) }
+    var profileRefreshTrigger by remember { mutableIntStateOf(0) }
     var showCreateFabMenu by remember { mutableStateOf(false) }
 
     LaunchedEffect(Unit) {
@@ -250,6 +251,7 @@ fun MainContent(tokenManager: TokenManager, launchToken: String? = null) {
                 ProfileScreen(
                     username = username,
                     currentUsername = currentUsername,
+                    refreshTrigger = profileRefreshTrigger,
                     onBack = { navController.popBackStack() },
                     onSettingsClick = { navController.navigate(NavRoutes.Settings.route) },
                     onNotificationsClick = { navController.navigate(NavRoutes.Notifications.route) },
@@ -333,7 +335,8 @@ fun MainContent(tokenManager: TokenManager, launchToken: String? = null) {
 
             composable(NavRoutes.EditProfile.route) {
                 EditProfileScreen(
-                    onBack = { navController.popBackStack() }
+                    onBack = { navController.popBackStack() },
+                    onSaved = { profileRefreshTrigger++ }
                 )
             }
 

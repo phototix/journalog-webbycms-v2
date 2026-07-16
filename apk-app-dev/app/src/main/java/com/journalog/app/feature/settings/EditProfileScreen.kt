@@ -33,7 +33,8 @@ import okhttp3.RequestBody.Companion.toRequestBody
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun EditProfileScreen(
-    onBack: () -> Unit
+    onBack: () -> Unit,
+    onSaved: () -> Unit = {}
 ) {
     val api = remember { ApiClient.create(ApiService::class.java) }
     val scope = rememberCoroutineScope()
@@ -352,6 +353,8 @@ fun EditProfileScreen(
                                         val msg = try { org.json.JSONObject(errBody).optString("message", "Upload failed") } catch (_: Exception) { "Upload failed" }
                                         throw Exception(msg)
                                     }
+                                    avatarUrl = uploadResp.body()?.data?.get("assetSrc") ?: avatarUrl
+                                    avatarUri = null
                                 }
 
                                 // Upload cover if changed
@@ -372,10 +375,13 @@ fun EditProfileScreen(
                                         val msg = try { org.json.JSONObject(errBody).optString("message", "Upload failed") } catch (_: Exception) { "Upload failed" }
                                         throw Exception(msg)
                                     }
+                                    coverUrl = uploadResp.body()?.data?.get("assetSrc") ?: coverUrl
+                                    coverUri = null
                                 }
 
                                 val resp = api.updateProfile(body)
                                 if (resp.isSuccessful) {
+                                    onSaved()
                                     onBack()
                                 } else {
                                     error = "Failed to save profile"
