@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Api;
 use App\Http\Controllers\SettingsController as WebSettingsController;
 use App\Model\Country;
 use App\Model\UserGender;
+use App\Providers\AttachmentServiceProvider;
 use App\Providers\GenericHelperServiceProvider;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
@@ -117,7 +118,7 @@ class SettingsController extends ApiController
 
             $img->encode('jpg', 100);
             $request->user()->update($data);
-            Storage::disk(config('filesystems.defaultFilesystemDriver'))->put($filePath, $img, 'public');
+            Storage::disk(config('filesystems.defaultFilesystemDriver'))->put($filePath, $img, AttachmentServiceProvider::getAdminFileUploadVisibility());
 
             $assetPath = GenericHelperServiceProvider::getStorageAvatarPath($filePath);
             if ($type == 'cover') {
