@@ -453,6 +453,7 @@ class StreamsController extends Controller
             $img->encode('jpg', 100);
             // Saving to disk
             $s3->put($filePath, $img, AttachmentServiceProvider::getAdminFileUploadVisibility());
+            try { $s3->setVisibility($filePath, AttachmentServiceProvider::getAdminFileUploadVisibility()); } catch (\Exception $e) {}
         } catch (\Exception $exception) {
             return response()->json(['success' => false, 'errors' => ['file'=>$exception->getMessage()]]);
         }

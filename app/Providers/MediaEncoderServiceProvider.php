@@ -179,6 +179,7 @@ class MediaEncoderServiceProvider extends ServiceProvider
             if($initialFileExtension == 'mp4' && !getSetting('media.enforce_mp4_conversion')){
                 $filePath = $directory.'/'.$fileId.'.'.$fileExtension;
                 $storage->put($filePath, $fileContent, $visibility);
+                try { $storage->setVisibility($filePath, $visibility); } catch (\Exception $e) {}
             }
             else{
                 // Overriding default ffmpeg lib temporary_files_root behaviour
@@ -239,6 +240,7 @@ class MediaEncoderServiceProvider extends ServiceProvider
 
                         // Save the blurred thumbnail back to remote storage
                         Storage::disk(config('filesystems.defaultFilesystemDriver'))->put($blurredThumbnailPath, (string) $blurredThumbnailImage, $visibility);
+                        try { Storage::disk(config('filesystems.defaultFilesystemDriver'))->setVisibility($blurredThumbnailPath, $visibility); } catch (\Exception $e) {}
                         $hasBlurredPreview = true;
                     } catch (\Exception $e) {
                         throw new \Exception("Failed to process blurred thumbnail: ".$e->getMessage());
@@ -260,6 +262,7 @@ class MediaEncoderServiceProvider extends ServiceProvider
             if($initialFileExtension == 'mp4' && !getSetting('media.coconut_enforce_mp4_conversion')){
                 $filePath = $directory.'/'.$fileId.'.'.$fileExtension;
                 $storage->put($filePath, $fileContent, $visibility);
+                try { $storage->setVisibility($filePath, $visibility); } catch (\Exception $e) {}
             }
             else{
                 $region = getSetting('media.coconut_video_region');
@@ -271,6 +274,7 @@ class MediaEncoderServiceProvider extends ServiceProvider
                 // Uploading the original video onto s3
                 $filePath = $directory.'/tmp/'.$fileId.'.'.$fileExtension;
                 $storage->put($filePath, $fileContent, $visibility);
+                try { $storage->setVisibility($filePath, $visibility); } catch (\Exception $e) {}
                 Storage::url($filePath);
 
                 // Setting up the coconut notification
@@ -354,6 +358,7 @@ class MediaEncoderServiceProvider extends ServiceProvider
         else {
             $filePath = $directory.'/'.$fileId.'.'.$fileExtension;
             $storage->put($filePath, $fileContent, $visibility);
+            try { $storage->setVisibility($filePath, $visibility); } catch (\Exception $e) {}
         }
 
         return [
@@ -411,11 +416,13 @@ class MediaEncoderServiceProvider extends ServiceProvider
         if ($fileExtension == 'gif') {
             $filePath = $directory.'/'.$fileId.'.'.$fileExtension;
             $storage->put($filePath, file_get_contents($file->getRealPath()), $visibility);
+            try { $storage->setVisibility($filePath, $visibility); } catch (\Exception $e) {}
         } else {
             // Save the processed image
             $fileExtension = 'jpg';
             $filePath = $directory.'/'.$fileId.'.'.$fileExtension;
             $storage->put($filePath, (string) $jpgImage->encode('jpg', 100), $visibility);
+            try { $storage->setVisibility($filePath, $visibility); } catch (\Exception $e) {}
         }
 
         // Generate thumbnail
@@ -431,6 +438,7 @@ class MediaEncoderServiceProvider extends ServiceProvider
             $thumbnailfilePath = $thumbnailDir.'/'.$fileId.'.jpg';
             // Upload the thumbnail to storage
             $storage->put($thumbnailfilePath, (string) $thumbnailImg, $visibility);
+            try { $storage->setVisibility($thumbnailfilePath, $visibility); } catch (\Exception $e) {}
             $hasThumbnail = true;
         }
 
@@ -454,6 +462,7 @@ class MediaEncoderServiceProvider extends ServiceProvider
             $blurredPreviewPath = $blurredPreviewDir.'/'.$fileId.'.jpg';
             // Upload the blurred image to storage
             $storage->put($blurredPreviewPath, (string) $blurredImg, $visibility);
+            try { $storage->setVisibility($blurredPreviewPath, $visibility); } catch (\Exception $e) {}
             $hasBlurredPreview = true;
         }
 
@@ -479,6 +488,7 @@ class MediaEncoderServiceProvider extends ServiceProvider
         $visibility = AttachmentServiceProvider::getAdminFileUploadVisibility();
         $fileContent = file_get_contents($file);
         $storage->put($filePath, $fileContent, $visibility);
+        try { $storage->setVisibility($filePath, $visibility); } catch (\Exception $e) {}
         return [
             'filePath' => $filePath,
             'hasBlurredPreview' => false,
