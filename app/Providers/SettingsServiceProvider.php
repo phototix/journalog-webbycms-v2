@@ -306,6 +306,7 @@ class SettingsServiceProvider extends ServiceProvider
         config(['filesystems.disks.s3.secret' => getSetting('storage.aws_secret_key')]);
         config(['filesystems.disks.s3.region' => $awsRegion]);
         config(['filesystems.disks.s3.bucket' => getSetting('storage.aws_bucket_name')]);
+        config(['filesystems.disks.s3.options' => ['ACL' => '']]);
 
         config(['filesystems.disks.wasabi.key' => getSetting('storage.was_access_key')]);
         config(['filesystems.disks.wasabi.secret' => getSetting('storage.was_secret_key')]);
